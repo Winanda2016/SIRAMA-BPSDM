@@ -1,4 +1,4 @@
-@extends('admin.themes.index')
+@extends('admin.themes.app')
 @section('content')
 <div class="container-fluid">
 
