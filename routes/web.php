@@ -18,12 +18,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('admin.themes.index');
 // });
 
-// Route::get('/', function () {
+Route::get('/', function () {
+    return view('admin.dashboard');
+});
+
+
+// Route::get('/admin-dashboard', function () {
 //     return view('admin.dashboard');
 // });
-Route::get('/', function () {
-    return view('pelanggan.dashboard');
-});
+
+// Route::get('/', function () {
+//     return view('pelanggan.dashboard');
+// });
 
 //== RESERVASI ==
 Route::get('/daftar-reservasi', function () {
