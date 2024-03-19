@@ -1,4 +1,8 @@
 @extends('admin.themes.app')
+@php
+$ar_judul = ['No','Nomor Kamar','Nama Gedung','Kapasitas','Status','Aksi'];
+$no = 1;
+@endphp
 @section('content')
 <div class="container-fluid">
 
@@ -26,7 +30,19 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
-                                <a href="{{ url('/tambah-kamar') }}" type="button" class="btn btn-primary waves-effect btn-label waves-light">
+                                <div>
+                                    @if($message = Session::get('success'))
+                                    <div class="alert alert-success">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                    @endif
+                                    @if($message = Session::get('error'))
+                                    <div class="alert alert-danger">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                    @endif
+                                </div>
+                                <a href="{{ url('/kelola-kamar/tambah-kamar') }}" type="button" class="btn btn-primary waves-effect btn-label waves-light">
                                     <i class="bx bx-plus label-icon"></i>
                                     Tambah Kamar
                                 </a>
@@ -38,29 +54,35 @@
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style="width: 100%;">
                             <thead>
-                                <tr class="bg-transparent">
-                                    <th style="text-align: center;">No</th>
-                                    <th style="text-align: center;">Nomor Kamar</th>
-                                    <th style="text-align: center;">Nama Gedung</th>
-                                    <th style="text-align: center;">Kapasitas</th>
-                                    <th style="text-align: center;">Status</th>
-                                    <th style="text-align: center;">Action</th>
+                                <tr class="table-primary">
+                                    @foreach($ar_judul as $jdl)
+                                    <th style="text-align: center;">{{ $jdl }}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody align="center">
+                                @foreach($kamar as $k)
                                 <tr>
-                                    <td><a href="javascript: void(0);" class="text-body fw-medium">1</a> </td>
-                                    <td><a href="javascript: void(0);" class="text-body fw-medium">102</a> </td>
-                                    <td> mmmmmmm </td>
-                                    <td> 2 orang </td>
+                                    <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                    <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $k->nomor_kamar }}</a> </td>
+                                    <td> {{ $k->nama_gedung }} </td>
+                                    <td>{{ $k->kapasitas }} orang</td>
                                     <td>
-                                        <div class="badge badge-soft-success font-size-12">kosong</div>
+                                        @if ($k->status === 'kosong')
+                                        <div class="badge badge-soft-success font-size-12">Kosong</div>
+                                        @elseif ($k->status === 'terisi')
+                                        <div class="badge badge-soft-danger font-size-12">Terisi</div>
+                                        @elseif ($k->status === 'reservasi')
+                                        <div class="badge badge-soft-warning font-size-12">Reservasi</div>
+                                        @elseif ($k->status === 'perbaikan')
+                                        <div class="badge badge-soft-secondary font-size-12">Perbaikan</div>
+                                        @endif
                                     </td>
                                     <td>
                                         <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/detail-kamar') }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bx-file font-size-16 align-middle"></i>
                                         </a>
-                                        <a type="button" class="btn btn-warning waves-effect waves-light  p-1" href="{{ url('/edit-kamar') }}" style="width: 35px; height:30px; margin-right:5px">
+                                        <a type="button" class="btn btn-warning waves-effect waves-light  p-1" href="/kelola-kamar/{{ $k->id }}/edit" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bxs-edit font-size-16 align-middle"></i>
                                         </a>
                                         <a type="button" class="btn btn-danger waves-effect waves-light p-1" href="#" style="width: 35px; height:30px; margin-right:5px">
@@ -68,6 +90,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

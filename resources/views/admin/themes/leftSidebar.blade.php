@@ -43,30 +43,39 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/kelola-gedung') }}">
-                        <i data-feather="layers"></i>
-                        <span data-key="t-gedung">Kelola Gedung</span>
+                    <a href="{{ url('/riwayat-transaksi') }}">
+                        <i data-feather="file-text"></i>
+                        <span data-key="t-riwayat">Riwayat</span>
                     </a>
                 </li>
 
-                <li>
+                <li class="menu-title mt-2" data-key="t-menu">Kelola Data</li>
+
+                <li class="@if (Route::currentRouteName() == 'kelola-gedung') active @endif">
+                    <a href="{{ url('/kelola-gedung') }}">
+                        <i data-feather="layers"></i>
+                        <span data-key="t-gedung">Data Gedung</span>
+                    </a>
+                </li>
+
+                <li class="@if (Route::currentRouteName() == 'kelola-kamar') active @endif">
                     <a href="{{ url('/kelola-kamar') }}">
                         <i data-feather="slack" ></i>
-                        <span data-key="t-kamar">Kelola Kamar</span>
+                        <span data-key="t-kamar">Data Kamar</span>
+                    </a>
+                </li>
+
+                <li class="@if (Route::currentRouteName() == 'kelola-kamar') active @endif">
+                    <a href="{{ url('/kelola-kamar') }}">
+                        <i data-feather="user" ></i>
+                        <span data-key="t-pelanggan">Data Jenis Pelanggan</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ url('/kelola-ruangan') }}">
                         <i data-feather="cpu" ></i>
-                        <span data-key="t-kamar">Kelola Ruangan</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ url('/riwayat-transaksi') }}">
-                        <i data-feather="file-text"></i>
-                        <span data-key="t-riwayat">Riwayat</span>
+                        <span data-key="t-kamar">Data Ruangan</span>
                     </a>
                 </li>
             </ul>

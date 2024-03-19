@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GedungController;
+use App\Http\Controllers\KamarController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,10 +70,15 @@ Route::get('/riwayat-transaksi', function () {
 
 // ===========================================================
 
-//== Ruangan ==
-Route::get('/kelola-gedung', function () {
-    return view('admin.gedung.kelolaGedung');
-});
+//== Gedun ==
+Route::resource('/kelola-gedung', GedungController::class);
+
+//== Kamar ==
+Route::resource('/kelola-kamar', KamarController::class)->except(['show']);
+Route::get('/kelola-kamar/tambah-kamar', [KamarController::class, 'create']);
+Route::post('/kelola-kamar', [KamarController::class, 'store']);
+Route::get('/kelola-kamar/{kamar}/edit', [KamarController::class, 'edit']);
+Route::put('/kelola-kamar/{kamar}', [KamarController::class, 'update']);
 
 Route::get('/kelola-ruangan', function () {
     return view('admin.ruangan.kelolaRuangan');
@@ -83,17 +90,8 @@ Route::get('/edit-ruangan', function () {
     return view('admin.ruangan.editRuangan');
 });
 
-Route::get('/kelola-kamar', function () {
-    return view('admin.kamar.kelolaKamar');
-});
-Route::get('/tambah-kamar', function () {
-    return view('admin.kamar.tambahKamar');
-});
-Route::get('/edit-kamar', function () {
-    return view('admin.kamar.editKamar');
-});
-
 // ===========================================================
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
