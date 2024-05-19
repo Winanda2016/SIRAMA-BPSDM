@@ -44,8 +44,27 @@ $no = 1;
                                 </div>
                                 <a href="{{ url('/kelola-kamar/tambah-kamar') }}" type="button" class="btn btn-primary waves-effect btn-label waves-light">
                                     <i class="bx bx-plus label-icon"></i>
-                                    Tambah Kamar
+                                    Tambah
                                 </a>
+
+                                <!-- filter gedung -->
+                                <div class="btn-group dropend" style="margin: 5px;">
+                                    <button type="button" class="btn btn-info waves-effect waves-light">
+                                        Filter
+                                    </button>
+                                    <button type="button" class="btn btn-info waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-chevron-right"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        {{-- <a selected hidden >{{request('search')}}</a> --}}
+                                        <a class="dropdown-item" href="{{ route('kelola_kamar') }}">All</a>
+                                        @foreach ($gedung as $gd)
+                                        <a class="dropdown-item" href="{{ route('kelola_kamar', ['gedung_id' => $gd->id]) }}">
+                                            {{ $gd->nama_gedung }}
+                                        </a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -82,7 +101,7 @@ $no = 1;
                                         <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/detail-kamar') }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bx-file font-size-16 align-middle"></i>
                                         </a>
-                                        <a type="button" class="btn btn-warning waves-effect waves-light  p-1" href="/kelola-kamar/{{ $k->id }}/edit" style="width: 35px; height:30px; margin-right:5px">
+                                        <a type="button" class="btn btn-warning waves-effect waves-light p-1" href="#" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bxs-edit font-size-16 align-middle"></i>
                                         </a>
                                         <a type="button" class="btn btn-danger waves-effect waves-light p-1" href="#" style="width: 35px; height:30px; margin-right:5px">

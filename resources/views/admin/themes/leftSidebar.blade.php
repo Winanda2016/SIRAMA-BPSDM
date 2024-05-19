@@ -16,6 +16,13 @@
                 </li>
 
                 <li>
+                    <a href="{{ url('/pegawai-dashboard') }}">
+                        <i data-feather="home"></i>
+                        <span data-key="t-dashboard">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="phone-incoming"></i>
                         <span data-key="t-reservasi">Reservasi</span>
@@ -37,7 +44,7 @@
 
                 <li>
                     <a href="{{ url('/daftar-tamu') }}">
-                        <i data-feather="users"></i>
+                        <i data-feather="book-open"></i>
                         <span data-key="t-dtamu">Daftar Tamu</span>
                     </a>
                 </li>
@@ -49,25 +56,26 @@
                     </a>
                 </li>
 
+                <!-- Administrator -->
                 <li class="menu-title mt-2" data-key="t-menu">Kelola Data</li>
 
-                <li class="@if (Route::currentRouteName() == 'kelola-gedung') active @endif">
-                    <a href="{{ url('/kelola-gedung') }}">
+                <li class="@if (Route::currentRouteName() == 'gedung') active @endif">
+                    <a href="{{ url('/gedung') }}">
                         <i data-feather="layers"></i>
                         <span data-key="t-gedung">Data Gedung</span>
                     </a>
                 </li>
 
                 <li class="@if (Route::currentRouteName() == 'kelola-kamar') active @endif">
-                    <a href="{{ url('/kelola-kamar') }}">
+                    <a href="{{ route('kelola_kamar') }}">
                         <i data-feather="slack" ></i>
                         <span data-key="t-kamar">Data Kamar</span>
                     </a>
                 </li>
 
-                <li class="@if (Route::currentRouteName() == 'kelola-kamar') active @endif">
-                    <a href="{{ url('/kelola-kamar') }}">
-                        <i data-feather="user" ></i>
+                <li class="@if (Route::currentRouteName() == 'jenis-pelanggan') active @endif">
+                    <a href="{{ url('/jenis-pelanggan') }}">
+                        <i data-feather="tag" ></i>
                         <span data-key="t-pelanggan">Data Jenis Pelanggan</span>
                     </a>
                 </li>
@@ -78,8 +86,15 @@
                         <span data-key="t-kamar">Data Ruangan</span>
                     </a>
                 </li>
+
+                <li class="@if (Route::currentRouteName() == 'kelola-users') active @endif">
+                    <a href="{{ url('/kelola-users') }}">
+                        <i data-feather="users" ></i>
+                        <span data-key="t-kusers">Kelola Users</span>
+                    </a>
+                </li>
             </ul>
-        </div>
+        </div><br><br>
 
         <!-- Sidebar -->
     </div>

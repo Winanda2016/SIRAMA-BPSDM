@@ -1,1 +1,219 @@
-function getChartColorsArray(r){r=$(r).attr("data-colors");return(r=JSON.parse(r)).map(function(r){r=r.replace(" ","");if(-1==r.indexOf("--"))return r;r=getComputedStyle(document.documentElement).getPropertyValue(r);return r||void 0})}var minichart1Colors=getChartColorsArray("#mini-chart1"),options={series:[{data:[2,10,18,22,36,15,47,75,65,19,14,2,47,42,15]}],chart:{type:"line",height:50,sparkline:{enabled:!0}},colors:minichart1Colors,stroke:{curve:"smooth",width:2},tooltip:{fixed:{enabled:!1},x:{show:!1},y:{title:{formatter:function(r){return""}}},marker:{show:!1}}},chart=new ApexCharts(document.querySelector("#mini-chart1"),options);chart.render();var minichart2Colors=getChartColorsArray("#mini-chart2"),options={series:[{data:[15,42,47,2,14,19,65,75,47,15,42,47,2,14,12]}],chart:{type:"line",height:50,sparkline:{enabled:!0}},colors:minichart2Colors,stroke:{curve:"smooth",width:2},tooltip:{fixed:{enabled:!1},x:{show:!1},y:{title:{formatter:function(r){return""}}},marker:{show:!1}}};(chart=new ApexCharts(document.querySelector("#mini-chart2"),options)).render();var minichart3Colors=getChartColorsArray("#mini-chart3"),options={series:[{data:[47,15,2,67,22,20,36,60,60,30,50,11,12,3,8]}],chart:{type:"line",height:50,sparkline:{enabled:!0}},colors:minichart3Colors,stroke:{curve:"smooth",width:2},tooltip:{fixed:{enabled:!1},x:{show:!1},y:{title:{formatter:function(r){return""}}},marker:{show:!1}}};(chart=new ApexCharts(document.querySelector("#mini-chart3"),options)).render();var minichart4Colors=getChartColorsArray("#mini-chart4"),options={series:[{data:[12,14,2,47,42,15,47,75,65,19,14,2,47,42,15]}],chart:{type:"line",height:50,sparkline:{enabled:!0}},colors:minichart4Colors,stroke:{curve:"smooth",width:2},tooltip:{fixed:{enabled:!1},x:{show:!1},y:{title:{formatter:function(r){return""}}},marker:{show:!1}}};(chart=new ApexCharts(document.querySelector("#mini-chart4"),options)).render();var piechartColors=getChartColorsArray("#wallet-balance"),options={series:[35,70,15],chart:{width:227,height:227,type:"pie"},labels:["Ethereum","Bitcoin","Litecoin"],colors:piechartColors,stroke:{width:0},legend:{show:!1},responsive:[{breakpoint:480,options:{chart:{width:200}}}]};(chart=new ApexCharts(document.querySelector("#wallet-balance"),options)).render();var radialchartColors=getChartColorsArray("#invested-overview"),options={chart:{height:270,type:"radialBar",offsetY:-10},plotOptions:{radialBar:{startAngle:-130,endAngle:130,dataLabels:{name:{show:!1},value:{offsetY:10,fontSize:"18px",color:void 0,formatter:function(r){return r+"%"}}}}},colors:[radialchartColors[0]],fill:{type:"gradient",gradient:{shade:"dark",type:"horizontal",gradientToColors:[radialchartColors[1]],shadeIntensity:.15,inverseColors:!1,opacityFrom:1,opacityTo:1,stops:[20,60]}},stroke:{dashArray:4},legend:{show:!1},series:[80],labels:["Series A"]};(chart=new ApexCharts(document.querySelector("#invested-overview"),options)).render();var barchartColors=getChartColorsArray("#market-overview"),options={series:[{name:"Profit",data:[12.45,16.2,8.9,11.42,12.6,18.1,18.2,14.16,11.1,8.09,16.34,12.88]},{name:"Loss",data:[-11.45,-15.42,-7.9,-12.42,-12.6,-18.1,-18.2,-14.16,-11.1,-7.09,-15.34,-11.88]}],chart:{type:"bar",height:400,stacked:!0,toolbar:{show:!1}},plotOptions:{bar:{columnWidth:"20%"}},colors:barchartColors,fill:{opacity:1},dataLabels:{enabled:!1},legend:{show:!1},yaxis:{labels:{formatter:function(r){return r.toFixed(0)+"%"}}},xaxis:{categories:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],labels:{rotate:-90}}};(chart=new ApexCharts(document.querySelector("#market-overview"),options)).render();var vectormapColors=getChartColorsArray("#sales-by-locations");$("#sales-by-locations").vectorMap({map:"world_mill_en",normalizeFunction:"polynomial",hoverOpacity:.7,hoverColor:!1,regionStyle:{initial:{fill:"#e9e9ef"}},markerStyle:{initial:{r:9,fill:vectormapColors,"fill-opacity":.9,stroke:"#fff","stroke-width":7,"stroke-opacity":.4},hover:{stroke:"#fff","fill-opacity":1,"stroke-width":1.5}},backgroundColor:"transparent",markers:[{latLng:[41.9,12.45],name:"USA"},{latLng:[12.05,-61.75],name:"Russia"},{latLng:[1.3,103.8],name:"Australia"}]});
+//Total transaksi perbulan
+var columnColors = getChartColorsArrayFromDOM("transaksi_status"),
+    options = {
+        chart: { height: 350, type: "bar", toolbar: { show: false } },
+        plotOptions: { bar: { horizontal: false, columnWidth: "45%" } },
+        dataLabels: { enabled: false },
+        stroke: { show: true, width: 2, colors: ["transparent"] },
+        series: [
+            { name: "Check In", data: [46, 57, 59, 54, 62, 58, 64, 60, 66] },
+            {
+                name: "Check Out",
+                data: [74, 83, 102, 97, 86, 106, 93, 114, 94],
+            },
+            { name: "Reservasi", data: [37, 42, 38, 26, 47, 50, 54, 55, 43] },
+        ],
+        colors: columnColors,
+        xaxis: {
+            categories: [
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+            ],
+        },
+        yaxis: {
+            title: { text: "Data tahun 2020", style: { fontWeight: "500" } },
+        },
+        grid: { borderColor: "#f1f1f1" },
+        fill: { opacity: 1 },
+        tooltip: {
+            y: {
+                formatter: function (e) {
+                    return e + " transaksi";
+                },
+            },
+        },
+    };
+
+var chart = new ApexCharts(
+    document.querySelector("#transaksi_status"),
+    options
+);
+chart.render();
+
+//Barchart total transaksi perbulan
+var barChart;
+var isBarChart = document.getElementById("total_perbulan");
+var barChartColors = getJQueryChartColorsArray(isBarChart);
+if (barChartColors) {
+    isBarChart.setAttribute("width", isBarChart.parentElement.offsetWidth);
+    barChart = new Chart(isBarChart, {
+        type: "bar",
+        data: {
+            labels: [
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember",
+            ],
+            datasets: [
+                {
+                    label: "Total Transaksi",
+                    backgroundColor: barChartColors[0],
+                    borderColor: barChartColors[0],
+                    borderWidth: 1,
+                    hoverBackgroundColor: barChartColors[1],
+                    hoverBorderColor: barChartColors[1],
+                    data: [65, 59, 81, 45, 56, 80, 50, 20, 81, 45, 56, 80],
+                },
+            ],
+        },
+    });
+}
+
+//Barchart total transaksi kamar perbulan
+var barChart;
+var isBarChart = document.getElementById("kamar_perbulan");
+var barChartColors = getJQueryChartColorsArray(isBarChart);
+if (barChartColors) {
+    isBarChart.setAttribute("width", isBarChart.parentElement.offsetWidth);
+    barChart = new Chart(isBarChart, {
+        type: "bar",
+        data: {
+            labels: [
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember",
+            ],
+            datasets: [
+                {
+                    label: "Transaksi kamar",
+                    backgroundColor: barChartColors[0],
+                    borderColor: barChartColors[0],
+                    borderWidth: 1,
+                    hoverBackgroundColor: barChartColors[1],
+                    hoverBorderColor: barChartColors[1],
+                    data: [65, 59, 81, 45, 56, 80, 50, 20, 81, 45, 56, 80],
+                },
+            ],
+        },
+    });
+}
+
+//Barchart total ruangan transaksi perbulan
+var barChart;
+var isBarChart = document.getElementById("ruangan_perbulan");
+var barChartColors = getJQueryChartColorsArray(isBarChart);
+if (barChartColors) {
+    isBarChart.setAttribute("width", isBarChart.parentElement.offsetWidth);
+    barChart = new Chart(isBarChart, {
+        type: "bar",
+        data: {
+            labels: [
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember",
+            ],
+            datasets: [
+                {
+                    label: "Transaksi Ruangan",
+                    backgroundColor: barChartColors[0],
+                    borderColor: barChartColors[0],
+                    borderWidth: 1,
+                    hoverBackgroundColor: barChartColors[1],
+                    hoverBorderColor: barChartColors[1],
+                    data: [65, 59, 81, 45, 56, 80, 50, 20, 81, 45, 56, 80],
+                },
+            ],
+        },
+    });
+}
+
+var pieChart;
+var isPieChart = document.getElementById("perbandingan_total");
+var pieChartColors = getJQueryChartColorsArray(isPieChart);
+if (pieChartColors) {
+    pieChart = new Chart(isPieChart, {
+        type: "pie",
+        data: {
+            labels: ["Ruangan A", "Ruangan B", "Ruangan C", "Ruangan D"],
+            datasets: [
+                {
+                    data: [300, 180, 500, 453],
+                    backgroundColor: pieChartColors,
+                    hoverBackgroundColor: pieChartColors,
+                    hoverBorderColor: "#fff",
+                },
+            ],
+        },
+    });
+}
+//===============================================================
+// Fungsi pertama
+function getJQueryChartColorsArray(e) {
+    e = $(e).attr("data-colors");
+    return (e = JSON.parse(e)).map(function (e) {
+        e = e.replace(" ", "");
+        if (-1 == e.indexOf("--")) return e;
+        e = getComputedStyle(document.documentElement).getPropertyValue(e);
+        return e || void 0;
+    });
+}
+
+// Fungsi kedua
+function getChartColorsArrayFromDOM(r) {
+    if (null !== document.getElementById(r)) {
+        r = document.getElementById(r).getAttribute("data-colors");
+        return (r = JSON.parse(r)).map(function (r) {
+            var o = r.replace(" ", "");
+            if (-1 === o.indexOf(",")) {
+                var a = getComputedStyle(
+                    document.documentElement
+                ).getPropertyValue(o);
+                return a || o;
+            }
+            r = r.split(",");
+            return 2 != r.length
+                ? o
+                : `rgba(${getComputedStyle(
+                      document.documentElement
+                  ).getPropertyValue(r[0])},${r[1]})`;
+        });
+    }
+}
+
+// Set default Chart properties
+Chart.defaults.borderColor = "rgba(133, 141, 152, 0.1)";
+Chart.defaults.color = "#858d98";

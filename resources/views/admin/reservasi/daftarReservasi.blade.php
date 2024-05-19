@@ -24,7 +24,18 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="mb-4">
+                                <a type="button" href="{{ url('/tambah-reservasi') }}" class="btn btn-primary waves-effect btn-label waves-light">
+                                    <i class="bx bx-plus label-icon"></i>
+                                    Tambah Reservasi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+                    
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">
                             <thead>
@@ -51,10 +62,10 @@
                                         <div class="badge badge-soft-success font-size-12">Terima</div>
                                     </td>
                                     <td>
-                                        <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/detail-reservasi') }}" style="width: 35px; height:30px; margin-right:5px">
-                                            <i class="bx bx-file font-size-16 align-middle"></i>
+                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ url('/detail-reservasi') }}">
+                                            <i class="bx bx-file label-icon"></i>
+                                            Detail
                                         </a>
-                                        <a type="button" href="{{ url('/form-checkin') }}" class="btn btn-info waves-effect waves-light p-1">Check In</a>
                                     </td>
                                 </tr>
                             </tbody>

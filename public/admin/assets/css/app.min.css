@@ -2,6 +2,68 @@
 [data-bs-theme="dark"] .bg-dark {
     background-color: var(--bs-sidebar-dark-bg) !important;
 }
+
+.avatar-xs {
+    height: 1rem;
+    width: 1rem;
+}
+.avatar-sm {
+    height: 2rem;
+    width: 2rem;
+}
+.avatar {
+    height: 3rem;
+    width: 3rem;
+}
+.avatar-md {
+    height: 4rem;
+    width: 4rem;
+}
+.avatar-lg {
+    height: 5rem;
+    width: 5rem;
+}
+.avatar-xl {
+    height: 13rem;
+    width: 13rem;
+}
+.avatar-title {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #3b76e1;
+    color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-weight: 500;
+    height: 100%;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 100%;
+}
+.avatar-group {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-left: 8px;
+}
+.avatar-group .avatar-group-item {
+    margin-left: -8px;
+    border: 2px solid var(--bs-border-color);
+    border-radius: 50%;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+}
+.avatar-group .avatar-group-item:hover {
+    position: relative;
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+}
+
 #page-topbar {
     position: fixed;
     top: 0;
@@ -570,6 +632,7 @@ body[data-sidebar-size="sm"] .vertical-menu {
     position: absolute;
     width: 70px !important;
     z-index: 5;
+    position: fixed;
 }
 body[data-sidebar-size="sm"] .vertical-menu .simplebar-content-wrapper,
 body[data-sidebar-size="sm"] .vertical-menu .simplebar-mask {

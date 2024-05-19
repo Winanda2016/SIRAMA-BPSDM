@@ -149,7 +149,26 @@
                     <div class="d-print-none mt-3">
                         <div class="float-end">
                             <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
-                            <a type="button" class="btn btn-info waves-effect waves-light" href="{{ url('/form-checkin') }}"><b>Check In</b></a>
+                            <a href="{{ url('/edit-reservasi') }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#checkin"><b>Check In</b></button>
+
+                            <div class="modal fade" id="checkin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="checkinLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Peringatan Check In!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Apakah yakin Check In Reservasi atas nama (..nama pelanggan..)?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-primary">Check In</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

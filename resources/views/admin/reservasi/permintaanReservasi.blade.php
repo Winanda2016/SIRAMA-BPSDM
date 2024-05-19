@@ -27,10 +27,10 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
-                                <button type="button" class="btn btn-primary waves-effect btn-label waves-light">
+                                <a type="button" href="{{ url('/tambah-reservasi') }}" class="btn btn-primary waves-effect btn-label waves-light">
                                     <i class="bx bx-plus label-icon"></i>
                                     Tambah Reservasi
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -15,6 +15,13 @@ class Kamar extends Model
         'foto', 'keterangan'
     ];
 
+    public function scopeFilter($query, array $filter){
+
+        $query->when($filter['search'] ?? false, function ($query, $search){
+            return $query->where('nomor_kamar', 'like', '%' . $search . '%');
+        });
+    }
+
     public function gedung(): BelongsTo
     {
         return $this->belongsTo(Gedung::class, 'gedung_id');

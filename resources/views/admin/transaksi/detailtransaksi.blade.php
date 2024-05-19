@@ -6,13 +6,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Detail Permintaan Reservasi</h4>
+                <h4 class="mb-sm-0 font-size-18">Detail Transaksi</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Permintaan Reservasi</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">List Permintaan</a></li>
-                        <li class="breadcrumb-item active">Detail</li>
+                        <li class="breadcrumb-item"><a href="{{ url('/riwayat-transaksi') }}">Riwayat Transaksi</a></li>
+                        <li class="breadcrumb-item active">Detail Transaksi</li>
                     </ol>
                 </div>
 
@@ -30,11 +29,7 @@
                             <div class="flex-grow-1">
                                 <div class="mb-4">
                                     <img src="{{ asset('admin/assets/images/users/avatar-9.jpg') }}" alt="" height="24"><span class="logo-txt">(nama users)</span>
-                                </div>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="mb-4">
-                                    <h4 class="float-end font-size-16">Reservasi # (id reservasi)</h4>
+                                    <button type="button" class="btn btn-soft-success btn-rounded waves-effect waves-light" style="width:50px; height:17px; font-size:8px; padding:2px">Terima</button>
                                 </div>
                             </div>
                         </div>
@@ -47,10 +42,10 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div>
-                                <h5 class="font-size-15 mb-3">Reservasi:</h5>
-                                <h5 class="font-size-14 mb-2">(nama reservasi)</h5>
-                                <p class="mb-1">(asal instansi reservasi)</p>
-                                <p class="mb-1">(nomor hp reservasi)</p>
+                                <h5 class="font-size-15 mb-3">Transaksi:</h5>
+                                <h5 class="font-size-14 mb-2">(namatamu)</h5>
+                                <p class="mb-1">(asal instansi)</p>
+                                <p class="mb-1">(nomor hp)</p>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -96,12 +91,20 @@
                         <h5 class="font-size-15">Dokumen Reservasi :</h5>
                         <a type="button" class="mb-1">
                             <i class="bx bxs-file-pdf font-size-20 align-middle" style="color: red;"></i>
-                            (nama dokumen reservasi).pdf
+                            (nama dokumen reservasi || NULL).pdf
+                        </a>
+                    </div>
+
+                    <div class="py-2">
+                        <h5 class="font-size-15">Bukti Pembayaran:</h5>
+                        <a type="button" class="mb-1">
+                            <i class="bx bxs-file-jpg font-size-20 align-middle" style="color:mediumslateblue;"></i>
+                            (bukti pembayaran || NULL).jpg
                         </a>
                     </div>
 
                     <div class="py-2 mt-3">
-                        <h5 class="font-size-15">Ringkasan Reservasi</h5>
+                        <h5 class="font-size-15">Ringkasan transaksi</h5>
                     </div>
                     <div class="p-4 border rounded">
                         <div class="table-responsive">
@@ -148,10 +151,9 @@
                     </div>
                     <div class="d-print-none mt-3">
                         <div class="float-end">
-                            <a href="#" class="btn btn-success waves-effect waves-light me-1" title="whatsapp"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
-                            <!-- <a type="button" class="btn btn-primary waves-effect waves-light">Konfirmasi</a> -->
-                            <a type="button" class="btn btn-success waves-effect waves-light" style="width: 70px;">Terima</a>
-                            <a type="button" class="btn btn-danger waves-effect waves-light" style="width: 70px;">Tolak</a>
+                            <a type="button" class="btn btn-secondary waves-effect waves-light m-2" onclick="kembali()">Kembali</a>
+                            <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light m-2"><i class="bx bx-printer font-size-20 align-middle"></i></a>
+                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light m-2"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
                         </div>
                     </div>
                 </div>

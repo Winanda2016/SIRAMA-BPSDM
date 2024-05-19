@@ -6,13 +6,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Detail Permintaan Reservasi</h4>
+                <h4 class="mb-sm-0 font-size-18">Detail Tamu</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Permintaan Reservasi</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">List Permintaan</a></li>
-                        <li class="breadcrumb-item active">Detail</li>
+                        <li class="breadcrumb-item"><a href="{{ url('/daftar-tamu') }}">Daftar Tamu</a></li>
+                        <li class="breadcrumb-item active">Detail Tamu</li>
                     </ol>
                 </div>
 
@@ -30,13 +29,14 @@
                             <div class="flex-grow-1">
                                 <div class="mb-4">
                                     <img src="{{ asset('admin/assets/images/users/avatar-9.jpg') }}" alt="" height="24"><span class="logo-txt">(nama users)</span>
+                                    <button type="button" class="btn btn-soft-primary btn-rounded waves-effect waves-light" style="width:50px; height:17px; font-size:8px; padding:2px">Check In</button>
                                 </div>
                             </div>
-                            <div class="flex-shrink-0">
+                            <!-- <div class="flex-shrink-0">
                                 <div class="mb-4">
                                     <h4 class="float-end font-size-16">Reservasi # (id reservasi)</h4>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <p class="mb-1">(asal instansi users)</p>
@@ -47,7 +47,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div>
-                                <h5 class="font-size-15 mb-3">Reservasi:</h5>
+                                <h5 class="font-size-15 mb-3">Transaksi:</h5>
                                 <h5 class="font-size-14 mb-2">(nama reservasi)</h5>
                                 <p class="mb-1">(asal instansi reservasi)</p>
                                 <p class="mb-1">(nomor hp reservasi)</p>
@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="py-2 mt-3">
-                        <h5 class="font-size-15">Ringkasan Reservasi</h5>
+                        <h5 class="font-size-15">Ringkasan Transaksi</h5>
                     </div>
                     <div class="p-4 border rounded">
                         <div class="table-responsive">
@@ -148,10 +148,9 @@
                     </div>
                     <div class="d-print-none mt-3">
                         <div class="float-end">
-                            <a href="#" class="btn btn-success waves-effect waves-light me-1" title="whatsapp"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
-                            <!-- <a type="button" class="btn btn-primary waves-effect waves-light">Konfirmasi</a> -->
-                            <a type="button" class="btn btn-success waves-effect waves-light" style="width: 70px;">Terima</a>
-                            <a type="button" class="btn btn-danger waves-effect waves-light" style="width: 70px;">Tolak</a>
+                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
+                            <a type="button" class="btn btn-danger waves-effect waves-light href="{{ url('/tamu/checkout') }}">Check Out</a>
+
                         </div>
                     </div>
                 </div>

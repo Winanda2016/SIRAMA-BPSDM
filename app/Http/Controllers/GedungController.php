@@ -24,7 +24,7 @@ class GedungController extends Controller
 
         if ($existingGedung) {
             // Tampilkan alert jika nama jenis sudah ada
-            return redirect()->route('kelola-gedung.index')
+            return redirect()->route('gedung.index')
                 ->with('error', 'Nama Gedung Tersebut Sudah Tersedia.');
         }
 
@@ -32,7 +32,7 @@ class GedungController extends Controller
         Gedung::create($request->all());
 
         // Redirect atau tindakan lain setelah penyimpanan berhasil
-        return redirect()->route('kelola-gedung.index')
+        return redirect()->route('gedung.index')
             ->with('success', 'Nama Gedung Baru Berhasil Ditambahkan');
     }
 
@@ -40,7 +40,7 @@ class GedungController extends Controller
     {
         //elequent
         Gedung::find($id)->delete();
-        return redirect()->route('kelola-gedung.index')
+        return redirect()->route('gedung.index')
             ->with('success', 'Data Jenis Makanan Berhasil Dihapus');
     }
 
@@ -50,13 +50,13 @@ class GedungController extends Controller
 
         if ($existingGedungUpdate) {
             // Tampilkan alert jika nama jenis sudah ada
-            return redirect()->route('kelola-gedung.index')
+            return redirect()->route('gedung.index')
                 ->with('error', 'Nama Gedung Tersebut Sudah Tersedia.');
         }
 
         Gedung::where('id', $id)->update(['nama_gedung' => $request->nama_gedung]);
 
-        return redirect()->route('kelola-gedung.index')
+        return redirect()->route('gedung.index')
             ->with('success', 'Nama Gedung Berhasil Diubah');
     }
 }

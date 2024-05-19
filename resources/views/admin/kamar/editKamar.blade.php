@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <h4 align="center">Formulir Tambah Kamar</h4>
                     <hr><br>
-                    <form method="POST" action="/kamar/{{ $kamar ->id }}" enctype="multipart/form-data">
+                    <form method="POST" action="" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="row">

@@ -57,7 +57,7 @@ $no = 1;
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form class="row g-3" method="POST" action="{{ route('kelola-gedung.store') }}">
+                                                <form class="row g-3" method="POST" action="{{ route('gedung.store') }}">
                                                     @csrf
                                                     <div class="mb-3">
                                                         <label for="example-text-input" class="form-label">Nama Gedung</label>
@@ -106,7 +106,7 @@ $no = 1;
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body" align="left">
-                                                            <form class="row g-3" method="POST" action="{{ route('kelola-gedung.update', ['kelola_gedung' => $gd->id]) }}">
+                                                            <form class="row g-3" method="POST" action="{{ route('gedung.update', ['gedung' => $gd->id]) }}">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="mb-3">
@@ -122,13 +122,34 @@ $no = 1;
                                                     </div>
                                                 </div>
                                             </div>
-                                            <form method="POST" action="{{ route('kelola-gedung.destroy', $gd->id) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger waves-effect waves-light p-1" title="hapus" style="width: 35px; height:30px; margin-right:5px">
-                                                    <i class="bx bx-trash font-size-16 align-middle"></i>
-                                                </button>
-                                            </form>
+
+                                            <button type="button" class="btn btn-danger waves-effect waves-light p-1" title="hapus" data-bs-toggle="modal" data-bs-target="#hapusGedung{{ $gd->id }}" style="width: 35px; height:30px; margin-right:5px">
+                                                <i class="bx bx-trash font-size-16 align-middle"></i>
+                                            </button>
+                                            <!-- Modal Hapus Jenis Pelanggan -->
+                                            <div class="modal fade" id="hapusGedung{{ $gd->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="hapusGedungLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content" style="width: fit-content;">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="staticBackdropLabel">Peringatan!!!</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h6>Yakin akan menghapus "{{ $gd->nama_gedung }}"?</h6>
+                                                            <p>(Data yang dihapus tidak dapat dikembalikan lagi.)</p>
+
+                                                            <div align="right">
+                                                                <form method="POST" action="method="POST" action="{{ route('gedung.destroy', $gd->id) }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>

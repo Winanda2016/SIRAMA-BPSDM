@@ -22,6 +22,18 @@
 
     <div class="row">
         <div class="col-lg-6">
+            <div>
+                @if($message = Session::get('success'))
+                <div class="alert alert-success">
+                    <p>{{ $message }}</p>
+                </div>
+                @endif
+                @if($message = Session::get('error'))
+                <div class="alert alert-danger">
+                    <p>{{ $message }}</p>
+                </div>
+                @endif
+            </div>
             <div class="card">
                 <div class="card-body">
                     <h4 align="center">Formulir Tambah Kamar</h4>

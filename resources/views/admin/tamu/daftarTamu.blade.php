@@ -20,38 +20,38 @@
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
+        <div class="col-12">
+            <div class="card card-h-100">
                 <div class="card-body">
+                    <h6>Filter Tanggal</h6>
+                    <input type="date" id="date" name="start_date" value="{{request('start_date')}}">
+                    {{-- <input type="date" id="date" name="tanggal_masuk" value="{{ now()->format('Y-m-d') }}" hidden> --}}
+                    <button class="btn btn-primary " type="submit" style="margin-left:5px; width:80px; height:30px;padding:0px">Cari Data</button>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive mt-3">
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">
                             <thead>
                                 <tr class="table-primary">
-                                    <th style=" width: 1%;text-align: center;">No</th>
-                                    <th style="text-align: center;">Tanggal Transaksi</th>
-                                    <th style="text-align: center;">Nama Tamu</th>
-                                    <th style="text-align: center;">Nomor Kamar</th>
-                                    <th style="text-align: center;">Jumlah Tamu</th>
-                                    <th style="text-align: center;">Jumlah Hari</th>
-                                    <th style="text-align: center;">Total harga</th>
-                                    <th style="text-align: center;">Action</th>
+                                    <th style="width: 1%;text-align: center;">Nomor Kamar</th>
+                                    <th style="width: 20%;text-align: center;">Nama Tamu</th>
+                                    <th style="width: 20%;text-align: center;">Tanggal Check In</th>
+                                    <th style="width: 20%;text-align: center;">Tanggal Check Out</th>
+                                    <th style="width: 30%;text-align: center;">Instansi</th>
+                                    <th style="width: 9%;text-align: center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody align="center">
                                 <tr>
-                                    <td>1</td>
-                                    <td>5 Maret 2024</td>
-                                    <td>Connie Franco</td>
                                     <td>101</td>
-                                    <td>2 orang</td>
-                                    <td>3 hari</td>
-                                    <td>Rp. 250.000,00</td>
+                                    <td>Connie Franco</td>
+                                    <td>5 Maret 2024</td>
+                                    <td>5 Maret 2024</td>
+                                    <td>Dinas XYZ</td>
                                     <td>
-                                        <a type="button" class="btn btn-primary waves-effect waves-light p-1" style="width: 35px; height:30px; margin-right:5px" href="#">
+                                        <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/tamu/detail') }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bx-file font-size-16 align-middle"></i>
                                         </a>
-                                        <a type="button" class="btn btn-danger waves-effect waves-light p-1">Check Out</a>
+                                        <a type="button" class="btn btn-danger waves-effect waves-light p-1" href="{{ url('/tamu/checkout') }}">Check Out</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -59,12 +59,9 @@
                     </div>
                     <!-- end table responsive -->
                 </div>
-                <!-- end card body -->
             </div>
-            <!-- end card -->
         </div>
-        <!-- end col -->
     </div>
-    <!-- end row -->
+
 </div>
 @endsection

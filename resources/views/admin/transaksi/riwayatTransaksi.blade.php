@@ -50,6 +50,7 @@
                                     <th style="text-align: center;">Jumlah Tamu</th>
                                     <th style="text-align: center;">Jumlah Hari</th>
                                     <th style="text-align: center;">Total harga</th>
+                                    <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Action</th>
                                 </tr>
                             </thead>
@@ -62,8 +63,9 @@
                                     <td>2 orang</td>
                                     <td>3 hari</td>
                                     <td>Rp. 250.000,00</td>
+                                    <td> <div class="badge badge-soft-success font-size-12">Terima</div> </td>
                                     <td>
-                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ url('#') }}">
+                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ url('/detail-transaksi') }}">
                                             <i class="bx bx-file label-icon"></i>
                                             Detail
                                         </a>
