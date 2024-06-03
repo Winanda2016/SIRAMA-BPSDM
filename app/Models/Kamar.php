@@ -11,8 +11,8 @@ class Kamar extends Model
     use HasFactory;
     protected $table = 'kamar';
     protected $fillable = [
-        'id', 'nomor-kamar', 'kapasitas', 'fasilitas', 'status',
-        'foto', 'keterangan'
+        'id', 'nomor_kamar', 'kapasitas', 'fasilitas', 'status',
+        'foto', 'keterangan', 'gedung_id'
     ];
 
     public function scopeFilter($query, array $filter){
@@ -24,6 +24,6 @@ class Kamar extends Model
 
     public function gedung(): BelongsTo
     {
-        return $this->belongsTo(Gedung::class, 'gedung_id');
+        return $this->belongsTo(Gedung::class, 'gedung_id', 'id');
     }
 }

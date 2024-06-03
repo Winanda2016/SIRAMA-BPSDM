@@ -1,52 +1,4 @@
 //Total transaksi perbulan
-var columnColors = getChartColorsArrayFromDOM("transaksi_status"),
-    options = {
-        chart: { height: 350, type: "bar", toolbar: { show: false } },
-        plotOptions: { bar: { horizontal: false, columnWidth: "45%" } },
-        dataLabels: { enabled: false },
-        stroke: { show: true, width: 2, colors: ["transparent"] },
-        series: [
-            { name: "Check In", data: [46, 57, 59, 54, 62, 58, 64, 60, 66] },
-            {
-                name: "Check Out",
-                data: [74, 83, 102, 97, 86, 106, 93, 114, 94],
-            },
-            { name: "Reservasi", data: [37, 42, 38, 26, 47, 50, 54, 55, 43] },
-        ],
-        colors: columnColors,
-        xaxis: {
-            categories: [
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-            ],
-        },
-        yaxis: {
-            title: { text: "Data tahun 2020", style: { fontWeight: "500" } },
-        },
-        grid: { borderColor: "#f1f1f1" },
-        fill: { opacity: 1 },
-        tooltip: {
-            y: {
-                formatter: function (e) {
-                    return e + " transaksi";
-                },
-            },
-        },
-    };
-
-var chart = new ApexCharts(
-    document.querySelector("#transaksi_status"),
-    options
-);
-chart.render();
-
 //Barchart total transaksi perbulan
 var barChart;
 var isBarChart = document.getElementById("total_perbulan");
@@ -161,25 +113,7 @@ if (barChartColors) {
     });
 }
 
-var pieChart;
-var isPieChart = document.getElementById("perbandingan_total");
-var pieChartColors = getJQueryChartColorsArray(isPieChart);
-if (pieChartColors) {
-    pieChart = new Chart(isPieChart, {
-        type: "pie",
-        data: {
-            labels: ["Ruangan A", "Ruangan B", "Ruangan C", "Ruangan D"],
-            datasets: [
-                {
-                    data: [300, 180, 500, 453],
-                    backgroundColor: pieChartColors,
-                    hoverBackgroundColor: pieChartColors,
-                    hoverBorderColor: "#fff",
-                },
-            ],
-        },
-    });
-}
+
 //===============================================================
 // Fungsi pertama
 function getJQueryChartColorsArray(e) {

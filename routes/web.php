@@ -5,6 +5,8 @@ use App\Http\Controllers\KamarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JPelangganController;
 use App\Http\Controllers\kelolaUserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RuanganController;
 use App\Models\JPelanggan;
 use Illuminate\Support\Facades\Route;
 
@@ -19,13 +21,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('admin.themes.index');
-// });
-
 Route::get('/', function () {
-    return view('admin.dashboard');
+    return view('admin.auth.login');
 });
+
+Route::get('/admin-dashboard', [DashboardController::class, 'indexAdmin']);
 
 Route::get('/pegawai-dashboard', function () {
     return view('admin.dashboardPegawai');
@@ -110,9 +110,8 @@ Route::put('/update-kamar/{id}', [KamarController::class, 'update'])->name('upda
 //== Jenis Pelanggan ==
 Route::resource('/jenis-pelanggan', JPelangganController::class);
 
-Route::get('/kelola-ruangan', function () {
-    return view('admin.ruangan.kelolaRuangan');
-});
+Route::get('/kelola-ruangan', [RuanganController::class, 'index'])->name('kelola_ruangan');
+
 Route::get('/tambah-ruangan', function () {
     return view('admin.ruangan.tambahRuangan');
 });

@@ -1,4 +1,8 @@
 @extends('admin.themes.app')
+@php
+$ar_judul = ['No','Nama Ruangan','Nama Gedung','Harga','Kapasitas','Status','Aksi'];
+$no = 1;
+@endphp
 @section('content')
 <div class="container-fluid">
 
@@ -26,10 +30,41 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
+                                <div>
+                                    @if($message = Session::get('success'))
+                                    <div class="alert alert-success">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                    @endif
+                                    @if($message = Session::get('error'))
+                                    <div class="alert alert-danger">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                    @endif
+                                </div>
                                 <a href="{{ url('/tambah-ruangan') }}" type="button" class="btn btn-primary waves-effect btn-label waves-light">
                                     <i class="bx bx-plus label-icon"></i>
                                     Tambah Ruangan
                                 </a>
+
+                                <!-- filter gedung -->
+                                <div class="btn-group dropend" style="margin: 5px;">
+                                    <button type="button" class="btn btn-info waves-effect waves-light">
+                                        Filter
+                                    </button>
+                                    <button type="button" class="btn btn-info waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-chevron-right"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        {{-- <a selected hidden >{{request('search')}}</a> --}}
+                                        <a class="dropdown-item" href="{{ route('kelola_ruangan') }}">All</a>
+                                        @foreach ($gedung as $gd)
+                                        <a class="dropdown-item" href="{{ route('kelola_ruangan', ['gedung_id' => $gd->id]) }}">
+                                            {{ $gd->nama_gedung }}
+                                        </a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -39,24 +74,29 @@
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style="width: 100%;">
                             <thead>
                                 <tr class="bg-transparent">
-                                    <th style="text-align: center;">No</th>
-                                    <th style="text-align: center;">Nama Ruangan</th>
-                                    <th style="text-align: center;">Nama Gedung</th>
-                                    <th style="text-align: center;">Harga</th>
-                                    <th style="text-align: center;">Kapasitas</th>
-                                    <th style="text-align: center;">Status</th>
-                                    <th style="text-align: center;">Action</th>
+                                    @foreach($ar_judul as $jdl)
+                                    <th style="text-align: center;">{{ $jdl }}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody align="center">
+                                @foreach($ruangan as $r)
                                 <tr>
-                                    <td style="width: 1%;"><a href="javascript: void(0);" class="text-body fw-medium">1</a> </td>
-                                    <td><a href="javascript: void(0);" class="text-body fw-medium">Aula</a> </td>
-                                    <td> Gedung Aula </td>
-                                    <td> Rp. 500.000,00 </td>
-                                    <td> 200 orang </td>
+                                    <td style="width: 1%;"><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                    <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $r->nama_ruangan }}</a> </td>
+                                    <td> {{ $r->nama_gedung}} </td>
+                                    <td> Rp.{{ $r->harga}},00</td>
+                                    <td> {{ $r->kapasitas }} orang </td>
                                     <td>
-                                        <div class="badge badge-soft-success font-size-12">kosong</div>
+                                        @if ($r->status === 'kosong')
+                                        <div class="badge badge-soft-success font-size-12">Kosong</div>
+                                        @elseif ($r->status === 'terisi')
+                                        <div class="badge badge-soft-danger font-size-12">Terisi</div>
+                                        @elseif ($r->status === 'reservasi')
+                                        <div class="badge badge-soft-warning font-size-12">Reservasi</div>
+                                        @elseif ($r->status === 'perbaikan')
+                                        <div class="badge badge-soft-secondary font-size-12">Perbaikan</div>
+                                        @endif
                                     </td>
                                     <td>
                                         <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/detail-ruangan') }}" style="width: 35px; height:30px; margin-right:5px">
@@ -70,6 +110,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

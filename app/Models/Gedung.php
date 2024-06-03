@@ -16,4 +16,8 @@ class Gedung extends Model
     public function kamar(){
         return $this->hasMany(Kamar::class);
     }
+
+    public function ruangan(){
+        return $this->hasMany(Ruangan::class);
+    }
 }

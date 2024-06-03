@@ -84,7 +84,6 @@
     </script>
 
 
-
     <!-- JAVASCRIPT -->
     <script src="{{ asset('admin/assets/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

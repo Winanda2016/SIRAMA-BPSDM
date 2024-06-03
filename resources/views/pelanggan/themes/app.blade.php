@@ -1,59 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx">
 
 <head>
-    <meta charset="utf-8">
-    <title>SIRAMA BPSDM</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta charset="UTF-8">
+    <meta name="description" content="Sona Template">
+    <meta name="keywords" content="Sona, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SIRAMA | BPSDM</title>
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('pelanggan/assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('pelanggan/assets/lib/lightbox/css/lightbox.min.css') }}"" rel=" stylesheet">
-
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('pelanggan/assets/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('pelanggan/assets/css/style.css') }}" rel="stylesheet">
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/flaticon.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/jquery-ui.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/style.css') }}" type="text/css">
 </head>
 
 <body>
 
-    @include('pelanggan.themes.spinner')
+    @include('pelanggan.themes.preloder')
 
-    @include('pelanggan.themes.topbar')
+    @include('pelanggan.themes.offcanvas')
 
-    @include('pelanggan.themes.navbar')
+    @include('pelanggan.themes.header')
 
     @yield('content')
-
+    
     @include('pelanggan.themes.footer')
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
 
-
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('pelanggan/assets/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('pelanggan/assets/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('pelanggan/assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('pelanggan/assets/lib/lightbox/js/lightbox.min.js') }}"></script>
-
-
-    <!-- Template Javascript -->
+    <!-- Js Plugins -->
+    <script src="{{ asset('pelanggan/assets/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('pelanggan/assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('pelanggan/assets/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('pelanggan/assets/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('pelanggan/assets/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('pelanggan/assets/js/jquery.slicknav.js') }}"></script>
+    <script src="{{ asset('pelanggan/assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('pelanggan/assets/js/main.js') }}"></script>
 </body>
 
