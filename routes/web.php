@@ -7,6 +7,7 @@ use App\Http\Controllers\JPelangganController;
 use App\Http\Controllers\kelolaUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\JPelanggan;
 use Illuminate\Support\Facades\Route;
 
@@ -36,7 +37,7 @@ Route::get('/pegawai-dashboard', function () {
 //     return view('admin.dashboard');
 // });
 
-Route::get('/db-pelanggan', function () {
+Route::get('/pelanggan-dashboard', function () {
     return view('pelanggan.dashboard');
 });
 
@@ -121,8 +122,20 @@ Route::get('/edit-ruangan', function () {
 
 // ===========================================================
 
+//== Pelanggan==
+Route::get('/tentang-kami', function () {
+    return view('pelanggan.tentangKami');
+});
+
+Route::get('/kamar', function () {
+    return view('pelanggan.detailKamar');
+});
+// ===========================================================
+
 //== user ==
 Route::resource('/kelola-users', kelolaUserController::class);
+
+// Route::resource('/form-login', AuthenticatedSessionController::class, 'crete');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

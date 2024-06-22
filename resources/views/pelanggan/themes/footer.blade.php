@@ -6,7 +6,7 @@
                     <div class="ft-about">
                         <div class="logo">
                             <a href="#">
-                                <img src="img/footer-logo.png" alt="">
+                                <img src="{{ asset('pelanggan/assets/img/footer-logo.png') }}" alt="">
                             </a>
                         </div>
                         <p>We inspire and reach millions of travelers<br /> across 90 local websites</p>
@@ -23,20 +23,18 @@
                     <div class="ft-contact">
                         <h6>Contact Us</h6>
                         <ul>
-                            <li>(12) 345 67890</li>
-                            <li>info.colorlib@gmail.com</li>
-                            <li>856 Cordia Extension Apt. 356, Lake, United State</li>
+                            <li><i class="fa fa-solid fa-phone" align="center" style="width: 16px; height: 16px"></i> &nbsp; (0751) 72730</li>
+                            <li><i class="fa fa-solid fa-envelope" align="center" style="width: 16px; height: 16px"></i> &nbsp; diklat.provsumbar@gmail.com</li>
+                            <li><i class="fa fa-solid fa-map-pin" align="center" style="width: 16px; height: 16px"></i> &nbsp; JL. Raya Padang Besi, Indarung, Lubuk Kilangan, Kota Padang, Sumatera Barat 25237</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
-                    <div class="ft-newslatter">
-                        <h6>New latest</h6>
-                        <p>Get the latest updates and offers.</p>
-                        <form action="#" class="fn-form">
-                            <input type="text" placeholder="Email">
-                            <button type="submit"><i class="fa fa-send"></i></button>
-                        </form>
+                    <div class="ft-terkait">
+                        <h6>Link Terkait</h6>
+                        <ul>
+                            <li><i class="fa fa-solid fa-caret-right"></i> &nbsp; <a href="https://bpsdm.sumbarprov.go.id/">BPSDM Sumbar</a>
+                            <li><i class="fa fa-solid fa-caret-right"></i> &nbsp; <a href="https://www.sumbarprov.go.id/">Sumbar Prov</a>
                     </div>
                 </div>
             </div>
@@ -47,10 +45,10 @@
             <div class="row">
                 <div class="col-lg-7">
                     <ul>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Terms of use</a></li>
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Environmental Policy</a></li>
+                        <li><a href="#">Kontak</a></li>
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Kamar</a></li>
+                        <li><a href="#">Ruangan</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-5">
@@ -58,8 +56,7 @@
                         <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             Copyright &copy;<script>
                                 document.write(new Date().getFullYear());
-                            </script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                            </script> SIRAMA BPSDM | by Winanda Afrilia Harisya</p>
                     </div>
                 </div>
             </div>
