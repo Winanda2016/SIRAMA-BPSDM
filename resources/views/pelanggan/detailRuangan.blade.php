@@ -6,10 +6,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text">
-                    <h2>Kamar</h2>
+                    <h2>Detail Ruangan</h2>
                     <div class="bt-option">
                         <a href="{{ url('/pelanggan-dashboard') }}">Halaman Utama</a>
-                        <span>Kamar</span>
+                        <a href="{{ url('/ruangan') }}">Ruangan</a>
+                        <span>Detail Ruangan</span>
                     </div>
                 </div>
             </div>
@@ -57,7 +58,7 @@
                         <div class="rd-text">
                             <div class="rd-title">
                                 <div class="rdt-left">
-                                    <a href="{{ url('/kamar/reservasi') }}">Reservasi</a>
+                                    <a href="{{ url('/ruangan/reservasi') }}">Reservasi</a>
                                 </div>
                             </div>
                             <h2>159$<span>/Pernight</span></h2>

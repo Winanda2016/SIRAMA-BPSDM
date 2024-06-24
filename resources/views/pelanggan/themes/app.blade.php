@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/magnific-popup.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('pelanggan/assets/css/style.css') }}" type="text/css">
+
 </head>
 
 <body>
@@ -37,7 +38,7 @@
     @include('pelanggan.themes.header')
 
     @yield('content')
-    
+
     @include('pelanggan.themes.footer')
 
     <!-- Js Plugins -->
@@ -49,6 +50,10 @@
     <script src="{{ asset('pelanggan/assets/js/jquery.slicknav.js') }}"></script>
     <script src="{{ asset('pelanggan/assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('pelanggan/assets/js/main.js') }}"></script>
+
+    <!-- Tambahan dari Admin -->
+    <script src="{{ asset('admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
 </body>
 
 </html>

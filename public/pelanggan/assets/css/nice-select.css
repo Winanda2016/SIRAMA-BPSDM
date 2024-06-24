@@ -123,7 +123,7 @@
     -webkit-transition: all 0.2s;
     transition: all 0.2s; }
     .nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus {
-      background-color: #f6f6f6; }
+      background-color: #4c5c7ea1; }
     .nice-select .option.selected {
       font-weight: bold; }
     .nice-select .option.disabled {

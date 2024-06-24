@@ -39,7 +39,7 @@ Route::get('/pegawai-dashboard', function () {
 
 Route::get('/pelanggan-dashboard', function () {
     return view('pelanggan.dashboard');
-});
+})->name('Pdashboard');; 
 
 //== RESERVASI ==
 Route::get('/daftar-reservasi', function () {
@@ -125,11 +125,32 @@ Route::get('/edit-ruangan', function () {
 //== Pelanggan==
 Route::get('/tentang-kami', function () {
     return view('pelanggan.tentangKami');
-});
+})->name('Ptentang');
 
 Route::get('/kamar', function () {
     return view('pelanggan.detailKamar');
+})->name('Pkamar');
+
+Route::get('/kamar/reservasi', function () {
+    return view('pelanggan.reservasiKamar');
 });
+
+Route::get('/ruangan', function () {
+    return view('pelanggan.ruangan');
+})->name('Pruangan');
+
+Route::get('/ruangan/reservasi', function () {
+    return view('pelanggan.reservasiRuangan');
+});
+
+Route::get('/ruangan/detail', function () {
+    return view('pelanggan.detailRuangan');
+})->name('PRdetail');
+
+Route::get('/kontak', function () {
+    return view('pelanggan.kontak');
+})->name('Pkontak');
+
 // ===========================================================
 
 //== user ==
