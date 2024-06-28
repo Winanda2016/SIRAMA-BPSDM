@@ -3,12 +3,13 @@
 use App\Http\Controllers\GedungController;
 use App\Http\Controllers\KamarController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\JTamuController;
+use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\kelolaUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\TamuController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Models\JTamu;
+use App\Models\Instansi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -108,8 +109,8 @@ Route::post('/kelola-kamar', [KamarController::class, 'store']);
 Route::get('/edit-kamar/{id}', [KamarController::class, 'edit'])->name('edit_kamar');
 Route::put('/update-kamar/{id}', [KamarController::class, 'update'])->name('update_kamar');
 
-//== Jenis Tamu ==
-Route::resource('/jenis-tamu', JTamuController::class);
+//== Intansi ==
+Route::resource('/instansi', InstansiController::class);
 
 Route::get('/kelola-ruangan', [RuanganController::class, 'index'])->name('kelola_ruangan');
 
@@ -127,11 +128,10 @@ Route::get('/tentang-kami', function () {
     return view('tamu.tentangKami');
 })->name('Ptentang');
 
-Route::get('/kamar', [KamarController::class, 'JTTamu'])->name('Pkamar');
-
-Route::get('/kamar/reservasi', function () {
-    return view('tamu.reservasiKamar');
-});
+//== Kamar Tamu==
+Route::get('/kamar', [TamuController::class, 'index'])->name('kamar_tamu');
+Route::get('/kamar/form-reservasi', [TamuController::class, 'create']);
+Route::post('/kamar', [TamuController::class, 'store']);
 
 Route::get('/ruangan', function () {
     return view('tamu.ruangan');

@@ -5,17 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JTamu extends Model
+class Instansi extends Model
 {
     use HasFactory;
-    protected $table = 'jenis_tamu';
-    protected $fillable = ['id', 'nama_jenis', 'harga'];
+    protected $table = 'instansi';
+    protected $fillable = ['id', 'nama_instansi', 'harga'];
 
     public $timestamps = false;
 
-    public function kamar()
+
+    public function detailTKamar()
     {
-        return $this->hasMany(Kamar::class);
+        return $this->hasMany(detailTKamar::class);
     }
 
     public function getFormattedHargaAttribute()

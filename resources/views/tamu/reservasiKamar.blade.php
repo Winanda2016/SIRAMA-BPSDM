@@ -27,38 +27,40 @@
                     <div class="room-booking">
                         <h3>Formulir Reservasi</h3>
                         <hr>
-                        <form action="#" id="reservationForm">
+                        <form method="POST" action="{{ url('/kamar') }}" enctype="multipart/form-data" id="reservationForm">
+                            @csrf
                             <div class="text-input">
                                 <label for="nama">Nama:</label>
-                                <input type="text" id="nama" placeholder="masukkan nama anda">
+                                <input type="text" id="nama" name="nama" placeholder="masukkan nama anda">
                             </div>
                             <div class="select-option">
                                 <label for="instansi">Instansi:</label>
-                                <select id="instansi">
-                                    <option value="">Umum</option>
-                                    <option value="">Pemerintahan Provinsi</option>
+                                <select id="instansi" name="instansi">
+                                    @foreach ($instansi as $in)
+                                    <option value="{{ $in->id }}" data-price="{{ $in->harga }}">{{ $in->nama_instansi }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="text-input">
                                 <label for="namaInstansi">Nama Instansi:</label>
-                                <input type="text" id="namaInstansi" placeholder="masukkan nama Instansi anda">
+                                <input type="text" id="namaInstansi" name="nama_instansi" placeholder="Badan Pengembangan Sumber Daya Manusia">
                             </div>
                             <div class="text-input">
                                 <label for="noHP">Nomor HP:</label>
-                                <input type="text" id="noHP" placeholder="08...">
+                                <input type="text" id="noHP" name="noHP" placeholder="08...">
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <div class="check-date">
-                                        <label for="date-in">Check In:</label>
-                                        <input type="text" class="date-input" id="date-in">
+                                        <label for="tglCheckIn">Check In:</label>
+                                        <input type="text" class="date-input" name="tgl_checkin" id="tglCheckIn">
                                         <i class="icon_calendar"></i>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="check-date">
-                                        <label for="date-out">Check Out:</label>
-                                        <input type="text" class="date-input" id="date-out">
+                                        <label for="tglCheckOut">Check Out:</label>
+                                        <input type="text" class="date-input" name="tgl_checkout" id="tglCheckOut">
                                         <i class="icon_calendar"></i>
                                     </div>
                                 </div>
@@ -66,20 +68,20 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="text-input">
-                                        <label for="numberPeople">Jumlah Orang:</label>
-                                        <input type="number" id="numberPeople" placeholder="0">
+                                        <label for="jumlahOrang">Jumlah Orang:</label>
+                                        <input type="number" id="jumlahOrang" name="jumlah_orang" placeholder="0">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="text-input">
-                                        <label for="totalDays">Total hari:</label>
-                                        <input type="number" id="totalDays" placeholder="0" disabled>
+                                        <label for="totalHari">Total hari:</label>
+                                        <input type="number" id="totalHari" name="total_hari" placeholder="0" disabled>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-input" style="width: 60%;">
-                                <label for="totalPrice">Total harga:</label>
-                                <input type="text" id="totalPrice" placeholder="0" disabled>
+                                <label for="totalHarga">Total harga:</label>
+                                <input type="text" id="totalHarga" name="total_harga" placeholder="0" disabled>
                             </div>
                             <div class="dokumen">
                                 <label for="dokumen">Dokumen:</label>
@@ -106,41 +108,55 @@
         </div>
     </div>
 </section>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const checkInInput = document.getElementById('date-in');
-        const checkOutInput = document.getElementById('date-out');
-        const numberPeopleInput = document.getElementById('numberPeople');
-        const totalDaysInput = document.getElementById('totalDays');
-        const totalPriceInput = document.getElementById('totalPrice');
+    $(document).ready(function() {
+        const tglCheckIn = $('#tglCheckIn');
+        const tglCheckOut = $('#tglCheckOut');
+        const jumlahOrang = $('#jumlahOrang');
+        const totalHari = $('#totalHari');
+        const totalHarga = $('#totalHarga');
+        const instansi = $('#instansi');
 
-        function formatNumberWithCommas(number) {
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+        function kalkulatorHari() {
+            const checkInDate = new Date(tglCheckIn.val());
+            const checkOutDate = new Date(tglCheckOut.val());
 
-        function calculateDaysAndPrice() {
-            const checkInDate = new Date(checkInInput.value);
-            const checkOutDate = new Date(checkOutInput.value);
-            const numberOfPeople = numberPeopleInput.value;
+            if (checkInDate && checkOutDate) {
+                const diffTime = Math.abs(checkOutDate - checkInDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                totalHari.val(diffDays);
 
-            if (checkInDate && checkOutDate && numberOfPeople) {
-                const timeDifference = checkOutDate - checkInDate;
-                const daysDifference = timeDifference / (1000 * 3600 * 24);
-
-                if (daysDifference > 0) {
-                    totalDaysInput.value = daysDifference;
-                    const totalPrice = daysDifference * numberOfPeople * 100; // Replace 100 with your price per day per person
-                    totalPriceInput.value = formatNumberWithCommas(totalPrice);
-                } else {
-                    totalDaysInput.value = 0;
-                    totalPriceInput.value = 0;
-                }
+                kalkulatorHarga(diffDays);
             }
         }
 
-        checkInInput.addEventListener('change', calculateDaysAndPrice);
-        checkOutInput.addEventListener('change', calculateDaysAndPrice);
-        numberPeopleInput.addEventListener('input', calculateDaysAndPrice);
+        function kalkulatorHarga(days) {
+            const orang = jumlahOrang.val();
+            const hargaPerHariPerOrang = instansi.find('option:selected').data('price');
+
+            if (days && orang && hargaPerHariPerOrang) {
+                const total = days * orang * hargaPerHariPerOrang;
+                totalHarga.val(total);
+            }
+        }
+
+        // Event listener untuk setiap perubahan
+        tglCheckIn.change(function() {
+            kalkulatorHari();
+        });
+
+        tglCheckOut.change(function() {
+            kalkulatorHari();
+        });
+
+        jumlahOrang.on('input', function() {
+            kalkulatorHarga(totalHari.val());
+        });
+
+        instansi.change(function() {
+            kalkulatorHarga(totalHari.val());
+        });
     });
 </script>
 

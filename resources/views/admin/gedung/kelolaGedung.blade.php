@@ -126,7 +126,7 @@ $no = 1;
                                             <button type="button" class="btn btn-danger waves-effect waves-light p-1" title="hapus" data-bs-toggle="modal" data-bs-target="#hapusGedung{{ $gd->id }}" style="width: 35px; height:30px; margin-right:5px">
                                                 <i class="bx bx-trash font-size-16 align-middle"></i>
                                             </button>
-                                            <!-- Modal Hapus Jenis Tamu -->
+                                            <!-- Modal Hapus Geudng -->
                                             <div class="modal fade" id="hapusGedung{{ $gd->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="hapusGedungLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content" style="width: fit-content;">

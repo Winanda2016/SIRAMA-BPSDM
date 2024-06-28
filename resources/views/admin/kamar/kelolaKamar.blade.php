@@ -57,7 +57,7 @@ $no = 1;
                                     </button>
                                     <div class="dropdown-menu">
                                         {{-- <a selected hidden >{{request('search')}}</a> --}}
-                                        <a class="dropdown-item" href="{{ route('kelola_kamar') }}">All</a>
+                                        <a class="dropdown-item" href="{{ route('kelola_kamar') }}">Semua</a>
                                         @foreach ($gedung as $gd)
                                         <a class="dropdown-item" href="{{ route('kelola_kamar', ['gedung_id' => $gd->id]) }}">
                                             {{ $gd->nama_gedung }}
@@ -84,7 +84,7 @@ $no = 1;
                                 <tr>
                                     <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
                                     <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $k->nomor_kamar }}</a> </td>
-                                    <td> {{ $k->nama_gedung }} </td>
+                                    <td style="text-transform: capitalize;"> {{ $k->nama_gedung }} </td>
                                     <td>{{ $k->kapasitas }} orang</td>
                                     <td>
                                         @if ($k->status === 'kosong')
@@ -103,9 +103,6 @@ $no = 1;
                                         </a>
                                         <a type="button" class="btn btn-warning waves-effect waves-light p-1" href="#" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bxs-edit font-size-16 align-middle"></i>
-                                        </a>
-                                        <a type="button" class="btn btn-danger waves-effect waves-light p-1" href="#" style="width: 35px; height:30px; margin-right:5px">
-                                            <i class="bx bx-trash font-size-16 align-middle"></i>
                                         </a>
                                     </td>
                                 </tr>

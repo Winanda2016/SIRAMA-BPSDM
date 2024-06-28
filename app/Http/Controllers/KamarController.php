@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kamar;
 use App\Models\Gedung;
-use App\Models\JTamu;
+use App\Models\Instansi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -74,28 +74,25 @@ class KamarController extends Controller
         $kamar->gedung_id = $validatedData['gedung_id'];
 
         // Handle file upload
-        try {
-            if ($request->hasFile('foto')) {
-                $extension = $request->file('foto')->getClientOriginalExtension();
-                $newFileName = 'Kamar' . '_ No.' . $kamar->nomor_kamar . '.' . $extension;
+        // try {
+        //     if ($request->hasFile('foto')) {
+        //         $extension = $request->file('foto')->getClientOriginalExtension();
+        //         $newFileName = 'Kamar' . '_ No.' . $kamar->nomor_kamar . '.' . $extension;
 
-                // Try to move the uploaded file
-                $request->file('foto')->move(public_path('admin/assets/images/kamar'), $newFileName);
+        //         $request->file('foto')->move(public_path('admin/assets/images/kamar'), $newFileName);
 
-                // Save the file path to the 'foto' column
-                $kamar->foto = 'admin/assets/images/kamar/' . $newFileName;
-            }
-        } catch (\Exception $e) {
-            // If an error occurs during file processing, handle it here
-            return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
-        }
+        //         $kamar->foto = 'admin/assets/images/kamar/' . $newFileName;
+        //     }
+        // } catch (\Exception $e) {
+        //     return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
+        // }
 
 
         // Save the kamar instance to the database
         $kamar->save();
 
         // Redirect or return a response as needed
-        return redirect()->route('kelola-kamar.index')
+        return redirect()->route('kelola_kamar')
             ->with('success', 'Nama Gedung Berhasil Ditambahkan');
     }
 
@@ -149,35 +146,26 @@ class KamarController extends Controller
         $kamar->gedung_id = $validatedData['gedung_id'];
 
         // Handle file upload
-        try {
-            if ($request->hasFile('foto')) {
-                $extension = $request->file('foto')->getClientOriginalExtension();
-                $newFileName = 'Kamar' . '_ No.' . $kamar->nomor_kamar . '.' . $extension;
+        // try {
+        //     if ($request->hasFile('foto')) {
+        //         $extension = $request->file('foto')->getClientOriginalExtension();
+        //         $newFileName = 'Kamar' . '_ No.' . $kamar->nomor_kamar . '.' . $extension;
 
-                // Try to move the uploaded file
-                $request->file('foto')->move(public_path('admin/assets/images/kamar'), $newFileName);
+        //         $request->file('foto')->move(public_path('admin/assets/images/kamar'), $newFileName);
 
-                // Save the file path to the 'foto' column
-                $kamar->foto = 'admin/assets/images/kamar/' . $newFileName;
-            }
-        } catch (\Exception $e) {
-            // If an error occurs during file processing, handle it here
-            return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
-        }
+        //         $kamar->foto = 'admin/assets/images/kamar/' . $newFileName;
+        //     }
+        // } catch (\Exception $e) {
+        //     return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
+        // }
 
         // Save the updated Donasi instance to the database
         $kamar->save();
 
         // Redirect or return a response as needed
-        return redirect()->route('kelola-kamar.index')
+        return redirect()->route('kelola_kamar')
             ->with('success', 'Nama Gedung Berhasil Diubah');
     }
 
-    public function JTTamu()
-{
-    $jtamu = JTamu::orderBy('id', 'desc')->get();
-    $kamarTersedia = Kamar::where('status', 'kosong')->count();
-
-    return view('tamu.detailKamar', compact('jtamu', 'kamarTersedia'));
-}
+    
 }

@@ -61,7 +61,7 @@ $no = 1;
                         <div class="rd-text">
                             <div class="rd-title">
                                 <div class="rdt-left">
-                                    <a href="{{ url('/kamar/reservasi') }}">Reservasi</a>
+                                    <a href="{{ url('/kamar/form-reservasi') }}">Reservasi</a>
                                 </div>
                             </div>
                             <table class="table table-bordered" style="width: 100%;">
@@ -71,10 +71,10 @@ $no = 1;
                                     @endforeach
                                 </thead>
                                 <tbody>
-                                    @foreach($jtamu as $jt)
+                                    @foreach($instansi as $jt)
                                     <tr>
                                         <td align="center" style="width: 10%;">{{ $no++ }}</td>
-                                        <td style="width: 60%;">{{ $jt->nama_jenis }}</td>
+                                        <td style="width: 60%;">{{ $jt->nama_instansi }}</td>
                                         <td style="width: 30%;">Rp. {{ $jt->formatted_harga }}</td>
                                     </tr>
                                     @endforeach

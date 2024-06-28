@@ -23,7 +23,7 @@ class GedungController extends Controller
         $existingGedung = Gedung::where('nama_gedung', $request->nama_gedung)->first();
 
         if ($existingGedung) {
-            // Tampilkan alert jika nama jenis sudah ada
+            // Tampilkan alert jika geudng sudah ada
             return redirect()->route('gedung.index')
                 ->with('error', 'Nama Gedung Tersebut Sudah Tersedia.');
         }
@@ -41,7 +41,7 @@ class GedungController extends Controller
         //elequent
         Gedung::find($id)->delete();
         return redirect()->route('gedung.index')
-            ->with('success', 'Data Jenis Makanan Berhasil Dihapus');
+            ->with('success', 'Data Gedung Berhasil Dihapus');
     }
 
     public function update(Request $request, $id)
@@ -49,7 +49,7 @@ class GedungController extends Controller
         $existingGedungUpdate = Gedung::where('nama_gedung', $request->nama_gedung)->first();
 
         if ($existingGedungUpdate) {
-            // Tampilkan alert jika nama jenis sudah ada
+            // Tampilkan alert jika gedung tersebut sudah ada
             return redirect()->route('gedung.index')
                 ->with('error', 'Nama Gedung Tersebut Sudah Tersedia.');
         }

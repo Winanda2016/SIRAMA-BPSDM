@@ -26,4 +26,16 @@ class Kamar extends Model
     {
         return $this->belongsTo(Gedung::class, 'gedung_id', 'id');
     }
+
+    public function detailTKamar(){
+        return $this->hasMany(detailTKamar::class);
+    }
+
+    // public function transaksi(){
+    //     return $this->hasMany(Transaksi::class);
+    // }
+
+    // public function instansi(){
+    //     return $this->hasMany(Instansi::class);
+    // }
 }

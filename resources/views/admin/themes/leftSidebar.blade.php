@@ -73,17 +73,17 @@
                     </a>
                 </li>
 
-                <li class="@if (Route::currentRouteName() == 'jenis-tamu') active @endif">
-                    <a href="{{ url('/jenis-tamu') }}">
+                <li class="@if (Route::currentRouteName() == 'instansi') active @endif">
+                    <a href="{{ url('/instansi') }}">
                         <i data-feather="tag" ></i>
-                        <span data-key="t-tamu">Data Jenis Tamu</span>
+                        <span data-key="t-instansi">Data Instansi</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ url('/kelola-ruangan') }}">
                         <i data-feather="cpu" ></i>
-                        <span data-key="t-kamar">Data Ruangan</span>
+                        <span data-key="t-ruangan">Data Ruangan</span>
                     </a>
                 </li>
 
