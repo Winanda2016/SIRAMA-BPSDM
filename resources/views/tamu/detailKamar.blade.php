@@ -1,4 +1,8 @@
-@extends('pelanggan.themes.app')
+@extends('tamu.themes.app')
+@php
+$ar_judul = ['No','Nama Instansi','Harga'];
+$no = 1;
+@endphp
 @section('content')
 <!-- Breadcrumb Section Begin -->
 <div class="breadcrumb-section">
@@ -8,7 +12,7 @@
                 <div class="breadcrumb-text">
                     <h2>Kamar</h2>
                     <div class="bt-option">
-                        <a href="{{ url('/pelanggan-dashboard') }}">Halaman Utama</a>
+                        <a href="{{ url('/tamu-dashboard') }}">Halaman Utama</a>
                         <span>Kamar</span>
                     </div>
                 </div>
@@ -23,7 +27,7 @@
     <div class="container">
         <div class="card p-2">
             <div class="row">
-                <div class="col-lg-7" style=" width: 100%; height: 400px; overflow: hidden; display: flex; flex-direction: column; margin-right:20px;">
+                <div class="col-lg-6" style=" width: 100%; height: 400px; overflow: hidden; display: flex; flex-direction: column; margin-right:20px;">
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style=" height: 100%;">
                         <ol class="carousel-indicators">
                             <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
@@ -32,7 +36,7 @@
                         </ol>
                         <div class="carousel-inner" role="listbox" style="height: 100%; display: flex;">
                             <div class="carousel-item active">
-                                <img class="d-block img-fluid w-100" src="{{ asset('pelanggan/assets/img/logo.png') }}" alt="First slide" style="height: 100%; width: 100%; object-fit: cover;">
+                                <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/logo.png') }}" alt="First slide" style="height: 100%; width: 100%; object-fit: cover;">
                             </div>
                             <div class="carousel-item">
                                 <img class="d-block img-fluid w-100" src="{{ asset('admin/assets/images/small/img-2.jpg') }}" alt="Second slide">
@@ -52,7 +56,7 @@
                     </div><!-- end carousel -->
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-5">
                     <div class="room-details-item">
                         <div class="rd-text">
                             <div class="rd-title">
@@ -60,25 +64,20 @@
                                     <a href="{{ url('/kamar/reservasi') }}">Reservasi</a>
                                 </div>
                             </div>
-                            <h2>159$<span>/Pernight</span></h2>
-                            <table>
+                            <table class="table table-bordered" style="width: 100%;">
+                                <thead>
+                                    @foreach($ar_judul as $jdl)
+                                    <td>{{ $jdl }}</td>
+                                    @endforeach
+                                </thead>
                                 <tbody>
+                                    @foreach($jtamu as $jt)
                                     <tr>
-                                        <td class="r-o">Size:</td>
-                                        <td>30 ft</td>
+                                        <td align="center" style="width: 10%;">{{ $no++ }}</td>
+                                        <td style="width: 60%;">{{ $jt->nama_jenis }}</td>
+                                        <td style="width: 30%;">Rp. {{ $jt->formatted_harga }}</td>
                                     </tr>
-                                    <tr>
-                                        <td class="r-o">Capacity:</td>
-                                        <td>Max persion 5</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Bed:</td>
-                                        <td>King Beds</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Services:</td>
-                                        <td>Wifi, Television, Bathroom,...</td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -88,18 +87,38 @@
         </div>
 
         <h3 class="my-3"><b>Deskripsi</b></h3>
-        <p class="f-para">Motorhome or Trailer that is the question for you. Here are some of the
-            advantages and disadvantages of both, so you will be confident when purchasing an RV.
-            When comparing Rvs, a motorhome or a travel trailer, should you buy a motorhome or fifth
-            wheeler? The advantages and disadvantages of both are studied so that you can make your
-            choice wisely when purchasing an RV. Possessing a motorhome or fifth wheel is an
-            achievement of a lifetime. It can be similar to sojourning with your residence as you
-            search the various sites of our great land, America.</p>
-        <p>The two commonly known recreational vehicle classes are the motorized and towable.
-            Towable rvs are the travel trailers and the fifth wheel. The rv travel trailer or fifth
-            wheel has the attraction of getting towed by a pickup or a car, thus giving the
-            adaptability of possessing transportation for you when you are parked at your campsite.
-        </p>
+        <table>
+            <tbody  style="width: 70%;color:#707079">
+                <tr>
+                    <td style="width: 30%;">Kamar Tersedia</td>
+                    <td style="width: 1%;"> : </td>
+                    <td  style="width: 54%;">{{ $kamarTersedia }}</td>
+                </tr>
+                <tr>
+                    <td>Kapasitas</td>
+                    <td> : </td>
+                    <td>2 Orang Dewasa</td>
+                </tr>
+                <tr>
+                    <td>Fasilitas</td>
+                    <td> : </td>
+                    <td>King Beds</td>
+                </tr>
+                <tr>
+                    <td>Lainnya</td>
+                    <td> : </td>
+                    <td>Wifi, Television, Bathroom,...</td>
+                </tr>
+            </tbody>
+        </table><hr>
+
+        <h3 class="my-3"><b>Keterangan</b></h3>
+        <p class="f-para">1. Setiap kamar terdiri dari 2 buah bed singel</p>
+        <p class="f-para">2. Untuk melakukan reservasi silahkan hitung pemesanan berdasarkan jumlah bed yang dibutuhkan</p>
+        <p class="f-para">3. Harga yang tertera merupakan harga per bed</p>
+        <p class="f-para">4. Satu bed hanya dapat di tempati maksimal oleh satu orang dewasa</p>
+        <p class="f-para">5. Jika anda hanya menyewa untuk satu bed saja, tidak akan ada kemungkinan
+                            untuk anda menempati kamar yang sama dengan orang lain</p>
     </div>
 </section>
 <!-- Room Details Section End -->

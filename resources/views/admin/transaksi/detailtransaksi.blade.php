@@ -112,7 +112,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 70px;">No.</th>
-                                        <th>Jenis Pelanggan</th>
+                                        <th>Jenis Tamu</th>
                                         <th>Jumlah Orang</th>
                                         <th class="text-end" style="width: 120px;">Harga</th>
                                     </tr>

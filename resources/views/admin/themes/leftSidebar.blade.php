@@ -73,10 +73,10 @@
                     </a>
                 </li>
 
-                <li class="@if (Route::currentRouteName() == 'jenis-pelanggan') active @endif">
-                    <a href="{{ url('/jenis-pelanggan') }}">
+                <li class="@if (Route::currentRouteName() == 'jenis-tamu') active @endif">
+                    <a href="{{ url('/jenis-tamu') }}">
                         <i data-feather="tag" ></i>
-                        <span data-key="t-pelanggan">Data Jenis Pelanggan</span>
+                        <span data-key="t-tamu">Data Jenis Tamu</span>
                     </a>
                 </li>
 

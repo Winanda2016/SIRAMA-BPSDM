@@ -1,4 +1,4 @@
-@extends('pelanggan.themes.app')
+@extends('tamu.themes.app')
 @section('content')
 <!-- Breadcrumb Section Begin -->
 <div class="breadcrumb-section">
@@ -8,7 +8,7 @@
                 <div class="breadcrumb-text">
                     <h2>Ruangan</h2>
                     <div class="bt-option">
-                        <a href="{{ url('/pelanggan-dashboard') }}">Halaman Utama</a>
+                        <a href="{{ url('/tamu-dashboard') }}">Halaman Utama</a>
                         <span>Ruangan</span>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="room-item">
                     <div class="card" style="width: 100%; height: 250px; overflow: hidden; display: flex;">
-                        <img src="{{ asset('pelanggan/assets/img/room/room-1.jpg') }}" alt="" style="height: 100%; width: 100%; object-fit: cover;">
+                        <img src="{{ asset('tamu/assets/img/room/room-1.jpg') }}" alt="" style="height: 100%; width: 100%; object-fit: cover;">
                     </div>
                     <div class="ri-text">
                         <h4>Premium King Room</h4>
@@ -56,7 +56,7 @@
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="room-item">
-                    <img src="{{ asset('pelanggan/assets/img/room/room-2.jpg') }}" alt="">
+                    <img src="{{ asset('tamu/assets/img/room/room-2.jpg') }}" alt="">
                     <div class="ri-text">
                         <h4>Deluxe Room</h4>
                         <h3>159$<span>/Pernight</span></h3>
@@ -86,7 +86,7 @@
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="room-item">
-                    <img src="{{ asset('pelanggan/assets/img/room/room-6.jpg') }}" alt="">
+                    <img src="{{ asset('tamu/assets/img/room/room-6.jpg') }}" alt="">
                     <div class="ri-text">
                         <h4>Small View</h4>
                         <h3>159$<span>/Pernight</span></h3>

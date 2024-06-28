@@ -28,7 +28,7 @@
                 <div class="col-lg-2">
                     <div class="logo">
                         <a href="./index.html">
-                            <img src="{{ asset('pelanggan/assets/img/logo.png') }}" alt=""  width="200" height="35">
+                            <img src="{{ asset('tamu/assets/img/logo.png') }}" alt=""  width="200" height="35">
                         </a>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="nav-menu">
                         <nav class="mainmenu">
                             <ul>
-                                <li class="{{ Route::currentRouteName() == 'Pdashboard' ? 'active' : '' }}"><a href="{{ url('/pelanggan-dashboard') }}">Home</a></li>
+                                <li class="{{ Route::currentRouteName() == 'Pdashboard' ? 'active' : '' }}"><a href="{{ url('/tamu-dashboard') }}">Home</a></li>
                                 <li class="{{ Route::currentRouteName() == 'Ptentang' ? 'active' : '' }}"><a href="{{ url('/tentang-kami') }}">Tentang Kami</a></li>
                                 <li class="{{ Route::currentRouteName() == 'Pkamar' ? 'active' : '' }}"><a href="{{ url('/kamar') }}">Kamar</a></li>
                                 <li class="{{ Route::currentRouteName() == 'Pruangan' ? 'active' : '' }}"><a href="{{ url('/ruangan') }}">Ruangan</a></li>

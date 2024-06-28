@@ -1,4 +1,4 @@
-@extends('pelanggan.themes.app')
+@extends('tamu.themes.app')
 @section('content')
 <!-- Breadcrumb Section Begin -->
 <div class="breadcrumb-section">
@@ -6,10 +6,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text">
-                    <h2>Reservasi Kamar</h2>
+                    <h2>Reservasi Ruangan</h2>
                     <div class="bt-option">
-                        <a href="{{ url('/pelanggan-dashboard') }}">Halaman Utama</a>
-                        <a href="{{ url('/kamar') }}">Kamar</a>
+                        <a href="{{ url('/tamu-dashboard') }}">Halaman Utama</a>
+                        <a href="{{ url('/ruangan') }}">Ruangan</a>
+                        <a href="{{ url('/ruangan/detail') }}">Detail Ruangan</a>
                         <span>Reservasi</span>
                     </div>
                 </div>
@@ -25,7 +26,7 @@
             <div class="col-lg-5">
                 <div class="card p-4">
                     <div class="room-booking">
-                        <h3>Formulir Reservasi</h3>
+                        <h3>Formulir Reservasi Ruangan</h3>
                         <hr>
                         <form action="#">
                             <div class="text-input">

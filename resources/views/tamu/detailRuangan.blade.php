@@ -1,4 +1,4 @@
-@extends('pelanggan.themes.app')
+@extends('tamu.themes.app')
 @section('content')
 <!-- Breadcrumb Section Begin -->
 <div class="breadcrumb-section">
@@ -8,7 +8,7 @@
                 <div class="breadcrumb-text">
                     <h2>Detail Ruangan</h2>
                     <div class="bt-option">
-                        <a href="{{ url('/pelanggan-dashboard') }}">Halaman Utama</a>
+                        <a href="{{ url('/tamu-dashboard') }}">Halaman Utama</a>
                         <a href="{{ url('/ruangan') }}">Ruangan</a>
                         <span>Detail Ruangan</span>
                     </div>
@@ -33,7 +33,7 @@
                         </ol>
                         <div class="carousel-inner" role="listbox" style="height: 100%; display: flex;">
                             <div class="carousel-item active">
-                                <img class="d-block img-fluid w-100" src="{{ asset('pelanggan/assets/img/logo.png') }}" alt="First slide" style="height: 100%; width: 100%; object-fit: cover;">
+                                <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/logo.png') }}" alt="First slide" style="height: 100%; width: 100%; object-fit: cover;">
                             </div>
                             <div class="carousel-item">
                                 <img class="d-block img-fluid w-100" src="{{ asset('admin/assets/images/small/img-2.jpg') }}" alt="Second slide">

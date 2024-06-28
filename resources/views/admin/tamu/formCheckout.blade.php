@@ -111,7 +111,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body" align="left">
-                                    <p>Apakah yakin Check Out Tamu atas nama (..nama pelanggan..)?</p>
+                                    <p>Apakah yakin Check Out Tamu atas nama (..nama tamu..)?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

@@ -109,7 +109,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 70px;">No.</th>
-                                        <th>Jenis Pelanggan</th>
+                                        <th>Jenis Tamu</th>
                                         <th>Jumlah Orang</th>
                                         <th class="text-end" style="width: 120px;">Harga</th>
                                     </tr>
@@ -160,7 +160,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Apakah yakin Check In Reservasi atas nama (..nama pelanggan..)?</p>
+                                            <p>Apakah yakin Check In Reservasi atas nama (..nama tamu..)?</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>

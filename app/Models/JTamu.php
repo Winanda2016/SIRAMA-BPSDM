@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JPelanggan extends Model
+class JTamu extends Model
 {
     use HasFactory;
-    protected $table = 'jenis_pelanggan';
+    protected $table = 'jenis_tamu';
     protected $fillable = ['id', 'nama_jenis', 'harga'];
 
     public $timestamps = false;
@@ -16,5 +16,10 @@ class JPelanggan extends Model
     public function kamar()
     {
         return $this->hasMany(Kamar::class);
+    }
+
+    public function getFormattedHargaAttribute()
+    {
+        return number_format($this->harga, 0, ',', '.');
     }
 }

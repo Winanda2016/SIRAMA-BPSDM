@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kamar;
 use App\Models\Gedung;
+use App\Models\JTamu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -171,4 +172,12 @@ class KamarController extends Controller
         return redirect()->route('kelola-kamar.index')
             ->with('success', 'Nama Gedung Berhasil Diubah');
     }
+
+    public function JTTamu()
+{
+    $jtamu = JTamu::orderBy('id', 'desc')->get();
+    $kamarTersedia = Kamar::where('status', 'kosong')->count();
+
+    return view('tamu.detailKamar', compact('jtamu', 'kamarTersedia'));
+}
 }

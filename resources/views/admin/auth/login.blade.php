@@ -35,7 +35,7 @@
                             <div class="d-flex flex-column h-100">
                                 <div class="mb-4 mb-md-5 text-center">
                                     <a href="index.html" class="d-block auth-logo">
-                                        <img src="{{ asset('pelanggan/assets/img/logo.png') }}" alt="" height="28">
+                                        <img src="{{ asset('tamu/assets/img/logo.png') }}" alt="" height="28">
                                     </a>
                                 </div>
                                 <div class="auth-content my-auto">

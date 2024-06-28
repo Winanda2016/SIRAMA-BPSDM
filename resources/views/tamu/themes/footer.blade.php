@@ -6,7 +6,7 @@
                     <div class="ft-about">
                         <div class="logo">
                             <a href="#">
-                                <img src="{{ asset('pelanggan/assets/img/footer-logo.png') }}" alt="">
+                                <img src="{{ asset('tamu/assets/img/footer-logo.png') }}" alt="">
                             </a>
                         </div>
                         <p>We inspire and reach millions of travelers<br /> across 90 local websites</p>

@@ -1,4 +1,4 @@
-@extends('pelanggan.themes.app')
+@extends('tamu.themes.app')
 @section('content')
 <!-- Contact Section Begin -->
 <section class="contact-section spad">

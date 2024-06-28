@@ -3,12 +3,12 @@
 use App\Http\Controllers\GedungController;
 use App\Http\Controllers\KamarController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\JPelangganController;
+use App\Http\Controllers\JTamuController;
 use App\Http\Controllers\kelolaUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Models\JPelanggan;
+use App\Models\JTamu;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,9 +37,9 @@ Route::get('/pegawai-dashboard', function () {
 //     return view('admin.dashboard');
 // });
 
-Route::get('/pelanggan-dashboard', function () {
-    return view('pelanggan.dashboard');
-})->name('Pdashboard');; 
+Route::get('/tamu-dashboard', function () {
+    return view('tamu.dashboard');
+})->name('Pdashboard');;
 
 //== RESERVASI ==
 Route::get('/daftar-reservasi', function () {
@@ -108,8 +108,8 @@ Route::post('/kelola-kamar', [KamarController::class, 'store']);
 Route::get('/edit-kamar/{id}', [KamarController::class, 'edit'])->name('edit_kamar');
 Route::put('/update-kamar/{id}', [KamarController::class, 'update'])->name('update_kamar');
 
-//== Jenis Pelanggan ==
-Route::resource('/jenis-pelanggan', JPelangganController::class);
+//== Jenis Tamu ==
+Route::resource('/jenis-tamu', JTamuController::class);
 
 Route::get('/kelola-ruangan', [RuanganController::class, 'index'])->name('kelola_ruangan');
 
@@ -122,33 +122,31 @@ Route::get('/edit-ruangan', function () {
 
 // ===========================================================
 
-//== Pelanggan==
+//== Tamu==
 Route::get('/tentang-kami', function () {
-    return view('pelanggan.tentangKami');
+    return view('tamu.tentangKami');
 })->name('Ptentang');
 
-Route::get('/kamar', function () {
-    return view('pelanggan.detailKamar');
-})->name('Pkamar');
+Route::get('/kamar', [KamarController::class, 'JTTamu'])->name('Pkamar');
 
 Route::get('/kamar/reservasi', function () {
-    return view('pelanggan.reservasiKamar');
+    return view('tamu.reservasiKamar');
 });
 
 Route::get('/ruangan', function () {
-    return view('pelanggan.ruangan');
+    return view('tamu.ruangan');
 })->name('Pruangan');
 
 Route::get('/ruangan/reservasi', function () {
-    return view('pelanggan.reservasiRuangan');
+    return view('tamu.reservasiRuangan');
 });
 
 Route::get('/ruangan/detail', function () {
-    return view('pelanggan.detailRuangan');
+    return view('tamu.detailRuangan');
 })->name('PRdetail');
 
 Route::get('/kontak', function () {
-    return view('pelanggan.kontak');
+    return view('tamu.kontak');
 })->name('Pkontak');
 
 // ===========================================================
@@ -168,4 +166,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

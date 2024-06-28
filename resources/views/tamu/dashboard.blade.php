@@ -1,4 +1,4 @@
-@extends('pelanggan.themes.app')
+@extends('tamu.themes.app')
 @section('content')
 <!-- Hero Section Begin -->
 <section class="hero-section">
@@ -15,9 +15,9 @@
         </div>
     </div>
     <div class="hero-slider owl-carousel">
-        <div class="hs-item set-bg" data-setbg="{{ asset('pelanggan/assets/img/hero/hero-1.jpg') }}"></div>
-        <div class="hs-item set-bg" data-setbg="{{ asset('pelanggan/assets/img/hero/hero-2.jpg') }}"></div>
-        <div class="hs-item set-bg" data-setbg="{{ asset('pelanggan/assets/img/hero/hero-3.jpg') }}"></div>
+        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-1.jpg') }}"></div>
+        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-2.jpg') }}"></div>
+        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-3.jpg') }}"></div>
     </div>
 </section>
 <!-- Hero Section End -->
@@ -44,10 +44,10 @@
                 <div class="about-pic">
                     <div class="row">
                         <div class="col-sm-6">
-                            <img src="{{ asset('pelanggan/assets/img/about/about-1.jpg') }}" alt="">
+                            <img src="{{ asset('tamu/assets/img/about/about-1.jpg') }}" alt="">
                         </div>
                         <div class="col-sm-6">
-                            <img src="{{ asset('pelanggan/assets/img/about/about-2.jpg') }}" alt="">
+                            <img src="{{ asset('tamu/assets/img/about/about-2.jpg') }}" alt="">
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
         <div class="hp-room-items px-5">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
-                    <div class="hp-room-item set-bg" data-setbg="{{ asset('pelanggan/assets/img/room/room-b1.jpg') }}">
+                    <div class="hp-room-item set-bg" data-setbg="{{ asset('tamu/assets/img/room/room-b1.jpg') }}">
                         <div class="hr-text">
                             <h3>Kamar</h3>
                             <h2><span>Mulai</span> RP.65.000<span>/Malam</span></h2>
@@ -96,7 +96,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <div class="hp-room-item set-bg" data-setbg="{{ asset('pelanggan/assets/img/room/room-b2.jpg') }}">
+                    <div class="hp-room-item set-bg" data-setbg="{{ asset('tamu/assets/img/room/room-b2.jpg') }}">
                         <div class="hr-text">
                             <h4>Ruang Komputer</h4>
                             <h2>RP.300.000<span>/Hari</span></h2>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <div class="hp-room-item set-bg" data-setbg="{{ asset('pelanggan/assets/img/room/room-b2.jpg') }}">
+                    <div class="hp-room-item set-bg" data-setbg="{{ asset('tamu/assets/img/room/room-b2.jpg') }}">
                         <div class="hr-text">
                             <h4>Ruang ...</h4>
                             <h2>RP.....<span>/Hari</span></h2>
