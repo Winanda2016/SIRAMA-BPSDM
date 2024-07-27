@@ -6,12 +6,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Tambah Kamar</h4>
+                <h4 class="mb-sm-0 font-size-18">Edit Kamar</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ url('/kelola-kamar') }}">Kelola Kamar</a></li>
-                        <li class="breadcrumb-item active">Tambah Kamar</li>
+                        <li class="breadcrumb-item active">Edit Kamar</li>
                     </ol>
                 </div>
 
@@ -24,20 +24,32 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 align="center">Formulir Tambah Kamar</h4>
+                    <h4 align="center">Formulir Edit </br> Kamar {{ $kamar->nomor_kamar }} | {{ $kamar->nama_gedung }}</h4>
                     <hr><br>
-                    <form method="POST" action="" enctype="multipart/form-data">
+                    <div>
+                        @if($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <p>{{ $message }}</p>
+                        </div>
+                        @endif
+                        @if($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ $message }}</p>
+                        </div>
+                        @endif
+                    </div>
+                    <form method="POST" action="{{ route('update_kamar', ['id' => $kamar->kamar_id]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="row">
-
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">Nama Gedung</label>
                                     <select name="gedung_id" required class="form-control form-select">
-                                        <option selected>Choose...</option>
                                         @foreach ($gedung as $g)
-                                        <option value="{{ $g->id }}">{{ $g->nama_gedung }}</option>
+                                        <option value="{{ $g->id }}" {{ $g->id == $kamar->gedung_id ? 'selected' : '' }}>
+                                            {{ $g->nama_gedung }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -47,13 +59,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="nomor_kamar" class="form-label">Nomor Kamar</label>
-                                    <input class="form-control" type="text" name="nomor_kamar" id="nomor_kamar">
+                                    <input class="form-control" type="text" name="nomor_kamar" id="nomor_kamar" value="{{ $kamar->nomor_kamar }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="kapasitas" class="form-label">Kapasitas</label>
-                                    <input class="form-control" type="text" name="kapasitas" id="kapasitas">
+                                    <input class="form-control" type="text" name="kapasitas" id="kapasitas" value="{{ $kamar->kapasitas }}">
                                 </div>
                             </div>
                         </div>
@@ -73,12 +85,6 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="status" id="status_reservasi" value="reservasi">
-                                    <label class="form-check-label" for="status_reservasi">Reservasi</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-check mb-3">
                                     <input class="form-check-input" type="radio" name="status" id="status_perbaikan" value="perbaikan">
                                     <label class="form-check-label" for="status_perbaikan">Perbaikan</label>
                                 </div>
@@ -88,15 +94,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="fasilitas" class="form-label">Fasilitas</label>
-                                    <textarea id="fasilitas" name="fasilitas" class="form-control" rows="5"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="foto" class="form-label">Foto</label>
-                                    <input type="file" class="form-control" id="foto" name="foto">
+                                    <textarea id="fasilitas" name="fasilitas" class="form-control" rows="5" value="{{ $kamar->fasilitas }}"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -104,7 +102,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="basicpill-address-input" class="form-label">Deskripsi Tambahan</label>
-                                    <textarea id="basicpill-address-input" name="keterangan" class="form-control" rows="3"></textarea>
+                                    <textarea id="basicpill-address-input" name="deskripsi" class="form-control" rows="3" value="{{ $kamar->deskripsi }}"></textarea>
                                     <p>*kosongkan jika tidak ada</p>
                                 </div>
                             </div>

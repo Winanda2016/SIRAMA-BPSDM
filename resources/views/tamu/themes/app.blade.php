@@ -30,6 +30,12 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
+
+    <!-- DataTables -->
+    <link href="{{ asset('admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
 
 </head>
 
@@ -45,6 +51,12 @@
 
     @include('tamu.themes.footer')
 
+    <script>
+        function kembali() {
+            window.history.back();
+        }
+    </script>
+    
     <!-- Js Plugins -->
     <script src="{{ asset('tamu/assets/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('tamu/assets/js/bootstrap.min.js') }}"></script>
@@ -57,6 +69,9 @@
 
     <!-- Tambahan dari Admin -->
     <script src="{{ asset('admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/pages/invoices-list.init.js') }}"></script>
 
 </body>
 

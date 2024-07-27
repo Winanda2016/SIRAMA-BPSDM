@@ -78,7 +78,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="status" id="status_terisi" value="Terisi">
+                                    <input class="form-check-input" type="radio" name="status" id="status_terisi" value="terisi">
                                     <label class="form-check-label" for="status_terisi">Terisi</label>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="basicpill-address-input" class="form-label">Deskripsi Tambahan</label>
-                                    <textarea id="basicpill-address-input" name="keterangan" class="form-control" rows="3"></textarea>
+                                    <textarea id="basicpill-address-input" name="deskripsi" class="form-control" rows="3"></textarea>
                                     <p>*kosongkan jika tidak ada</p>
                                 </div>
                             </div>

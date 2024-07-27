@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Ruangan extends Model
 {
@@ -26,5 +27,20 @@ class Ruangan extends Model
     public function gedung(): BelongsTo
     {
         return $this->belongsTo(Gedung::class, 'gedung_id', 'id');
+    }
+
+    public function getFormattedHargaAttribute()
+    {
+        return number_format($this->harga, 0, ',', '.');
+    }
+
+    public $incrementing = false; // karena id tidak auto increment
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->{$model->getKeyName()} = (string) Str::uuid();
+        });
     }
 }

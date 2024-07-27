@@ -51,9 +51,9 @@ $no = 1;
                                 <!-- Modal Tambah Gedung -->
                                 <div class="modal fade" id="tambahGedung" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="tambahGedungLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="tambahGedungLabel">Form Tambah Gedung</h5>
+                                        <div class="modal-content border-primary">
+                                            <div class="modal-header  bg-gradient bg-primary" >
+                                                <h5 class="modal-title text-white" id="tambahGedungLabel">Form Tambah Gedung</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -65,7 +65,7 @@ $no = 1;
                                                     </div>
                                                     <div class="mb-3">
                                                         <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                                        <button type="submit" class="btn btn-success mx-2">Simpan</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -100,9 +100,9 @@ $no = 1;
                                             <!-- Modal Edit Gedung -->
                                             <div class="modal fade" id="editGedung{{ $gd->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editGedungLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="editGedungLabel">Form Edit Gedung</h5>
+                                                    <div class="modal-content border-primary">
+                                                        <div class="modal-header bg-gradient bg-primary">
+                                                            <h5 class="modal-title text-white" id="editGedungLabel">Form Edit Gedung</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body" align="left">
@@ -115,7 +115,7 @@ $no = 1;
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                                                    <button type="submit" class="btn btn-success mx-2">Simpan</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -123,11 +123,11 @@ $no = 1;
                                                 </div>
                                             </div>
 
-                                            <button type="button" class="btn btn-danger waves-effect waves-light p-1" title="hapus" data-bs-toggle="modal" data-bs-target="#hapusGedung{{ $gd->id }}" style="width: 35px; height:30px; margin-right:5px">
+                                            <!-- <button type="button" class="btn btn-danger waves-effect waves-light p-1" title="hapus" data-bs-toggle="modal" data-bs-target="#hapusGedung{{ $gd->id }}" style="width: 35px; height:30px; margin-right:5px">
                                                 <i class="bx bx-trash font-size-16 align-middle"></i>
-                                            </button>
+                                            </button> -->
                                             <!-- Modal Hapus Geudng -->
-                                            <div class="modal fade" id="hapusGedung{{ $gd->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="hapusGedungLabel" aria-hidden="true">
+                                            <!-- <div class="modal fade" id="hapusGedung{{ $gd->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="hapusGedungLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content" style="width: fit-content;">
                                                         <div class="modal-header">
@@ -139,7 +139,7 @@ $no = 1;
                                                             <p>(Data yang dihapus tidak dapat dikembalikan lagi.)</p>
 
                                                             <div align="right">
-                                                                <form method="POST" action="method="POST" action="{{ route('gedung.destroy', $gd->id) }}">
+                                                                <form method="POST" action="method=" POST" action="{{ route('gedung.destroy', $gd->id) }}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -149,7 +149,7 @@ $no = 1;
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </td>
                                 </tr>

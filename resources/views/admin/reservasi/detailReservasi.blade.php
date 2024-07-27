@@ -28,46 +28,49 @@
                         <div class="d-flex align-items-start">
                             <div class="flex-grow-1">
                                 <div class="mb-4">
-                                    <img src="{{ asset('admin/assets/images/users/avatar-9.jpg') }}" alt="" height="24"><span class="logo-txt">(nama users)</span>
-                                    <button type="button" class="btn btn-soft-success btn-rounded waves-effect waves-light" style="width:50px; height:17px; font-size:8px; padding:2px">Terima</button>
+                                    <img src="{{ asset('admin/assets/images/users/avatar-9.jpg') }}" alt="" height="24"><span class="logo-txt">{{ $data->nama_users }}</span>
                                 </div>
                             </div>
                             <div class="flex-shrink-0">
                                 <div class="mb-4">
-                                    <h4 class="float-end font-size-16">Reservasi # (id reservasi)</h4>
+                                    @if ($jenis_transaksi === 'kamar')
+                                    <h4 class="float-end font-size-16">Kamar</h4>
+                                    @elseif ($jenis_transaksi === 'ruangan')
+                                    <h4 class="float-end font-size-16">{{ $data->nama_ruangan }}</h4>
+                                    @endif
                                 </div>
                             </div>
                         </div>
 
-                        <p class="mb-1">(asal instansi users)</p>
-                        <p class="mb-1"><i class="mdi mdi-email align-middle me-1"></i> (email users)</p>
-                        <p><i class="mdi mdi-phone align-middle me-1"></i> (nomor hp users)</p>
+                        <!-- <p class="mb-1">Umum</p> -->
+                        <p class="mb-1"><i class="mdi mdi-email align-middle me-1"></i> {{ $data->email_users }} </p>
+                        <p><i class="mdi mdi-phone align-middle me-1"></i> {{ $data->nohp_users }}</p>
                     </div>
                     <hr class="my-4">
                     <div class="row">
                         <div class="col-sm-4">
                             <div>
                                 <h5 class="font-size-15 mb-3">Reservasi:</h5>
-                                <h5 class="font-size-14 mb-2">(nama reservasi)</h5>
-                                <p class="mb-1">(asal instansi reservasi)</p>
-                                <p class="mb-1">(nomor hp reservasi)</p>
+                                <h5 class="font-size-14 mb-2">{{ $data->nama }}</h5>
+                                <p class="mb-1">{{ $data->nama_instansi }}</p>
+                                <p class="mb-1">{{ $data->nohp }}</p>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div>
                                 <div>
                                     <h5 class="font-size-15">Tanggal Reservasi:</h5>
-                                    <p>February 16, 2020 (tanggal reservasi)</p>
+                                    <p>{{ $data->tgl_reservasi }}</p>
                                 </div>
 
                                 <div class="mt-4">
                                     <h5 class="font-size-15">Tanggal Check in:</h5>
-                                    <p>February 16, 2020 (tanggal check in)</p>
+                                    <p>{{ $data->tgl_checkin }}</p>
                                 </div>
 
                                 <div class="mt-4">
                                     <h5 class="font-size-15">Tanggal Check out:</h5>
-                                    <p>February 16, 2020 (tanggal check out)</p>
+                                    <p>{{ $data->tgl_checkout }}</p>
                                 </div>
                             </div>
                         </div>
@@ -76,17 +79,24 @@
                             <div>
                                 <div>
                                     <h5 class="font-size-15">Jumlah Orang:</h5>
-                                    <p>3 orang (jumlah orang)</p>
+                                    <p>{{ $data->jumlah_orang }} Orang</p>
                                 </div>
 
+                                @if ($jenis_transaksi === 'kamar')
                                 <div class="mt-4">
                                     <h5 class="font-size-15">Nomor Kamar:</h5>
-                                    <p>103 (nomor kamar)</p>
+                                    <p>101</p>
                                 </div>
+                                @elseif ($jenis_transaksi === 'ruangan')
+                                <div class="mt-4">
+                                    <h5 class="font-size-15">Nama Ruangan:</h5>
+                                    <p>{{ $data->nama_ruangan }}</p>
+                                </div>
+                                @endif
 
                                 <div class="mt-4">
                                     <h5 class="font-size-15">Nama Gedung:</h5>
-                                    <p>Tuan sakato (nama gedung)</p>
+                                    <p>{{ $data->nama_gedung }}</p>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +106,7 @@
                         <h5 class="font-size-15">Dokumen Reservasi :</h5>
                         <a type="button" class="mb-1">
                             <i class="bx bxs-file-pdf font-size-20 align-middle" style="color: red;"></i>
-                            (nama dokumen reservasi).pdf
+                            --
                         </a>
                     </div>
 
@@ -109,37 +119,35 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 70px;">No.</th>
-                                        <th>Instansi</th>
+                                        <th>Harga</th>
                                         <th>Jumlah Orang</th>
-                                        <th class="text-end" style="width: 120px;">Harga</th>
+                                        <th>Jumlah Hari</th>
+                                        <th class="text-end" style="width: 120px;">Total Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th scope="row">01</th>
                                         <td>
-                                            <h5 class="font-size-15 mb-1">Umum</h5>
-                                            <p class="font-size-13 text-muted mb-0">Rp.50.000,00 / Orang</p>
+                                            <h5 class="font-size-15 mb-1">Rp.{{ $data->harga }}</h5>
                                         </td>
                                         <td>
-                                            <h5 class="font-size-15 mb-1">2 orang</h5>
+                                            <h5 class="font-size-15 mb-1">{{ $data->jumlah_orang }} Orang</h5>
                                         </td>
-                                        <td class="text-end">Rp.100.000,00</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row" colspan="3" class="text-end">Sub Total</th>
-                                        <td class="text-end">Rp.100.000,00</td>
+                                        <td>
+                                            <h5 class="font-size-15 mb-1">{{ $data->total_hari }} Hari</h5>
+                                        </td>
+                                        <td class="text-end">Rp.{{ $data->formatted_harga }}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="3" class="border-0 text-end">
-                                            Jumlah Hari</th>
-                                        <td class="border-0 text-end">2 hari</td>
+                                        <th scope="row" colspan="4" class="border-0 text-end">
+                                            Diskon</th>
+                                        <td class="text-end">0 %</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="3" class="border-0 text-end">Total</th>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Total</th>
                                         <td class="border-0 text-end">
-                                            <h4 class="m-0">Rp.200.000,00</h4>
+                                            <h4 class="m-0">Rp.{{ $data->formatted_harga }},00</h4>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -164,7 +172,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" class="btn btn-primary">Check In</button>
+                                            <a href="{{ url('/daftar-tamu') }}" type="submit" class="btn btn-primary">Check In</a>
                                         </div>
                                     </div>
                                 </div>

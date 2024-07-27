@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Ruangan;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
@@ -52,8 +53,8 @@ class DashboardController extends Controller
             SELECT 11 UNION ALL SELECT 12
         ) AS m'))
             ->leftJoin('transaksi as t', function ($join) {
-                $join->on(DB::raw('MONTH(t.tgl_selesai)'), '=', 'm.bulan')
-                    ->on(DB::raw('YEAR(t.tgl_selesai)'), '=', DB::raw('YEAR(CURRENT_DATE())'));
+                $join->on(DB::raw('MONTH(t.tgl_checkout)'), '=', 'm.bulan')
+                    ->on(DB::raw('YEAR(t.tgl_checkout)'), '=', DB::raw('YEAR(CURRENT_DATE())'));
             })
             ->leftJoin('detail_transaksi_kamar as dt', 't.id', '=', 'dt.transaksi_id')
             ->leftJoin('kamar as k', 'dt.kamar_id', '=', 'k.id')
@@ -123,5 +124,11 @@ class DashboardController extends Controller
                 'series'
             )
         );
+    }
+
+    public function indexTamu()
+    {
+        $ruangan = Ruangan::all();
+        return view('tamu.dashboard', compact('ruangan'));
     }
 }

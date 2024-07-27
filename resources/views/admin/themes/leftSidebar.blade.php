@@ -8,19 +8,23 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" data-key="t-menu">Menu</li>
 
+                @if( Auth::user()->role == 'admin')
                 <li>
                     <a href="{{ url('/admin-dashboard') }}">
                         <i data-feather="home"></i>
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+                @endif
 
+                @if( Auth::user()->role == 'pegawai')
                 <li>
                     <a href="{{ url('/pegawai-dashboard') }}">
                         <i data-feather="home"></i>
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+                @endif
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -57,6 +61,7 @@
                 </li>
 
                 <!-- Administrator -->
+                @if( Auth::user()->role == 'admin')
                 <li class="menu-title mt-2" data-key="t-menu">Kelola Data</li>
 
                 <li class="@if (Route::currentRouteName() == 'gedung') active @endif">
@@ -93,6 +98,7 @@
                         <span data-key="t-kusers">Kelola Users</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </div><br><br>
 

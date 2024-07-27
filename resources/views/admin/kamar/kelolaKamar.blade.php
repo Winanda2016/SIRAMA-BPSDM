@@ -71,7 +71,7 @@ $no = 1;
                     <!-- end row -->
 
                     <div class="table-responsive">
-                        <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style="width: 100%;">
+                        <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style="text-transform: capitalize; width:100%">
                             <thead>
                                 <tr class="table-primary">
                                     @foreach($ar_judul as $jdl)
@@ -84,24 +84,22 @@ $no = 1;
                                 <tr>
                                     <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
                                     <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $k->nomor_kamar }}</a> </td>
-                                    <td style="text-transform: capitalize;"> {{ $k->nama_gedung }} </td>
+                                    <td> {{ $k->nama_gedung }} </td>
                                     <td>{{ $k->kapasitas }} orang</td>
                                     <td>
                                         @if ($k->status === 'kosong')
                                         <div class="badge badge-soft-success font-size-12">Kosong</div>
                                         @elseif ($k->status === 'terisi')
                                         <div class="badge badge-soft-danger font-size-12">Terisi</div>
-                                        @elseif ($k->status === 'reservasi')
-                                        <div class="badge badge-soft-warning font-size-12">Reservasi</div>
                                         @elseif ($k->status === 'perbaikan')
                                         <div class="badge badge-soft-secondary font-size-12">Perbaikan</div>
                                         @endif
                                     </td>
                                     <td>
-                                        <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/detail-kamar') }}" style="width: 35px; height:30px; margin-right:5px">
+                                        <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ route('detail_kamar', $k->kamar_id) }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bx-file font-size-16 align-middle"></i>
                                         </a>
-                                        <a type="button" class="btn btn-warning waves-effect waves-light p-1" href="#" style="width: 35px; height:30px; margin-right:5px">
+                                        <a type="button" class="btn btn-warning waves-effect waves-light p-1" href="{{ route('edit_kamar', $k->kamar_id) }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bxs-edit font-size-16 align-middle"></i>
                                         </a>
                                     </td>

@@ -41,12 +41,6 @@ $no = 1;
                                         <p>{{ $message }}</p>
                                     </div>
                                     @endif
-                                    @if($errors->has('nama_instansi'))
-                                    <div class="alert alert-danger">
-                                        <!-- <p>{{ $errors->first('nama_instansi') }}</p> -->
-                                        <p>kjhgufyrtetsrdxtfcgvhbjk</p>
-                                    </div>
-                                    @endif
                                 </div>
 
                                 <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="modal" data-bs-target="#tambahInstansi">
@@ -75,7 +69,7 @@ $no = 1;
                                                     </div>
                                                     <div class="mt-3 mb-3">
                                                         <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                                        <button type="submit" class="btn btn-success mx-2">Simpan</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -129,7 +123,7 @@ $no = 1;
                                                                 </div>
                                                                 <div class="mt-3 mb-3">
                                                                     <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                    <button type="submit" class="btn btn-primary mx-2">Simpan</button>
                                                                 </div>
                                                             </form>
                                                         </div>

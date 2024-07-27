@@ -57,13 +57,51 @@
                             <tbody align="center">
                                 <tr>
                                     <td>1</td>
+                                    <td>05 Juli 2024</td>
+                                    <td>Raidhatul</td>
+                                    <td>101</td>
+                                    <td>2 orang</td>
+                                    <td>1 hari</td>
+                                    <td>Rp. 150.000,00</td>
+                                    <td>
+                                        <div class="badge badge-soft-danger font-size-12">Checkout</div>
+                                    </td>
+                                    <td>
+                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ url('/detail-transaksi') }}">
+                                            <i class="bx bx-file label-icon"></i>
+                                            Detail
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
                                     <td>5 Maret 2024</td>
-                                    <td>Connie Franco</td>
+                                    <td>Afril</td>
                                     <td>101</td>
                                     <td>2 orang</td>
                                     <td>3 hari</td>
-                                    <td>Rp. 250.000,00</td>
-                                    <td> <div class="badge badge-soft-success font-size-12">Terima</div> </td>
+                                    <td>Rp. 450.000,00</td>
+                                    <td>
+                                        <div class="badge badge-soft-danger font-size-12">Checkout</div>
+                                    </td>
+                                    <td>
+                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ url('/detail-transaksi') }}">
+                                            <i class="bx bx-file label-icon"></i>
+                                            Detail
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>1 Maret 2024</td>
+                                    <td>Amelia putri</td>
+                                    <td>101</td>
+                                    <td>1 orang</td>
+                                    <td>2 hari</td>
+                                    <td>Rp. 150.000,00</td>
+                                    <td>
+                                        <div class="badge badge-soft-danger font-size-12">Checkout</div>
+                                    </td>
                                     <td>
                                         <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ url('/detail-transaksi') }}">
                                             <i class="bx bx-file label-icon"></i>

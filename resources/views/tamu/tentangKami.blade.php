@@ -9,7 +9,7 @@
                     <h2>Sistem Informasi Asrama</h2>
                     <h3>Badan Pengembangan Sumber Daya Manusia Provinsi Sumatera Barat</h3>
                     <div class="bt-option">
-                        <a href="{{ url('/tamu-dashboard') }}">Halaman Utama</a>
+                        <a href="{{ url('/') }}">Halaman Utama</a>
                         <span>Tentang Kami</span>
                     </div>
                 </div>
@@ -27,40 +27,35 @@
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
                 <div class="blog-details-text">
-                    <div class="bd-title">
-                        <p>Thinking about overseas adventure travel? Have you put any thought into the best places
-                            to go when it comes to overseas adventure travel? Nepal is one of the most popular
-                            places of all, when you visit this magical country you will have the best adventures
-                            right there at your doorstep. Only overseas adventure travel in Nepal will give you
-                            these kinds of opportunities so if this is not on your list of possible places to visit
-                            yet then now is the time to put it on there!</p>
-                        <p>In Nepal your overseas adventure travel is going to be fascinating. You will get to see
-                            the Himalayan Mountains and experience all that the rich Nepalese culture has to offer.
-                            They are an amazing people who have managed to hang on to their own culture and beliefs
-                            longer than most other countries. When overseas adventure travel takes you to Nepal you
-                            will have the chance to see all of the fantastic and one of a kind lakes and forests and
-                            you can even spend days or weeks camping out in their forests with a specialized guide.
-                            And the waterfalls in Nepal are to die for, you will never see anything more gorgeous in
-                            your life as their waterfalls! This should be at the top of your overseas adventure
-                            travel destination list for sure!</p>
-                    </div>
-                    <div class="bd-more-text">
+                    <!-- <div class="bd-title" align="justify">
+                    </div> -->
+                    <div class="bd-more-text" align="justify">
                         <div class="bm-item">
-                            <h4>If you live in New York City</h4>
-                            <p>You know all about the traffic there. Getting places is often next to impossible,
-                                even with the gazillion yellow cabs. If you’re like me you often look with envy at
-                                those shiny limousines with their unformed drivers and wish you could sit in one.
-                                Well, you can. New York limo service is more affordable than you think, whether it’s
-                                for Newark airport transportation, LaGuardia airport transportation, or to drive
-                                wherever you wish to go.</p>
+                            <h4>Badan Pengembangan Sumber Daya Manusia (BPSDM)</h4>
+                            <p>Badan Pengembangan Sumber Daya Manusia (BPSDM) Provinsi Sumatera Barat, merupakan salah satu Organisasi Perangkat Daerah (OPD)
+                                Provinsi Sumatera Barat yang merupakan unsur penunjang urusan pemerintahan di bidang pengembangan sumber daya manusia yang
+                                menjadi kewenangan daerah provinsi.
+                            </p>
+                            <p>
+                                Berdasarkan dokumen Rencana Strategis (RENSTRA) BPSDM Perubahan tahun 2016-2021, Salah satu tugas atau kinerja BPSDM
+                                Provinsi Sumatera Barat adalah Peningkatan Kualitas SDM Penyelenggara melalui pendidikan dan pelatihan (diklat).
+                                Pada RENSTRA BPSDM Perubahaan 2016-2021 juga dijelaskan bahwa, untuk meningkatkan kuantitas dan kualitas sarana dan prasarana
+                                baik untuk proses belajar-mengajar maupun untuk penyelenggaraan, salah satunya dibangun Asrama penginapan peserta diklat dan
+                                peningkatan kualitas Aula.
+                            </p>
                         </div>
                         <div class="bm-item">
-                            <h4>Every time I hail a cab in New York City</h4>
-                            <p>I hope I’ll be lucky enough to get one that’s halfway decent and that the driver
-                                actually speaks English. I have spent many anxious moments wondering if I ever get
-                                to my destination. Or whether I’d get ripped off. Even if all goes well, I can’t say
-                                I can remember many rides in New York cabs that were very pleasant. And given how
-                                much they cost by now, going with a limo makes ever more sense.</p>
+                            <h4>Sistem Informasi Asrama (SIRAMA)</h4>
+                            <p>SIRAMA atau Sistem Informasi Asrama Badan Pengmbangan Sumber Daya Manusia Provinsi Sumtaera Barat
+                                adalah salah satu sistem informasi yang ada di Badan Pengembangan Sumber Daya Manusia
+                                Provinsi Sumatera Barat yang bertujuan untuk meningkatkan pelayanan retribusi daerah pada Asrama Badan Pengembangan Sumber Daya
+                                Manusia Provinsi Sumatera Barat.
+                            </p>
+                            <p>Selain untuk meningkatkan pelayanan retribusi daerah, SIRAMA juga bertujuan untuk mempermudah tamu atau pengunjung yang ingin 
+                                melakukan reservasi pada kamar asrama dan ruangan pada BPSDM Prov.Sumbar. Dengan tersedianya Sistem Informasi Asrama ini pengunjung atau tamu
+                                tidak perlu lagi untuk datang ke kantor langsung untuk melakukan reservsi, dan juga dengan adanya SIRAMA ini pengunjung atau tamu 
+                                dapat dengan mudah melihat informasi mengenai kamar atau layanan lainnya yang ada di BPSDM Prov.Sumbar.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -68,5 +63,52 @@
         </div>
     </div>
 </section>
+
+<!-- Gallery Section Begin -->
+<section class="gallery-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <span>Galeri Kami</span>
+                    <h2>Temukan Layanan Kami</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="gallery-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-1.png') }}">
+                    <div class="gi-text">
+                        <h3>Ruang Aula</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="gallery-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-3.jpeg') }}">
+                            <div class="gi-text">
+                                <h3>Ruang Komputer</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="gallery-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-4.png') }}">
+                            <div class="gi-text">
+                                <h3>Kamar Asrama</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="gallery-item large-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-2.png') }}">
+                    <div class="gi-text">
+                        <h3>Asrama BPSDM</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Gallery Section End -->
 
 @endsection

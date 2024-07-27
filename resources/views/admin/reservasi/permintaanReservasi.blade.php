@@ -1,4 +1,8 @@
 @extends('admin.themes.app')
+@php
+$ar_judul = ['No','Jenis Transaksi','Tanggal Reservasi','Nama','Instansi','Tanggal Check In','Tanggal Check Out','Aksi'];
+$no = 1;
+@endphp
 @section('content')
 <div class="container-fluid">
 
@@ -40,34 +44,33 @@
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">
                             <thead>
                                 <tr class="bg-transparent" align="center">
-                                    <th style="width: 120px;">ID Reservasi</th>
-                                    <th>Tanggal Reservasi</th>
-                                    <th>Nama</th>
-                                    <th>Instansi</th>
-                                    <th>Tanggal Check In</th>
-                                    <th>Tanggal Check Out</th>
-                                    <th>Status</th>
-                                    <th style="width: 90px;">Action</th>
+                                    @foreach($ar_judul as $jdl)
+                                    <th>{{ $jdl }}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody align="center">
-                                <tr>
-                                    <td><a href="javascript: void(0);" class="text-body fw-medium">#MN0215</a> </td>
-                                    <td> 12 Oct, 2020 </td>
-                                    <td>Connie Franco</td>
-                                    <td>Umum</td>
-                                    <td> 12 Oct, 2020 </td>
-                                    <td> 12 Oct, 2020 </td>
+                                @foreach($transaksi as $t)
+                                <tr style="text-transform: capitalize;">
+                                    <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                    @if ($t->jenis_transaksi === 'ruangan')
+                                    <td>{{ $t->nama_transaksi }}</td>
+                                    @elseif ($t->jenis_transaksi === 'kamar')
+                                    <td>Kamar</td>
+                                    @endif
+                                    <td>{{ $t->tgl_reservasi }}</td>
+                                    <td>{{ $t->nama }}</td>
+                                    <td>{{ $t->nama_instansi }}</td>
+                                    <td>{{ $t->tgl_reservasi }}</td>
+                                    <td>{{ $t->tgl_checkout }}</td>
                                     <td>
-                                        <div class="badge badge-soft-success font-size-12">Terima</div>
-                                    </td>
-                                    <td>
-                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light"  href="{{ url('/detail-permintaan-reservasi') }}">
+                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ route('detail_PReservasi', ['jenis_transaksi' => $t->jenis_transaksi, 'id' => $t->detail_id]) }}">
                                             <i class="bx bx-file label-icon"></i>
                                             Detail
                                         </a>
                                     </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

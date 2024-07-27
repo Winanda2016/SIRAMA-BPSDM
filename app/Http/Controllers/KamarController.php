@@ -6,6 +6,7 @@ use App\Models\Kamar;
 use App\Models\Gedung;
 use App\Models\Instansi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class KamarController extends Controller
@@ -24,7 +25,7 @@ class KamarController extends Controller
                 $query->where('id', $gedungId);
             });
         })
-            ->select('kamar.nomor_kamar', 'kamar.kapasitas', 'kamar.status', 'gedung.nama_gedung')
+            ->select('kamar.id as kamar_id', 'kamar.nomor_kamar', 'kamar.kapasitas', 'kamar.status', 'gedung.nama_gedung')
             ->leftJoin('gedung', 'gedung.id', '=', 'kamar.gedung_id')
             ->orderBy('nomor_kamar', 'asc')
             ->filter(request(['search']))
@@ -43,12 +44,14 @@ class KamarController extends Controller
 
     public function store(Request $request)
     {
+        Log::info('Store method called');
+        Log::info('Request data: ', $request->all());
+
         $existingKamar = Kamar::where('nomor_kamar', $request->nomor_kamar)
             ->where('gedung_id', $request->gedung_id)
             ->first();
 
         if ($existingKamar) {
-            // Tampilkan alert jika kamar dengan nomor kamar dan id gedung yang sama sudah ada
             return back()->with('error', 'Kamar dengan nomor tersebut di gedung tersebut sudah tersedia.');
         }
 
@@ -57,84 +60,75 @@ class KamarController extends Controller
             'status' => 'required',
             'kapasitas' => 'required|min:1',
             'fasilitas' => 'nullable|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'keterangan' => 'nullable|string|max:255',
-            'gedung_id' => 'required|numeric',
+            'deskripsi' => 'nullable|string|max:255',
+            'gedung_id' => 'required|uuid',
         ]);
 
-        // Create a new kamar instance
-        $kamar = new Kamar();
+        Log::info('Validated Data: ', $validatedData);
 
-        // Assign values to the kamar instance
+        $kamar = new Kamar();
         $kamar->status = $validatedData['status'];
         $kamar->nomor_kamar = $validatedData['nomor_kamar'];
         $kamar->kapasitas = $validatedData['kapasitas'];
         $kamar->fasilitas = $validatedData['fasilitas'];
-        $kamar->keterangan = $validatedData['keterangan'];
+        $kamar->deskripsi = $validatedData['deskripsi'];
         $kamar->gedung_id = $validatedData['gedung_id'];
 
-        // Handle file upload
-        // try {
-        //     if ($request->hasFile('foto')) {
-        //         $extension = $request->file('foto')->getClientOriginalExtension();
-        //         $newFileName = 'Kamar' . '_ No.' . $kamar->nomor_kamar . '.' . $extension;
+        if ($kamar->save()) {
+            Log::info('Kamar saved successfully: ', $kamar->toArray());
+        } else {
+            Log::error('Failed to save kamar.');
+        }
 
-        //         $request->file('foto')->move(public_path('admin/assets/images/kamar'), $newFileName);
-
-        //         $kamar->foto = 'admin/assets/images/kamar/' . $newFileName;
-        //     }
-        // } catch (\Exception $e) {
-        //     return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
-        // }
-
-
-        // Save the kamar instance to the database
-        $kamar->save();
-
-        // Redirect or return a response as needed
-        return redirect()->route('kelola_kamar')
-            ->with('success', 'Nama Gedung Berhasil Ditambahkan');
+        return redirect()->route('kelola_kamar')->with('success', 'Kamar Berhasil Ditambahkan');
     }
 
+    public function showDetail($id)
+    {
+        $kamar = Kamar::select('kamar.id as kamar_id', 'kamar.*', 'gedung.*')
+            ->leftJoin('gedung', 'kamar.gedung_id', '=', 'gedung.id')
+            ->where('kamar.id', $id)
+            ->first();
+
+        // Tampilkan formulir donasi
+        return view('admin.kamar.detailKamar', compact('kamar'));
+    }
 
     public function edit($id)
     {
-        $kamar = Kamar::findOrFail($id);
         $gedung = Gedung::all();
 
-        // Tampilkan formulir donasi
-        return view('admin.kamar.editKamar', compact('kamar', 'gedung'));
-    }
+        $kamar = Kamar::select('kamar.id as kamar_id', 'kamar.*', 'gedung.id as gedung_id', 'gedung.*')
+            ->leftJoin('gedung', 'kamar.gedung_id', '=', 'gedung.id')
+            ->where('kamar.id', $id)
+            ->first();
 
-    // public function edit(kamar $kamar)
-    // {
-    //     $tipe = Gedung::all();
-    //     return view('kamar.edit', compact('kamar', 'tipe'));
-    // }
+        // Tampilkan formulir donasi
+        return view('admin.kamar.editKamar', compact('gedung', 'kamar'));
+    }
 
     public function update(Request $request, $id)
     {
-
-        $existingKamar = Kamar::where('nomor_kamar', $request->nomor_kamar)
-            ->where('gedung_id', $request->gedung_id)
-            ->first();
-
-        if ($existingKamar) {
-            // Tampilkan alert jika kamar dengan nomor kamar dan id gedung yang sama sudah ada
-            return back()->with('error', 'Kamar dengan nomor tersebut di gedung tersebut sudah tersedia.');
-        }
-
         $validatedData = $request->validate([
             'nomor_kamar' => 'required|max:5',
             'status' => 'required',
             'kapasitas' => 'required|min:1',
             'fasilitas' => 'nullable|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'keterangan' => 'nullable|string|max:255',
-            'gedung_id' => 'required|numeric',
+            'deskripsi' => 'nullable|string|max:255',
+            'gedung_id' => 'required|uuid',
         ]);
 
-        // Find the Donasi record by ID
+        // Cek apakah ada kamar lain dengan nomor kamar dan gedung yang sama
+        $existingKamar = Kamar::where('nomor_kamar', $request->nomor_kamar)
+            ->where('gedung_id', $request->gedung_id)
+            ->where('id', '!=', $id) // Mengecualikan kamar yang sedang diedit
+            ->first();
+
+        if ($existingKamar) {
+            return back()->with('error', 'Kamar dengan nomor tersebut di gedung tersebut sudah tersedia.');
+        }
+
+        // Find the Kamar record by ID
         $kamar = Kamar::findOrFail($id);
 
         // Assign values to the kamar instance
@@ -142,30 +136,15 @@ class KamarController extends Controller
         $kamar->nomor_kamar = $validatedData['nomor_kamar'];
         $kamar->kapasitas = $validatedData['kapasitas'];
         $kamar->fasilitas = $validatedData['fasilitas'];
-        $kamar->keterangan = $validatedData['keterangan'];
+        $kamar->deskripsi = $validatedData['deskripsi'];
         $kamar->gedung_id = $validatedData['gedung_id'];
 
-        // Handle file upload
-        // try {
-        //     if ($request->hasFile('foto')) {
-        //         $extension = $request->file('foto')->getClientOriginalExtension();
-        //         $newFileName = 'Kamar' . '_ No.' . $kamar->nomor_kamar . '.' . $extension;
-
-        //         $request->file('foto')->move(public_path('admin/assets/images/kamar'), $newFileName);
-
-        //         $kamar->foto = 'admin/assets/images/kamar/' . $newFileName;
-        //     }
-        // } catch (\Exception $e) {
-        //     return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
-        // }
-
-        // Save the updated Donasi instance to the database
-        $kamar->save();
-
-        // Redirect or return a response as needed
-        return redirect()->route('kelola_kamar')
-            ->with('success', 'Nama Gedung Berhasil Diubah');
+        try {
+            $kamar->save();
+            return redirect()->route('kelola_kamar')->with('success', 'Kamar berhasil diubah.');
+        } catch (\Exception $e) {
+            Log::error('Update failed: ' . $e->getMessage());
+            return back()->with('error', 'Gagal mengubah kamar.');
+        }
     }
-
-    
 }

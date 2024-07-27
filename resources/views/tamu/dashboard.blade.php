@@ -1,29 +1,71 @@
 @extends('tamu.themes.app')
 @section('content')
 <!-- Hero Section Begin -->
-<section class="hero-section">
+<!-- <section class="hero-section">
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-lg-6">
                 <div class="hero-text">
-                    <h1>ASRAMA BPSDM Prov.SUMBAR</h1>
+                    <h1>SIRAMA BPSDM</h1>
                     <p>Here are the best hotel booking sites, including recommendations for international
                         travel and for finding low-priced hotel rooms.</p>
                     <a href="#" class="primary-btn">Discover Now</a>
                 </div>
             </div>
+            <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
+                <div class="booking-form">
+                    <h4>Cek Ketersediaan Kamar</h4>
+                    <hr>
+                    <form action="#">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="check-date">
+                                    <label for="date-in">Check In:</label>
+                                    <input type="date" class="date-input" id="date-in" placeholder="YYYY-MM-DD">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="check-date">
+                                    <label for="date-out">Check Out:</label>
+                                    <input type="date" class="date-input" id="date-out" placeholder="YYYY-MM-DD">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="cek-ketersediaan">Cek Ketersediaan</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <div class="hero-slider owl-carousel">
-        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-1.jpg') }}"></div>
+        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-2.jpg') }}"></div>
         <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-2.jpg') }}"></div>
         <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-3.jpg') }}"></div>
     </div>
+</section> -->
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="hero-text">
+                    <h1>SIRAMA BPSDM</h1>
+                    <p>Sistem Informasi Asrama (SIRAMA) adalah salah satu sistem informasi yang
+                        bertujuan untuk meningkatkan pelayanan retribusi daerah...</p>
+                    <a href="#about" class="primary-btn">Telusuri Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-slider owl-carousel">
+        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-1.png') }}"></div>
+        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-1.png') }}"></div>
+        <div class="hs-item set-bg" data-setbg="{{ asset('tamu/assets/img/hero/hero-1.png') }}"></div>
+    </div>
 </section>
-<!-- Hero Section End -->
 
 <!-- About Us Section Begin -->
-<section class="aboutus-section spad">
+<section class="aboutus-section spad" id="about">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
@@ -32,131 +74,80 @@
                         <span>Tentang Kami</span>
                         <h3 class="mt-2">Sistem Informasi Asrama (SIRAMA) </h3>
                     </div>
-                    <p class="f-para">Sona.com is a leading online accommodation site. We’re passionate about
-                        travel. Every day, we inspire and reach millions of travelers across 90 local websites in 41
-                        languages.</p>
-                    <p class="s-para">So when it comes to booking the perfect hotel, vacation rental, resort,
-                        apartment, guest house, or tree house, we’ve got you covered.</p>
-                    <a href="#" class="primary-btn about-btn">Read More</a>
+                    <p class="f-para">SIRAMA adalah salah satu sistem informasi yang ada di Badan Pengembangan Sumber Daya Manusia
+                        Provinsi Sumatera Barat yang bertujuan untuk meningkatkan pelayanan retribusi daerah pada Asrama Badan Pengembangan Sumber Daya
+                        Manusia Provinsi Sumatera Barat.
+                    </p>
+                    <a href="#" class="primary-btn about-btn">Baca Selengkapnya</a>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="about-pic">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <img src="{{ asset('tamu/assets/img/about/about-1.jpg') }}" alt="">
+                        <div class="col-sm-6" style=" width: 100%; height: 400px; overflow: hidden; display: flex; flex-direction: column;">
+                            <img src="{{ asset('tamu/assets/img/about/about-1.png') }}" alt="" style="height: 100%; width: 100%; object-fit: cover;">
                         </div>
                         <div class="col-sm-6">
-                            <img src="{{ asset('tamu/assets/img/about/about-2.jpg') }}" alt="">
+                            <img src="{{ asset('tamu/assets/img/about/about-2.png') }}" alt="" style="height: 100%; width: 100%; object-fit: cover;">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</section><hr>
 <!-- About Us Section End -->
 
 <!-- Home Room Section Begin -->
-<section class="hp-room-section mb-5">
+<section class="hp-room-section mb-5 mt-5">
     <div class="container-fluid">
         <div class="section-title">
-            <span>What We Do</span>
-            <h2>Temukan Layanan Kami.</h2>
-        </div>
-        <div class="hp-room-items px-5">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="hp-room-item set-bg" data-setbg="{{ asset('tamu/assets/img/room/room-b1.jpg') }}">
-                        <div class="hr-text">
-                            <h3>Kamar</h3>
-                            <h2><span>Mulai</span> RP.65.000<span>/Malam</span></h2>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="r-o">Ukuran Kamar</td>
-                                        <td>: 30 ft</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Kapasitas</td>
-                                        <td>: Max 4 Orang</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Kasur</td>
-                                        <td>: Singel Beds</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Fasilitas</td>
-                                        <td>: Wifi, Television, Bathroom,...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href="#" class="primary-btn">More Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="hp-room-item set-bg" data-setbg="{{ asset('tamu/assets/img/room/room-b2.jpg') }}">
-                        <div class="hr-text">
-                            <h4>Ruang Komputer</h4>
-                            <h2>RP.300.000<span>/Hari</span></h2>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="r-o">Ukuran Ruangan</td>
-                                        <td>: 30 ft</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Kapasitas</td>
-                                        <td>: 20 Orang</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Jumlah Komputer</td>
-                                        <td>: 25</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Fasilitas</td>
-                                        <td>: Wifi, Television, Bathroom,...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href="#" class="primary-btn">More Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="hp-room-item set-bg" data-setbg="{{ asset('tamu/assets/img/room/room-b2.jpg') }}">
-                        <div class="hr-text">
-                            <h4>Ruang ...</h4>
-                            <h2>RP.....<span>/Hari</span></h2>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="r-o">Ukuran Ruangan</td>
-                                        <td>: 30 ft</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Kapasitas</td>
-                                        <td>: 20 Orang</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Jumlah Komputer</td>
-                                        <td>: 25</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Fasilitas</td>
-                                        <td>: Wifi, Television, Bathroom,...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href="#" class="primary-btn">More Details</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <span>Apa Yang Kami Tawarkan</span>
+            <h2>Temukan Layanan Kami</h2>
         </div>
     </div>
 </section>
 <!-- Home Room Section End -->
+
+<section class="rooms-section spad mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6" style="border-radius: 10px;">
+                <div class="room-item" style="box-shadow: 0px 9px 10px #4c5c7ed7;">
+                    <div class="card" style="width: 100%; height: 250px; overflow: hidden; display: flex;">
+                        <img src="{{ asset('tamu/assets/img/about/about-1.png') }}" alt="Default Image" style="height: 100%; width: 100%; object-fit: cover;">
+                    </div>
+                    <div class="ri-text">
+                        <h4>Kamar</h4>
+                        <span>Mulai</span> 
+                        <h3>Rp.65.000<span>/Hari</span></h3>
+                        <p class="r-o">Kapasitas : 2 Orang</p>
+                        <a href="{{ route('kamar_tamu') }}" class="primary-btn">Detail Selengkapnya</a>
+                    </div>
+                </div>
+            </div>
+            @foreach ($ruangan as $r)
+            <div class="col-lg-3 col-md-6">
+                <div class="room-item" style="box-shadow: 0px 9px 10px #4c5c7ed7;">
+                    <div class="card" style="width: 100%; height: 250px; overflow: hidden; display: flex;">
+                        @if ($r->foto)
+                        <img src="{{ asset($r->foto) }}" alt="{{ $r->nama_ruangan }}" style="height: 100%; width: 100%; object-fit: cover;">
+                        @else
+                        <img src="{{ asset('tamu/assets/img/ruangan/no_image.jpg') }}" alt="Default Image" style="height: 100%; width: 100%; object-fit: cover;">
+                        @endif
+                    </div>
+                    <div class="ri-text">
+                        <h4>{{ $r->nama_ruangan}}</h4><br>
+                        <h3>Rp.{{ $r->formatted_harga }}<span>/Hari</span></h3>
+                        <p class="r-o">Kapasitas : {{ $r->kapasitas }} Orang</p>
+                        <a href="{{ route('detail_ruangan', $r->id) }}" class="primary-btn">Detail Selengkapnya</a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 
 @endsection

@@ -43,10 +43,10 @@
                             <tbody align="center">
                                 <tr>
                                     <td>101</td>
-                                    <td>Connie Franco</td>
-                                    <td>5 Maret 2024</td>
-                                    <td>5 Maret 2024</td>
-                                    <td>Dinas XYZ</td>
+                                    <td>Raidhatul</td>
+                                    <td>4 Juli 2024</td>
+                                    <td>5 Juli 2024</td>
+                                    <td>Umum</td>
                                     <td>
                                         <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/tamu/detail') }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bx-file font-size-16 align-middle"></i>

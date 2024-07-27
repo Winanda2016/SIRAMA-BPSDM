@@ -30,7 +30,7 @@ $no = 1;
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
-                                <div>
+                                <div style="width: 40%;">
                                     @if($message = Session::get('success'))
                                     <div class="alert alert-success">
                                         <p>{{ $message }}</p>
@@ -42,7 +42,7 @@ $no = 1;
                                     </div>
                                     @endif
                                 </div>
-                                <a href="{{ url('/tambah-ruangan') }}" type="button" class="btn btn-primary waves-effect btn-label waves-light">
+                                <a href="{{ route('tambah_ruangan') }}" type="button" class="btn btn-primary waves-effect btn-label waves-light">
                                     <i class="bx bx-plus label-icon"></i>
                                     Tambah Ruangan
                                 </a>
@@ -71,9 +71,9 @@ $no = 1;
                     <!-- end row -->
 
                     <div class="table-responsive">
-                        <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style="width: 100%;">
+                        <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style="text-transform: capitalize; width:100%">
                             <thead>
-                                <tr class="bg-transparent">
+                                <tr class="table-primary">
                                     @foreach($ar_judul as $jdl)
                                     <th style="text-align: center;">{{ $jdl }}</th>
                                     @endforeach
@@ -85,7 +85,7 @@ $no = 1;
                                     <td style="width: 1%;"><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
                                     <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $r->nama_ruangan }}</a> </td>
                                     <td> {{ $r->nama_gedung}} </td>
-                                    <td> Rp.{{ $r->harga}},00</td>
+                                    <td> Rp.{{ $r->formatted_harga}}</td>
                                     <td> {{ $r->kapasitas }} orang </td>
                                     <td>
                                         @if ($r->status === 'kosong')
@@ -99,14 +99,11 @@ $no = 1;
                                         @endif
                                     </td>
                                     <td>
-                                        <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ url('/detail-ruangan') }}" style="width: 35px; height:30px; margin-right:5px">
+                                        <a type="button" class="btn btn-primary waves-effect waves-light p-1" href="{{ route('detail_ruangan', $r->ruangan_id) }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bx-file font-size-16 align-middle"></i>
                                         </a>
-                                        <a type="button" class="btn btn-warning waves-effect waves-light p-1" href="{{ url('/edit-ruangan') }}" style="width: 35px; height:30px; margin-right:5px">
+                                        <a type="button" class="btn btn-warning waves-effect waves-light p-1" href="{{ route('edit_ruangan', $r->ruangan_id) }}" style="width: 35px; height:30px; margin-right:5px">
                                             <i class="bx bxs-edit font-size-16 align-middle"></i>
-                                        </a>
-                                        <a type="button" class="btn btn-danger waves-effect waves-light p-1" href="#" style="width: 35px; height:30px; margin-right:5px">
-                                            <i class="bx bx-trash font-size-16 align-middle"></i>
                                         </a>
                                     </td>
                                 </tr>

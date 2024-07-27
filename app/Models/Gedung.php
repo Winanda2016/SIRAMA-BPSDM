@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Gedung extends Model
 {
@@ -19,5 +20,16 @@ class Gedung extends Model
 
     public function ruangan(){
         return $this->hasMany(Ruangan::class);
+    }
+
+    public $incrementing = false; // karena id tidak auto increment
+    protected $keyType = 'string';
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->{$model->getKeyName()} = (string) Str::uuid();
+        });
     }
 }

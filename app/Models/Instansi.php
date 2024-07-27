@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Instansi extends Model
 {
@@ -22,5 +23,16 @@ class Instansi extends Model
     public function getFormattedHargaAttribute()
     {
         return number_format($this->harga, 0, ',', '.');
+    }
+
+    public $incrementing = false; // karena id tidak auto increment
+    protected $keyType = 'string';
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->{$model->getKeyName()} = (string) Str::uuid();
+        });
     }
 }
