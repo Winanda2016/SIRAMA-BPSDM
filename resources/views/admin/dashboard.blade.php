@@ -161,16 +161,23 @@
             <div class="card card-h-100">
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center">
-                        <h5 class="card-title me-2">Total transaksi kamar perbulan berdasarkan gedung pada tahun </h5>
+                        <h5 class="card-title me-2">
+                            Total transaksi kamar dan ruangan perbulan pada tahun
+                            <select id="yearFilter">
+                                @for ($year = date('Y'); $year >= date('Y') - 5; $year--)
+                                <option value="{{ $year }}" @if($year==request('year', date('Y'))) selected @endif>{{ $year }}</option>
+                                @endfor
+                            </select>
+                        </h5>
                     </div>
                     <hr>
-                    <div id="transaksi_status" data-colors='["#2ab57d", "#fd625e", "#ffbf53","#6f42c1"]' class="apex-charts" dir="ltr"></div>
+                    <div id="transaksi_status" data-colors='["#2ab57d", "#fd625e"]' class="apex-charts" dir="ltr"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-xl-4">
             <div class="card card-h-100">
                 <div class="card-body">
@@ -206,7 +213,7 @@
                 </div>
             </div>
         </div>
-    </div><!-- end row-->
+    </div> -->
 </div><!-- end row-->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -232,6 +239,11 @@
 </script>
 
 <script>
+    document.getElementById('yearFilter').addEventListener('change', function() {
+        var selectedYear = this.value;
+        window.location.href = '?year=' + selectedYear;
+    });
+
     //COLUMN CHART
     document.addEventListener('DOMContentLoaded', function() {
         var columnColors = getChartColorsArrayFromDOM("transaksi_status");
@@ -279,9 +291,9 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(e) {
-                        return e + " transaksi";
-                    },
+                    formatter: function(val) {
+                        return val + " Transaksi"
+                    }
                 },
             },
         };

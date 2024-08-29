@@ -1,6 +1,6 @@
 @extends('admin.themes.app')
 @php
-$ar_judul = ['No','Jenis Transaksi','Tanggal Reservasi','Nama','Instansi','Tanggal Check In','Tanggal Check Out','Aksi'];
+$ar_judul = ['No','Nama','Instansi','Jenis Transaksi','Tanggal Check In','Tanggal Check Out','Jumlah Orang','Aksi'];
 $no = 1;
 @endphp
 @section('content')
@@ -10,12 +10,11 @@ $no = 1;
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Permintaan Reservasi</h4>
+                <h2 class="mb-sm-0">Daftar Tamu</h2>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Permintaan Reservasi</a></li>
-                        <li class="breadcrumb-item active">List Permintaan Reservasi</li>
+                        <li class="breadcrumb-item active">Daftar Tamu</li>
                     </ol>
                 </div>
 
@@ -25,38 +24,49 @@ $no = 1;
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
+        <div class="col-12">
+            <div class="card card-h-100">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="mb-4">
+                                <a type="button" href="{{ route('kamar_checkin.create') }}" class="btn btn-primary waves-effect btn-label waves-light">
+                                    <i class="bx bx-plus label-icon"></i>
+                                    Tambah Transaksi Kamar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">
                             <thead>
                                 <tr class="table-primary">
                                     @foreach($ar_judul as $jdl)
-                                    <th align="center">{{ $jdl }}</th>
+                                    <th style="text-align: center;">{{ $jdl }}</th>
                                     @endforeach
                                 </tr>
                             </thead>
                             <tbody align="center">
                                 @foreach($transaksi as $t)
-                                <tr style="text-transform: capitalize;">
+                                <tr>
                                     <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                    <td>{{ $t->nama }}</td>
+                                    <td>{{ $t->nama_instansi }}</td>
                                     @if ($t->jenis_transaksi === 'ruangan')
                                     <td>Ruangan</td>
                                     @elseif ($t->jenis_transaksi === 'kamar')
                                     <td>Kamar</td>
                                     @endif
-                                    <td>{{ $t->tgl_reservasi }}</td>
-                                    <td>{{ $t->nama }}</td>
-                                    <td>{{ $t->nama_instansi }}</td>
                                     <td>{{ $t->tgl_checkin }}</td>
                                     <td>{{ $t->tgl_checkout }}</td>
+                                    <td>{{ $t->jumlah_orang }} Orang</td>
                                     <td>
                                         <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ route('detail_transaksi', ['jenis_transaksi' => $t->jenis_transaksi, 'id' => $t->transaksi_id]) }}">
                                             <i class="bx bx-file label-icon"></i>
                                             Detail
                                         </a>
+                                        <!-- <a type="button" class="btn btn-danger waves-effect waves-light p-1" href="{{ url('/tamu/checkout') }}">Check Out</a> -->
                                     </td>
                                 </tr>
                                 @endforeach
@@ -65,12 +75,9 @@ $no = 1;
                     </div>
                     <!-- end table responsive -->
                 </div>
-                <!-- end card body -->
             </div>
-            <!-- end card -->
         </div>
-        <!-- end col -->
     </div>
-    <!-- end row -->
+
 </div>
 @endsection

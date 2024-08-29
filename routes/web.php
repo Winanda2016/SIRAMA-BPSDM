@@ -3,15 +3,17 @@
 use App\Http\Controllers\GedungController;
 use App\Http\Controllers\KamarController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\InstansiController;
+use App\Http\Controllers\JInstansiController;
 use App\Http\Controllers\kelolaUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\transaksiKamarController;
 use App\Http\Controllers\transaksiRuanganController;
+use App\Http\Controllers\tamuTransaksiController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Models\Instansi;
+use App\Models\JInstansi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,71 +28,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [DashboardController::class, 'indexTamu'])->name('Tdashboard');
-
 Route::get('/admin-dashboard', [DashboardController::class, 'indexAdmin']);
+Route::get('/pegawai-dashboard', [DashboardController::class, 'indexPegawai'])->name('dashboard_pegawai');
 
-Route::get('/pegawai-dashboard', function () {
-    return view('admin.dashboardPegawai');
-});
 
 // --------------------------------------------------------------------------------------------
+//== Admin ==
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
-//== RESERVASI ==
-
-
-
-
-
-
-
-Route::get('/edit-reservasi', function () {
-    return view('admin.reservasi.editReservasi');
-});
-
-Route::get('/tambah-reservasi', function () {
-    return view('admin.reservasi.tambahReservasi');
-});
-// --------------------------------------------------------------------------------------------
-
-//== TAMU ==
-Route::get('/daftar-tamu', function () {
-    return view('admin.tamu.daftarTamu');
-});
-
-Route::get('/tamu/detail', function () {
-    return view('admin.tamu.detailTamu');
-});
-
-Route::get('/tamu/checkout', function () {
-    return view('admin.tamu.formCheckout');
-});
-// --------------------------------------------------------------------------------------------
-
-//== TRANSAKSI ==
-Route::get('/form-checkin', function () {
-    return view('admin.transaksi.formCheckin');
-});
-
-Route::get('/riwayat-transaksi', function () {
-    return view('admin.transaksi.riwayatTransaksi');
-});
-
-Route::get('/detail-transaksi', function () {
-    return view('admin.transaksi.detailTransaksi');
-});
-// --------------------------------------------------------------------------------------------
-//== Admin & Pegawai ==
-Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
     //== Gedung ==
     Route::resource('/gedung', GedungController::class);
 
     //== Intansi ==
-    Route::resource('/instansi', InstansiController::class);
+    Route::resource('/jinstansi', JInstansiController::class);
 
     //== Kamar ==
     Route::get('/kelola-kamar', [KamarController::class, 'index'])->name('kelola_kamar');
     Route::get('/kelola-kamar/tambah-kamar', [KamarController::class, 'create']);
-    Route::post('/kelola-kamar', [KamarController::class, 'store'])->name('kelola_kamar');
+    Route::post('/kelola-kamar', [KamarController::class, 'store'])->name('kelola_kamar2');
     Route::get('/kelola-kamar/detail/{id}', [KamarController::class, 'showDetail'])->name('detail_kamar');
     Route::get('/kelola-kamar/edit/{id}', [KamarController::class, 'edit'])->name('edit_kamar');
     Route::put('/kelola-kamar/update/{id}', [KamarController::class, 'update'])->name('update_kamar');
@@ -103,11 +58,45 @@ Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
     Route::get('/kelola-ruangan/edit/{id}', [RuanganController::class, 'edit'])->name('edit_ruangan');
     Route::put('/kelola-ruangan/update/{id}', [RuanganController::class, 'update'])->name('update_ruangan');
 
-    //Riwayat
-    Route::get('/permintaan-reservasi', [TransaksiController::class, 'showPReservasi'])->name('permintaan_reservasi');
-    Route::get('/permintaan-reservasi/detail/{jenis_transaksi}/{id}', [TransaksiController::class, 'showDetailPReservasi'])->name('detail_PReservasi');
-    Route::get('/daftar-reservasi', [TransaksiController::class, 'showDReservasi'])->name('daftar_reservasi');
-    Route::get('/daftar-reservasi/detail/{jenis_transaksi}/{id}', [TransaksiController::class, 'showDetailDReservasi'])->name('detail_DReservasi');
+    //== Kelola Users ==
+    Route::resource('/kelola-users', kelolaUserController::class);
+
+    //== Komentar ==
+    Route::resource('/komentar', KomentarController::class);
+
+});
+
+//== Admin & Pegawai ==
+Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
+
+    //== Reservasi ==
+    Route::get('/permintaan-reservasi', [TransaksiController::class, 'showPReservasi'])->name('permintaan_reservasi')->middleware('check.expired.transactions');
+    Route::get('/tambah-reservasi-kamar', [TransaksiController::class, 'createReservasiKamar'])->name('tambah_reservasi_kamar');
+    Route::post('/tambah-kamar-transaksi/{jenis_transaksi}/{id}', [TransaksiController::class, 'tambahKamar'])->name('tambah_kamar_transaksi');
+    Route::delete('/hapus-kamar-transaksi/{jenis_transaksi}/{id}', [TransaksiController::class, 'hapusKamar'])->name('hapus_kamar_transaksi');
+    Route::get('/daftar-reservasi', [TransaksiController::class, 'showDReservasi'])->name('daftar_reservasi')->middleware('check.expired.transactions');
+
+    Route::get('/reservasi/kamar/edit/{id}', [transaksiKamarController::class, 'editReservasiAdmin'])->name('admin_reservasiKamar.edit');
+    Route::put('/update-reservasi/kamar/{id}', [transaksiKamarController::class, 'updateReservasiAdmin'])->name('admin_reservasiKamar.update');
+
+    Route::get('/reservasi/ruangan/edit/{id}', [transaksiRuanganController::class, 'editReservasiAdmin'])->name('admin_reservasiRuangan.edit');
+    Route::put('/update-reservasi/ruangan/{id}', [transaksiRuanganController::class, 'updateReservasiAdmin'])->name('admin_reservasiRuangan.update');
+
+    //== Transaksi ==
+    Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayatTransaksi'])->name('riwayat_transaksi')->middleware('check.expired.transactions');
+
+    Route::get('/detail/{jenis_transaksi}/{id}', [TransaksiController::class, 'detailTransaksi'])->name('detail_transaksi')->middleware('check.expired.transactions');
+    Route::put('/reservasi/tolak/{id}', [TransaksiController::class, 'tolakReservasi'])->name('tolak_reservasi');
+    Route::put('/reservasi/terima/{jenis_transaksi}/{id}', [TransaksiController::class, 'terimaReservasiRuangan'])->name('terima_reservasiRuangan');
+    Route::put('/checkin/{jenis_transaksi}/{id}', [TransaksiController::class, 'CheckIn'])->name('checkin');
+    Route::put('/checkout/{jenis_transaksi}/{id}', [TransaksiController::class, 'CheckOut'])->name('checkout');
+    Route::put('/diskon/{jenis_transaksi}/{id}', [TransaksiController::class, 'diskon'])->name('diskon_transaksi');
+
+    Route::get('/checkin/kamar', [transaksiKamarController::class, 'createCheckIn'])->name('kamar_checkin.create');
+    Route::post('/checkin', [transaksiKamarController::class, 'storeCheckIn'])->name('kamar_checkin_store');
+
+    //== Daftar Tamu ==
+    Route::get('/daftar-tamu', [TransaksiController::class, 'daftarTamu'])->name('daftar_tamu')->middleware('check.expired.transactions');
 });
 // ============================================================================================================================
 
@@ -118,15 +107,15 @@ Route::get('/tentang-kami', function () {
 })->name('Ptentang');
 // --------------------------------------------------------------------------------------------
 
-//== Riwayat Transaksi Tamu ==
+//== Tamu ==
 Route::middleware(['auth', 'role:tamu'])->group(function () {
     //Riwayat
-    Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayatTransaksi'])->name('riwayat_tamu');
-    Route::get('/riwayat-transaksi/detail/{jenis_transaksi}/{id}', [TransaksiController::class, 'showDetailRiwayat'])
+    Route::get('/tamu/riwayat-transaksi', [tamuTransaksiController::class, 'riwayatTransaksi'])->name('riwayat_tamu');
+    Route::get('/riwayat-transaksi/detail/{jenis_transaksi}/{id}', [tamuTransaksiController::class, 'showDetailRiwayat'])
         ->name('detail_riwayat');
-    Route::put('/reservasi/cancel/{id}', [TransaksiController::class, 'cancelReservasi'])
+    Route::put('/reservasi/cancel/{jenis_transaksi}/{id}', [tamuTransaksiController::class, 'cancelReservasi'])
         ->name('cancel_reservasi');
-    Route::put('/reservasi/bukti-bayar/{id}', [TransaksiController::class, 'tambahBuktiBayar'])
+    Route::put('/reservasi/bukti-bayar/{id}', [tamuTransaksiController::class, 'tambahBuktiBayar'])
         ->name('tambah_bbayar');
 
     //Kamar
@@ -137,8 +126,9 @@ Route::middleware(['auth', 'role:tamu'])->group(function () {
 
     //Ruangan
     Route::get('/ruangan/form-reservasi/{id}', [transaksiRuanganController::class, 'create'])->name('reservasi_ruangan');
-    Route::post('/ruangan', [transaksiRuanganController::class, 'store'])->name('ruangan_tamu');
-    Route::get('/ruangan/reservasi/{id}', [transaksiRuanganController::class, 'edit'])->name('edit_RRuangan');
+    Route::post('/ruangan', [transaksiRuanganController::class, 'store'])->name('store_ruangan_tamu');
+    Route::get('/ruangan/reservasi/edit/{id}', [transaksiRuanganController::class, 'edit'])->name('edit_RRuangan');
+    Route::put('/ruangan/update-reservasi/{id}', [transaksiRuanganController::class, 'update'])->name('reservasi_ruangan.update');
 });
 
 
@@ -153,6 +143,8 @@ Route::get('/kamar', [transaksiKamarController::class, 'index'])->name('kamar_ta
 //== Ruangan Tamu ==
 Route::get('/ruangan', [transaksiRuanganController::class, 'index'])->name('ruangan_tamu');
 Route::get('/ruangan/detail/{id}', [transaksiRuanganController::class, 'show'])->name('detail_ruangan_tamu');
+Route::post('/cek-ketersediaan-ruangan/{id}', [transaksiRuanganController::class, 'cekKetersediaan'])
+    ->name('cek_ketersediaan_ruangan');
 
 // --------------------------------------------------------------------------------------------
 
@@ -162,16 +154,6 @@ Route::get('/kontak', function () {
 })->name('Pkontak');
 
 // --------------------------------------------------------------------------------------------
-
-
-//== user ==
-Route::resource('/kelola-users', kelolaUserController::class);
-
-// Route::resource('/form-login', AuthenticatedSessionController::class, 'crete');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

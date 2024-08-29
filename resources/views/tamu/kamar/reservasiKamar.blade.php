@@ -38,9 +38,9 @@
                                 <input type="text" id="nama" name="nama" placeholder="masukkan nama anda">
                             </div>
                             <div class="select-option">
-                                <label for="instansi">Instansi:</label>
-                                <select id="instansi" name="instansi_id">
-                                    @foreach ($instansi as $in)
+                                <label for="jinstansi">Jenis Instansi:</label>
+                                <select id="jinstansi" name="jinstansi_id">
+                                    @foreach ($jinstansi as $in)
                                     <option value="{{ $in->id }}" data-price="{{ $in->harga }}">{{ $in->nama_instansi }}</option>
                                     @endforeach
                                 </select>
@@ -74,11 +74,16 @@
                                         <input type="number" id="jumlahOrang" name="jumlah_orang" placeholder="0">
                                     </div>
                                 </div>
+                                <div class="col-6">
+                                    <div class="text-input">
+                                        <label for="jumlahKamar">Jumlah Kamar:</label>
+                                        <input type="number" id="jumlahKamar" name="jumlah_ruangan" placeholder="0">
+                                    </div>
+                                </div>
                             </div>
                             <div class="dokumen">
                                 <label for="dokumen_reservasi">Dokumen:</label>
                                 <input type="file" class="form-control" id="dokumen_reservasi" name="dokumen_reservasi">
-                                <p>*Jika dari Instansi maka wajib mengirim dokumen untuk reservasi </p>
                                 <p>*Jika Umum tidak perlu dokumen reservasi </p>
                             </div>
                             <div class="button-container">
@@ -101,5 +106,24 @@
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function() {
+        // Ambil tanggal dari local storage dan isi ke input tanggal
+        var tglCheckin = localStorage.getItem('tglCheckin');
+        var tglCheckout = localStorage.getItem('tglCheckout');
 
+        if (tglCheckin && tglCheckout) {
+            $('#tglCheckIn').val(tglCheckin).prop('readonly', true);
+            $('#tglCheckOut').val(tglCheckout).prop('readonly', true);
+        }
+
+        // Hapus tanggal dari local storage jika klik batal
+        $('#reservationForm').on('reset', function() {
+            localStorage.removeItem('tglCheckin');
+            localStorage.removeItem('tglCheckout');
+            $('#tglCheckIn').prop('readonly', false);
+            $('#tglCheckOut').prop('readonly', false);
+        });
+    });
+</script>
 @endsection

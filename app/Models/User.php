@@ -52,6 +52,10 @@ class User extends Authenticatable
         return $this->hasMany(Transaksi::class,'id');
     }
 
+    public function Komentar(){
+        return $this->hasMany(Komentar::class,'id');
+    }
+
     public $incrementing = false; // karena id tidak auto increment
     protected $keyType = 'string';
 

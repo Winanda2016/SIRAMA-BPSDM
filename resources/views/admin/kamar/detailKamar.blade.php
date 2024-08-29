@@ -49,11 +49,11 @@
                     </div><br>
                     <div class="mb-3">
                         <h6>Fasilitas :</h6>
-                        <p>{{ $kamar->fasilitas }}</p>
+                        <p>{!! nl2br(e($ruangan->fasilitas)) !!}</p>
                     </div><br>
                     <div class="mb-3">
                         <h6>Deskripsi :</h6>
-                        <p>{{ $kamar->deskripsi }}</p>
+                        <p>{!! nl2br(e($ruangan->deskripsi)) !!}</p>
                     </div>
                 </div>
             </div>

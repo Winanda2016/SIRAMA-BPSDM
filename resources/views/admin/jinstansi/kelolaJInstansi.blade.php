@@ -10,11 +10,11 @@ $no = 1;
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Data Instansi</h4>
+                <h4 class="mb-sm-0 font-size-18">Data Jenis Instansi</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item active">Kelola Data Instansi</li>
+                        <li class="breadcrumb-item active">Kelola Data Jenis Instansi</li>
                     </ol>
                 </div>
 
@@ -43,24 +43,24 @@ $no = 1;
                                     @endif
                                 </div>
 
-                                <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="modal" data-bs-target="#tambahInstansi">
+                                <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="modal" data-bs-target="#tambahJInstansi">
                                     <i class="bx bx-plus label-icon"></i>
                                     Tambah
                                 </button>
 
-                                <!-- Modal Tambah Instansi -->
-                                <div class="modal fade" id="tambahInstansi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="tambahInstansiLabel" aria-hidden="true">
+                                <!-- Modal Tambah JInstansi -->
+                                <div class="modal fade" id="tambahJInstansi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="tambahJInstansiLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content border-primary">
                                             <div class="modal-header bg-gradient bg-primary">
-                                                <h5 class="modal-title text-white" id="tambahGInstansiLabel">FORMULIR TAMBAH Instansi</h5>
+                                                <h5 class="modal-title text-white" id="tambahJInstansiLabel">FORMULIR TAMBAH Jenis Instansi</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form class="row" method="POST" action="{{ route('instansi.store') }}">
+                                                <form class="row" method="POST" action="{{ route('jinstansi.store') }}">
                                                     @csrf
                                                     <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">Nama Instansi</label>
+                                                        <label for="example-text-input" class="form-label">Nama Jenis Instansi</label>
                                                         <input class="form-control" type="text" name="nama_instansi" id="example-text-input">
                                                     </div>
                                                     <div class="mb-3">
@@ -91,35 +91,35 @@ $no = 1;
                                 </tr>
                             </thead>
                             <tbody align="center">
-                                @foreach($instansi as $jp)
+                                @foreach($jinstansi as $ji)
                                 <tr>
                                     <td style="width: 1%;"><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
-                                    <td style="width: 74%;">{{ $jp->nama_instansi }}</td>
-                                    <td style="width: 74%;">Rp. {{ $jp->formatted_harga }}</td>
+                                    <td style="width: 74%;">{{ $ji->nama_instansi }}</td>
+                                    <td style="width: 74%;">Rp. {{ $ji->formatted_harga }}</td>
                                     <td style="width: 25%;">
                                         <div class="d-flex justify-content-center" align="center">
-                                            <button type="button" class="btn btn-warning waves-effect waves-light p-1" title="edit" data-bs-toggle="modal" data-bs-target="#editInstansi{{ $jp->id }}" style="width: 35px; height:30px;">
+                                            <button type="button" class="btn btn-warning waves-effect waves-light p-1" title="edit" data-bs-toggle="modal" data-bs-target="#editJInstansi{{ $ji->id }}" style="width: 35px; height:30px;">
                                                 <i class="bx bxs-edit font-size-16 align-middle"></i>
                                             </button>
-                                            <!-- Modal Edit Instansi -->
-                                            <div class="modal fade" id="editInstansi{{ $jp->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editInstansiLabel" aria-hidden="true">
+                                            <!-- Modal Edit JInstansi -->
+                                            <div class="modal fade" id="editJInstansi{{ $ji->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editJInstansiLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content border-primary">
                                                         <div class="modal-header bg-gradient bg-primary">
-                                                            <h5 class="modal-title text-white" id="editInstansiLabel">FORM EDIT INSTANSI</h5>
+                                                            <h5 class="modal-title text-white" id="editJInstansiLabel">FORM EDIT JENIS INSTANSI</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body" align="left">
-                                                            <form class="row" method="POST" action="{{ route('instansi.update', ['instansi' => $jp->id]) }}">
+                                                            <form class="row" method="POST" action="{{ route('jinstansi.update', ['jinstansi' => $ji->id]) }}">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="mb-3">
-                                                                    <label for="example-text-input" class="form-label">Instansi</label>
-                                                                    <input class="form-control" type="text" name="nama_instansi" value="{{ $jp->nama_instansi }}" id="example-text-input">
+                                                                    <label for="example-text-input" class="form-label">Jenis Instansi</label>
+                                                                    <input class="form-control" type="text" name="nama_instansi" value="{{ $ji->nama_instansi }}" id="example-text-input">
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="example-text-input" class="form-label">Harga</label>
-                                                                    <input class="form-control" type="text" name="harga" value="{{ $jp->harga }}" id="example-text-input">
+                                                                    <input class="form-control" type="text" name="harga" value="{{ $ji->harga }}" id="example-text-input">
                                                                 </div>
                                                                 <div class="mt-3 mb-3">
                                                                     <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>

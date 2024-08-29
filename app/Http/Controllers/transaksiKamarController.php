@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kamar;
 use App\Models\Transaksi;
 use App\Models\detailTKamar;
-use App\Models\Instansi;
+use App\Models\JInstansi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,16 +17,16 @@ class transaksiKamarController extends Controller
     public function index()
     {
 
-        $instansi = Instansi::orderBy('id', 'desc')->get();
+        $jinstansi = JInstansi::orderBy('id', 'desc')->get();
         $kamarTersedia = Kamar::where('status', 'kosong')->count();
 
-        return view('tamu.kamar.detailKamar', compact('kamarTersedia', 'instansi'));
+        return view('tamu.kamar.detailKamar', compact('kamarTersedia', 'jinstansi'));
     }
 
     public function create()
     {
-        $instansi = Instansi::all();
-        return view('tamu.kamar.reservasiKamar', compact('instansi'));
+        $jinstansi = JInstansi::all();
+        return view('tamu.kamar.reservasiKamar', compact('jinstansi'));
     }
 
     public function store(Request $request)
@@ -36,25 +36,29 @@ class transaksiKamarController extends Controller
 
         $validatedData = $request->validate([
             'nama' => 'required|string|max:100',
-            'instansi_id' => 'required|exists:instansi,id',
+            'jinstansi_id' => 'required|exists:jenis_instansi,id',
             'nohp' => 'required|string|max:20',
-            'nama_instansi' => 'nullable|string|max:100',
+            'nama_instansi' => 'required|string|max:100',
             'tgl_reservasi' => 'required|date_format:Y-m-d',
             'tgl_checkin' => 'required|date_format:Y-m-d',
             'tgl_checkout' => 'required|date_format:Y-m-d',
             'jumlah_orang' => 'required|integer|min:1',
+            'jumlah_ruangan' => 'required|integer|min:1',
+            'dokumen_reservasi' => 'nullable|file|max:1024|mimes:pdf,doc,docx'
         ]);
+
+        Log::info('Data yang tervalidasi:', $validatedData);
 
         $tgl_checkin = Carbon::parse($validatedData['tgl_checkin']);
         $tgl_checkout = Carbon::parse($validatedData['tgl_checkout']);
         $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
 
-        $instansi = Instansi::find($validatedData['instansi_id']);
-        if (!$instansi) {
-            return redirect()->back()->withInput()->withErrors(['instansi_id' => 'Instansi tidak valid.']);
+        $jinstansi = JInstansi::find($validatedData['jinstansi_id']);
+        if (!$jinstansi) {
+            return redirect()->back()->withInput()->withErrors(['jinstansi_id' => 'Jenis Instansi tidak valid.']);
         }
 
-        $total_harga = $instansi->harga * $validatedData['jumlah_orang'] * $total_hari;
+        $total_harga = $jinstansi->harga * $validatedData['jumlah_orang'] * $total_hari;
 
         $transaksi = new Transaksi();
         $transaksi->users_id = auth()->user()->id;
@@ -65,38 +69,32 @@ class transaksiKamarController extends Controller
         $transaksi->tgl_checkin = $validatedData['tgl_checkin'];
         $transaksi->tgl_checkout = $validatedData['tgl_checkout'];
         $transaksi->jumlah_orang = $validatedData['jumlah_orang'];
+        $transaksi->jumlah_ruangan = $validatedData['jumlah_ruangan'];
+        $transaksi->harga = $total_harga;
         $transaksi->total_harga = $total_harga;
+        $transaksi->jinstansi_id = $validatedData['jinstansi_id'];
         $transaksi->jenis_transaksi = 'kamar';
         $transaksi->status_transaksi = 'pending';
+        $transaksi->diskon = 0;
         $transaksi->save();
 
-        $detailTransaksi = new DetailTKamar();
-        $detailTransaksi->transaksi_id = $transaksi->id;
-        $detailTransaksi->instansi_id = $validatedData['instansi_id'];
-        $detailTransaksi->save();
-
-        return redirect()->route('store_RKamar')->with('success', 'Reservasi berhasil disimpan.');
+        return redirect()->route('store_RKamar')->with('success', 'Reservasi berhasil dilakukan.');
     }
 
     public function edit($id)
     {
-        $instansi = Instansi::all();
-        $data = DB::table('detail_transaksi_kamar as dtk')
-            ->leftJoin('kamar as k', 'dtk.kamar_id', '=', 'k.id')
-            ->leftJoin('gedung as g', 'k.gedung_id', '=', 'g.id')
-            ->leftJoin('transaksi as t', 'dtk.transaksi_id', '=', 't.id')
-            ->leftJoin('instansi as i', 'dtk.instansi_id', '=', 'i.id')
-            ->where('dtk.id', $id)
+        $jinstansi = JInstansi::all();
+        $data = DB::table('transaksi as t')
+            ->leftJoin('jenis_instansi as i', 't.jinstansi_id', '=', 'i.id')
+            ->where('t.id', $id)
             ->select(
-                'k.nomor_kamar',
-                'g.nama_gedung',
-                'i.id as instansi_id',
-                'i.nama_instansi as instansi',
-                'dtk.id As detail_id',
+                'i.id as jinstansi_id',
+                'i.nama_instansi as jinstansi',
+                't.id As transaksi_id',
                 't.*'
             )
             ->first();
-        return view('tamu.kamar.editReservasi', compact('data', 'instansi'));
+        return view('tamu.kamar.editReservasi', compact('data', 'jinstansi'));
     }
 
     public function update(Request $request, $id)
@@ -104,13 +102,15 @@ class transaksiKamarController extends Controller
         // Validasi input jika diperlukan
         $validatedData = $request->validate([
             'nama' => 'required|string|max:100',
-            'instansi_id' => 'required|exists:instansi,id',
+            'jinstansi_id' => 'required|exists:jenis_instansi,id',
             'nohp' => 'required|string|max:20',
             'nama_instansi' => 'nullable|string|max:100',
             'tgl_reservasi' => 'required|date_format:Y-m-d',
             'tgl_checkin' => 'required|date_format:Y-m-d',
             'tgl_checkout' => 'required|date_format:Y-m-d',
             'jumlah_orang' => 'required|integer|min:1',
+            'jumlah_ruangan' => 'required|integer|min:1',
+            'dokumen_reservasi' => 'nullable|file|max:2024|mimes:pdf,doc,docx'
         ]);
 
         // Hitung total hari
@@ -118,24 +118,17 @@ class transaksiKamarController extends Controller
         $tgl_checkout = Carbon::parse($validatedData['tgl_checkout']);
         $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
 
-        // Cari instansi berdasarkan id
-        $instansi = Instansi::find($validatedData['instansi_id']);
-        if (!$instansi) {
-            return redirect()->back()->withInput()->withErrors(['instansi_id' => 'Instansi tidak valid.']);
+        // Cari jinstansi berdasarkan id
+        $jinstansi = JInstansi::find($validatedData['jinstansi_id']);
+        if (!$jinstansi) {
+            return redirect()->back()->withInput()->withErrors(['jinstansi_id' => 'Jenis Instansi tidak valid.']);
         }
 
         // Hitung total harga
-        $total_harga = $instansi->harga * $validatedData['jumlah_orang'] * $total_hari;
-
-        // Ambil data detail transaksi kamar
-        $detailTransaksi = DetailTKamar::findOrFail($id);
-
-        // Update data detail transaksi kamar
-        $detailTransaksi->instansi_id = $request->instansi_id;
-        $detailTransaksi->save();
+        $total_harga = $jinstansi->harga * $validatedData['jumlah_orang'] * $total_hari;
 
         // Update juga transaksi terkait jika perlu
-        $transaksi = Transaksi::findOrFail($detailTransaksi->transaksi_id);
+        $transaksi = Transaksi::findOrFail($id);
         $transaksi->tgl_reservasi = $request->tgl_reservasi;
         $transaksi->nama = $request->nama;
         $transaksi->nohp = $request->nohp;
@@ -143,13 +136,38 @@ class transaksiKamarController extends Controller
         $transaksi->tgl_checkin = $request->tgl_checkin;
         $transaksi->tgl_checkout = $request->tgl_checkout;
         $transaksi->jumlah_orang = $request->jumlah_orang;
+        $transaksi->jumlah_ruangan = $request->jumlah_ruangan;
+        $transaksi->harga = $total_harga;
         $transaksi->total_harga = $total_harga;
+        $transaksi->jinstansi_id = $request->jinstansi_id;
+        // Handle file upload
+        if ($request->hasFile('dokumen_reservasi')) {
+            // Cek apakah ada file lama
+            if ($transaksi->dokumen_reservasi && file_exists(public_path($transaksi->dokumen_reservasi))) {
+                // Hapus file lama
+                unlink(public_path($transaksi->dokumen_reservasi));
+            }
+
+            $file = $request->file('dokumen_reservasi');
+            $file->getClientOriginalExtension();
+
+            // Format tanggal saat ini
+            $datePrefix = now()->format('YmdHis');
+            $newFileName = $datePrefix . '_' . $file->getClientOriginalName();
+
+            // Pindahkan file baru ke direktori penyimpanan
+            $file->move(public_path('tamu/assets/dokumen_reservasi/ruangan'), $newFileName);
+
+            // Perbarui path file baru di database
+            $transaksi->dokumen_reservasi = 'tamu/assets/dokumen_reservasi/ruangan/' . $newFileName;
+        }
+
         $transaksi->save();
 
         // Redirect ke halaman detail riwayat transaksi
         return redirect()->route('detail_riwayat', [
             'jenis_transaksi' => $transaksi->jenis_transaksi,
-            'id' => $detailTransaksi->id
+            'id' => $transaksi->id
         ])->with('success', 'Data Reservasi berhasil diperbarui!');
     }
 
@@ -182,5 +200,129 @@ class transaksiKamarController extends Controller
             ->count();
 
         return response()->json(['jumlah_kamar_tersedia' => $jumlah_kamar_tersedia]);
+    }
+
+    // == ADMIN / PEGAWAI ==
+    public function editReservasiAdmin($id)
+    {
+        $jinstansi = JInstansi::all();
+        $data = DB::table('transaksi as t')
+            ->leftJoin('jenis_instansi as i', 't.jinstansi_id', '=', 'i.id')
+            ->where('t.id', $id)
+            ->select(
+                'i.id as jinstansi_id',
+                'i.nama_instansi as jinstansi',
+                't.id As transaksi_id',
+                't.*'
+            )
+            ->first();
+        return view('admin.reservasi.kamar.editReservasi', compact('data', 'jinstansi'));
+    }
+
+    public function updateReservasiAdmin(Request $request, $id)
+    {
+        // Validasi input jika diperlukan
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:100',
+            'jinstansi_id' => 'required|exists:jenis_instansi,id',
+            'nohp' => 'required|string|max:12',
+            'nama_instansi' => 'nullable|string|max:100',
+            'tgl_reservasi' => 'required|date_format:Y-m-d',
+            'tgl_checkin' => 'required|date_format:Y-m-d',
+            'tgl_checkout' => 'required|date_format:Y-m-d',
+            'jumlah_orang' => 'required|integer|min:1',
+            'jumlah_ruangan' => 'required|integer|min:1',
+            'dokumen_reservasi' => 'nullable|file|max:2024|mimes:pdf,doc,docx'
+        ]);
+
+        // Hitung total hari
+        $tgl_checkin = Carbon::parse($validatedData['tgl_checkin']);
+        $tgl_checkout = Carbon::parse($validatedData['tgl_checkout']);
+        $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
+
+        // Cari jinstansi berdasarkan id
+        $jinstansi = JInstansi::find($validatedData['jinstansi_id']);
+        if (!$jinstansi) {
+            return redirect()->back()->withInput()->withErrors(['jinstansi_id' => 'Jenis Instansi tidak valid.']);
+        }
+
+        // Hitung total harga
+        $total_harga = $jinstansi->harga * $validatedData['jumlah_orang'] * $total_hari;
+
+        // Update juga transaksi terkait jika perlu
+        $transaksi = Transaksi::findOrFail($id);
+        $transaksi->tgl_reservasi = $request->tgl_reservasi;
+        $transaksi->nama = $request->nama;
+        $transaksi->nohp = $request->nohp;
+        $transaksi->nama_instansi = $request->nama_instansi;
+        $transaksi->tgl_checkin = $request->tgl_checkin;
+        $transaksi->tgl_checkout = $request->tgl_checkout;
+        $transaksi->jumlah_orang = $request->jumlah_orang;
+        $transaksi->jumlah_ruangan = $request->jumlah_ruangan;
+        $transaksi->harga = $total_harga;
+        $transaksi->total_harga = $total_harga;
+        $transaksi->jinstansi_id = $request->jinstansi_id;
+        $transaksi->save();
+
+        // Redirect ke halaman detail riwayat transaksi
+        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $transaksi->jenis_transaksi, 'id' => $id])->with('success', 'Data Reservasi berhasil diperbarui!');
+    }
+
+    public function createCheckIn()
+    {
+        $jinstansi = JInstansi::all();
+        return view('admin.transaksi.formCheckin', compact('jinstansi'));
+    }
+
+    public function storeCheckIn(Request $request)
+    {
+        Log::info('Store method called');
+        Log::info('Request data: ', $request->all());
+
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:100',
+            'jinstansi_id' => 'required|exists:jenis_instansi,id',
+            'nohp' => 'required|string|max:20',
+            'nama_instansi' => 'required|string|max:100',
+            'tgl_checkin' => 'required|date_format:Y-m-d',
+            'tgl_checkout' => 'required|date_format:Y-m-d',
+            'jumlah_orang' => 'required|integer|min:1',
+            'jumlah_ruangan' => 'required|integer|min:1' // Pastikan nama ini konsisten dengan nama field di form
+        ]);
+
+        Log::info('Data yang tervalidasi:', $validatedData);
+
+        $tgl_checkin = Carbon::parse($validatedData['tgl_checkin']);
+        $tgl_checkout = Carbon::parse($validatedData['tgl_checkout']);
+        $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
+
+        $jinstansi = JInstansi::find($validatedData['jinstansi_id']);
+        if (!$jinstansi) {
+            return redirect()->back()->withInput()->withErrors(['jinstansi_id' => 'Jenis Instansi tidak valid.']);
+        }
+
+        $total_harga = $jinstansi->harga * $validatedData['jumlah_orang'] * $total_hari;
+
+        $transaksi = new Transaksi();
+        $transaksi->users_id = auth()->user()->id;
+        $transaksi->nama = $validatedData['nama'];
+        $transaksi->nohp = $validatedData['nohp'];
+        $transaksi->nama_instansi = $validatedData['nama_instansi'];
+        $transaksi->tgl_checkin = $validatedData['tgl_checkin'];
+        $transaksi->tgl_checkout = $validatedData['tgl_checkout'];
+        $transaksi->jumlah_orang = $validatedData['jumlah_orang'];
+        $transaksi->jumlah_ruangan = $validatedData['jumlah_ruangan']; // Sesuaikan nama ini dengan field di form
+        $transaksi->harga = $total_harga;
+        $transaksi->total_harga = $total_harga;
+        $transaksi->jinstansi_id = $validatedData['jinstansi_id'];
+        $transaksi->tgl_reservasi = Carbon::now()->toDateString();
+        $transaksi->jenis_transaksi = 'kamar';
+        $transaksi->status_transaksi = 'terima';
+        $transaksi->diskon = 0;
+        $transaksi->save();
+
+        Log::info('Transaksi berhasil disimpan:', ['transaksi_id' => $transaksi->id]);
+
+        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $transaksi->jenis_transaksi, 'id' => $transaksi->id])->with('success', 'Data Reservasi berhasil diperbarui!');
     }
 }

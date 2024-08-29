@@ -86,6 +86,14 @@
     padding: 2px;
     height: 35px;
 }
+.keterangan_input {
+    color: #aaaab3;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+span{
+    color: #4c5c7e;
+}
 .room-booking .text-input input {
     width: 100%;
     height: 40px;
@@ -95,7 +103,7 @@
     padding-left: 10px;
     margin-bottom: 28px;
 }
-.room-booking .reservationForm .text-input label {
+.room-booking .text-input label {
     font-size: 14px;
     color: #4c5c7e;
     display: block;
@@ -109,9 +117,17 @@
     font-size: 14px;
     color: #19191a;
     padding-left: 10px;
-    margin-bottom: 28px;
 }
-.room-booking .reservationForm .dokumen label {
+.room-booking .dokumen a {
+    color: #4c5c7e;
+    text-decoration: none;
+    background-color: transparent;
+}
+.room-booking .dokumen a:hover {
+    color: #dfa974;
+    text-decoration: underline;
+}
+.room-booking .dokumen label {
     font-size: 14px;
     color: #4c5c7e;
     display: block;
@@ -124,22 +140,16 @@
     font-size: 14px;
     font-weight: normal;
 }
-.room-booking .reservationform .dokumen span {
+.room-booking  p {
     color: #aaaab3;
     font-size: 12px;
-    font-weight: normal;
 }
-.room-booking .reservationform p {
-    color: #aaaab3;
-    font-size: 12px;
-    font-weight: normal;
-}
-.room-booking .reservationform p::before {
+.room-booking p::before {
     content: "";
     display: block;
-    margin-top: -28px;
+    margin-top: 0;
 }
-.room-booking .reservationform .cek-ketersediaan {
+.room-booking .cek-ketersediaan {
 	display: block;
 	font-size: 14px;
 	text-transform: uppercase;
@@ -761,18 +771,18 @@ ol {
     color: #4c5c7e;
     margin-top: 20px;
 }
-.booking-form .reservationForm .tanggal {
+.booking-form .tanggal {
     position: relative;
     margin-bottom: 15px;
     margin-top: 15px;
 }
-.booking-form .reservationform .tanggal label {
+.booking-form .tanggal label {
     font-size: 14px;
     color: #707079;
     display: block;
     margin-bottom: 10px;
 }
-.booking-form .reservationform .tanggal input {
+.booking-form .tanggal input {
     width: 100%;
     height: 50px;
     border: 1px solid #ebebeb;
@@ -783,7 +793,7 @@ ol {
     font-weight: 500;
     padding: 10px;
 }
-.booking-form .reservationform .tanggal i {
+.booking-form .tanggal i {
     color: #4c5c7e;
     position: absolute;
     right: 18px;
@@ -1551,6 +1561,15 @@ ol {
     background: #4c5c7e;
     padding: 14px 28px 13px;
 }
+.rdt-right button {
+    display: inline-block;
+	color: #ffffff;
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: 700;
+    background: #4c5c7e;
+    padding: 14px 28px 13px;
+}
 .room-details-item .rd-text h2 {
     color: #4c5c7e;
     font-weight: 700;
@@ -1748,22 +1767,18 @@ ol {
     margin-bottom: 10px;
     text-align: center;
 }
-.room-booking p {
-    color: #4c5c7e;
-    margin-top: 20px;
-}
-.room-booking .reservationform .tanggal {
+.room-booking .tanggal {
     position: relative;
     margin-bottom: 15px;
 }
-.room-booking .reservationform .tanggal label {
+.room-booking .tanggal label {
     font-size: 14px;
     color: #4c5c7e;
     display: block;
     font-weight: bold;
     margin-bottom: 10px;
 }
-.room-booking .reservationform .tanggal input {
+.room-booking .tanggal input {
     width: 100%;
     height: 40px;
     border: 1px solid #4c5c7e;
@@ -1773,23 +1788,23 @@ ol {
     font-weight: 500;
     padding: 10px;
 }
-.room-booking .reservationform .tanggal i {
+.room-booking .tanggal i {
     color: #4c5c7e;
     position: absolute;
     right: 18px;
     bottom: 17px;
 }
-.room-booking .reservationform .select-option {
+.room-booking .select-option {
     margin-bottom: 15px;
 }
-.room-booking .reservationform .select-option label {
+.room-booking .select-option label {
     font-size: 14px;
     color: #4c5c7e;
     display: block;
     font-weight: bold;
     margin-bottom: 10px;
 }
-.room-booking .reservationform .select-option .nice-select {
+.room-booking .select-option .nice-select {
     border-radius: 2px;
     border: 1px solid #4c5c7e;
     height: 40px;
@@ -1799,7 +1814,7 @@ ol {
     width: 100%;
     float: none;
 }
-.room-booking .reservationform .select-option .nice-select:after {
+.room-booking .select-option .nice-select:after {
     border-bottom: 2px solid #4c5c7e;
     border-right: 2px solid #4c5c7e;
     height: 10px;
@@ -1808,12 +1823,12 @@ ol {
     width: 10px;
     top: 36%;
 }
-.room-booking .reservationform .select-option .nice-select span {
+.room-booking .select-option .nice-select span {
     font-size: 14px;
     color: #19191a;
     font-weight: 500;
 }
-.room-booking .reservationform .select-option .nice-select .list {
+.room-booking .select-option .nice-select .list {
     margin-top: 0;
     width: 100%;
 }

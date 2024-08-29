@@ -40,8 +40,16 @@
                                 <label for="nama">Nama:</label>
                                 <input type="text" id="nama" name="nama" placeholder="masukkan nama anda">
                             </div>
+                            <div class="select-option">
+                                <label for="jinstansi">Jenis Instansi:</label>
+                                <select id="jinstansi" name="jinstansi_id">
+                                    @foreach ($jinstansi as $in)
+                                    <option value="{{ $in->id }}" data-price="{{ $in->harga }}">{{ $in->nama_instansi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="text-input">
-                                <label for="nama_instansi">Instansi:</label>
+                                <label for="nama_instansi">Nama Instansi:</label>
                                 <input type="text" id="nama_instansi" name="nama_instansi" placeholder="masukkan nama Instansi anda">
                             </div>
                             <div class="text-input">
@@ -49,16 +57,16 @@
                                 <input type="text" id="nohp" name="nohp" placeholder="08...">
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                            <div class="col-6">
                                     <div class="tanggal">
-                                        <label for="tgl_checkin">Check In:</label>
-                                        <input type="date" name="tgl_checkin" id="tgl_checkin">
+                                        <label for="tglCheckIn">Check In:</label>
+                                        <input type="date" name="tgl_checkin" id="tglCheckIn" placeholder="YYYY-MM-DD">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="tanggal">
-                                        <label for="tgl_checkout">Check Out:</label>
-                                        <input type="date" name="tgl_checkout" id="tgl_checkout">
+                                        <label for="tglCheckOut">Check Out:</label>
+                                        <input type="date" name="tgl_checkout" id="tglCheckOut" placeholder="YYYY-MM-DD">
                                     </div>
                                 </div>
                             </div>
@@ -79,8 +87,7 @@
                             <div class="dokumen">
                                 <label for="dokumen_reservasi">Dokumen:</label>
                                 <input type="file" class="form-control" id="dokumen_reservasi" name="dokumen_reservasi">
-                                <p>*Jika dari Instansi maka wajib mengirim dokumen untuk reservasi </p>
-                                <p>*Jika Umum tidak perlu dokumen reservasi </p>
+                                <p>*File reservasi berupa pdf/doc/docs, ukuran file maks 1 mb </p>
                             </div>
                             <div class="button-container">
                                 <button type="submit" class="BPrimary">Reservasi</button>
@@ -109,4 +116,24 @@
     </div>
 </section>
 
+<script>
+    $(document).ready(function() {
+        // Ambil tanggal dari local storage dan isi ke input tanggal
+        var tglCheckin = localStorage.getItem('tglCheckin');
+        var tglCheckout = localStorage.getItem('tglCheckout');
+
+        if (tglCheckin && tglCheckout) {
+            $('#tglCheckIn').val(tglCheckin).prop('readonly', true);
+            $('#tglCheckOut').val(tglCheckout).prop('readonly', true);
+        }
+
+        // Hapus tanggal dari local storage jika klik batal
+        $('#reservationForm').on('reset', function() {
+            localStorage.removeItem('tglCheckin');
+            localStorage.removeItem('tglCheckout');
+            $('#tglCheckIn').prop('readonly', false);
+            $('#tglCheckOut').prop('readonly', false);
+        });
+    });
+</script>
 @endsection

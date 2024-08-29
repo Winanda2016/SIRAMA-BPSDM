@@ -47,7 +47,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a href="{{ route('detail_ruangan', $r->id) }}" class="primary-btn">Detail Selengkapnya</a>
+                        <a href="{{ route('detail_ruangan_tamu', $r->id) }}" class="primary-btn">Detail Selengkapnya</a>
                     </div>
                 </div>
             </div>

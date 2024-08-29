@@ -91,6 +91,13 @@
                         <span data-key="t-ruangan">Data Ruangan</span>
                     </a>
                 </li>
+                
+                <li class="@if (Route::currentRouteName() == 'komentar') active @endif">
+                    <a href="{{ url('/komentar') }}">
+                        <i data-feather="message-circle" ></i>
+                        <span data-key="t-kkomen">Kelola Komentar</span>
+                    </a>
+                </li>
 
                 <li class="@if (Route::currentRouteName() == 'kelola-users') active @endif">
                     <a href="{{ url('/kelola-users') }}">

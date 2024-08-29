@@ -12,17 +12,12 @@ class detailTKamar extends Model
     use HasFactory;
     protected $table = 'detail_transaksi_kamar';
     protected $fillable = [
-        'id', 'kamar_id', 'transaksi_id', 'instansi_id'
+        'id', 'kamar_id', 'transaksi_id', 'jinstansi_id'
     ];
 
     public function kamar(): BelongsTo
     {
         return $this->belongsTo(Kamar::class, 'kamar_id', 'id');
-    }
-
-    public function instansi(): BelongsTo
-    {
-        return $this->belongsTo(Instansi::class, 'instansi_id', 'id');
     }
 
     public function transaksi(): BelongsTo

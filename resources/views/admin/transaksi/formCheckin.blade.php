@@ -26,99 +26,79 @@
                 <div class="card-body">
                     <h4 align="center">Formulir Check In</h4>
                     <hr>
-                    <div class="mb-3">
-                        <label for="example-text-input" class="form-label">Nama</label>
-                        <input class="form-control" type="text" value="Artisanal kale" id="example-text-input">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tipe Tamu</label>
-                        <select class="form-select">
-                            <option>Select</option>
-                            <option>umum</option>
-                            <option>Dinas kota</option>
-                            <option>Dinas provinsi</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="example-text-input" class="form-label">Nama Instansi</label>
-                        <input class="form-control" type="text" value="Artisanal kale" id="example-text-input">
-                        <div class="text-muted" style="font-size: 11px;">*Jika umum silahkan dikosongkan</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="example-text-input" class="form-label">Nomor Handphone</label>
-                        <input class="form-control" type="text" value="Artisanal kale" id="example-text-input">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="formrow-email-input">Tanggal Reservasi</label>
-                        <input class="form-control" type="date" value="2019-08-19" id="example-date-input" readonly>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label" for="formrow-email-input">Tanggal Check In</label>
-                                <input class="form-control" type="date" value="2019-08-19" id="example-date-input">
+                    <form method="POST" action="{{ route('kamar_checkin_store') }}" enctype="multipart/form-data" id="reservationForm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama</label>
+                            <input class="form-control" type="text" id="nama" name="nama">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jenis Instansi</label>
+                            <select class="form-select" name="jinstansi_id">
+                                @foreach ($jinstansi as $in)
+                                <option value="{{ $in->id }}" data-price="{{ $in->harga }}">{{ $in->nama_instansi }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="namaInstansi" class="form-label">Nama Instansi</label>
+                            <input class="form-control" type="text" id="namaInstansi" name="nama_instansi">
+                            <div class="text-muted" style="font-size: 11px;">*Jika umum isikan 'umum'</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="noHP" class="form-label">Nomor HP</label>
+                            <input class="form-control" type="text" id="noHP" name="nohp">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="tglCheckIn">Tanggal Check In</label>
+                                    <input class="form-control" type="date" name="tgl_checkin" id="tglCheckIn" placeholder="YYYY-MM-DD">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="tglCheckOu">Tanggal Check Out</label>
+                                    <input class="form-control" type="date" name="tgl_checkout" id="tglCheckOut" placeholder="YYYY-MM-DD">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label" for="formrow-password-input">Tanggal Check Out</label>
-                                <input class="form-control" type="date" value="2019-08-19" id="example-date-input">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="jumlahOrang" class="form-label">Jumlah Orang</label>
+                                    <input class="form-control" type="number" id="jumlahOrang" name="jumlah_orang" placeholder="0">
+                                    <div class="text-muted" style="font-size: 11px;">*hitung berdasarkan kebutuhan tempat tidur</div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="example-text-input" class="form-label">Jumlah Orang</label>
-                        <input class="form-control" type="text" value="Artisanal kale" id="example-text-input">
-                        <div class="text-muted" style="font-size: 11px;">*hitung berdasarkan kebutuhan tempat tidur</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="choices-multiple-remove-button" class="form-label font-size-13 text-muted">Nomor Kamar</label>
-                        <select class="form-control" name="choices-multiple-remove-button" id="choices-multiple-remove-button" placeholder="This is a placeholder" multiple>
-                            <option value="Choice 1" selected>Choice 1</option>
-                            <option value="Choice 2">Choice 2</option>
-                            <option value="Choice 3">Choice 3</option>
-                            <option value="Choice 4">Choice 4</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="example-text-input" class="form-label">Keterangan</label>
-                        <textarea id="fasilitas" name="keterangan" class="form-control" rows="5"></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label" for="formrow-email-input">Jumlah Hari</label>
-                                <input class="form-control" type="text" value="Artisanal kale" id="example-text-input" readonly>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="jumlahKamar" class="form-label">Jumlah Kamar</label>
+                                    <input class="form-control" type="number" id="jumlahKamar" name="jumlah_ruangan" placeholder="0">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label" for="formrow-password-input">Total Bayar</label>
-                                <input class="form-control" type="text" value="Artisanal kale" id="example-text-input" readonly>
-                            </div>
-                        </div>
-                    </div><br>
+                        </div><br>
 
-                    <a type="reset" class="btn btn-danger waves-effect waves-light" onclick="kembali()"><b>Batal</b></a>
-                    <button type="submit" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#simpan"><b>Simpan</b></button>
-                    <div class="modal fade" id="simpan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="simpanLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="simpanLabel">Peringatan!</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Yakin akan menyimpan data yang telah diubah sebelumnya?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                        <a type="reset" class="btn btn-danger waves-effect waves-light" onclick="kembali()"><b>Batal</b></a>
+                        <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#simpan"><b>Simpan</b></button>
+                        <div class="modal fade" id="simpan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="simpanLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content border-primary">
+                                    <div class="modal-header bg-gradient bg-primary">
+                                        <h5 class="modal-title text-white" id="simpanLabel">Peringatan!</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Kirim Formulir Transaksi?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </form>
                 </div>
             </div>
         </div>

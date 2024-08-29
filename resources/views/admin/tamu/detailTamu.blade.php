@@ -150,7 +150,6 @@
                         <div class="float-end">
                             <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
                             <a type="button" class="btn btn-danger waves-effect waves-light href="{{ url('/tamu/checkout') }}">Check Out</a>
-
                         </div>
                     </div>
                 </div>

@@ -28,8 +28,8 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Kamar kosong</span>
-                            <h1 class="mb-3 text-white"> 123 </h1>
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate"><b>Kamar kosong</b></span>
+                            <h1 class="mb-3 text-white">{{ $totalKKosong }}</h1>
                         </div>
                         <div class="col-6">
                             <i class="fas fa-user-check" style="font-size: 80px; padding:5px"></i>
@@ -46,8 +46,8 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Kamar Terisi</span>
-                            <h1 class="mb-3 text-white"> 123 </h1>
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate"><b>Kamar Terisi</b></span>
+                            <h1 class="mb-3 text-white">{{ $totalKTerisi }}</h1>
                         </div>
                         <div class="col-6">
                             <i class="fas fa-user-clock" style="font-size: 80px; padding:5px"></i>
@@ -64,8 +64,8 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Kamar Reservasi</span>
-                            <h1 class="mb-3 text-white"> 123 </h1>
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate"><b>Kamar Reservasi</b></span>
+                            <h1 class="mb-3 text-white">{{ $totalKReservasi }}</h1>
                         </div>
                         <div class="col-6">
                             <i class="fas fa-tags" style="font-size: 80px; padding:5px"></i>
@@ -82,8 +82,8 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Kamar Perbaikan</span>
-                            <h1 class="mb-3 text-white"> 123 </h1>
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate"><b>Kamar Perbaikan</b></span>
+                            <h1 class="mb-3 text-white">{{ $totalKPerbaikan }}</h1>
                         </div>
                         <div class="col-6">
                             <i class="fas fa-cogs" style="font-size: 80px; padding:5px"></i>
@@ -178,90 +178,61 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-2">
+                            <!-- filter gedung -->
                             <div class="btn-group dropend mb-3">
                                 <button type="button" class="btn btn-info waves-effect waves-light">
-                                    Filter Kamar
+                                    Filter
                                 </button>
                                 <button type="button" class="btn btn-info waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="mdi mdi-chevron-right"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Gedung A</a>
-                                    <a class="dropdown-item" href="#">Gedung B</a>
-                                    <a class="dropdown-item" href="#">Gedung C</a>
+                                    {{-- <a selected hidden >{{request('search')}}</a> --}}
+                                    <a class="dropdown-item" href="{{ route('dashboard_pegawai') }}">Semua</a>
+                                    @foreach ($gedung as $gd)
+                                    <a class="dropdown-item" href="{{ route('dashboard_pegawai', ['gedung_id' => $gd->id]) }}">
+                                        {{ $gd->nama_gedung }}
+                                    </a>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-8 d-flex flex-wrap align-items-center">
-                            <span class="badge rounded-pill badge-soft-success me-3 p-1">Kosong</span>
-                            <span class="badge rounded-pill badge-soft-warning me-3 p-1">Reservasi</span>
-                            <span class="badge rounded-pill badge-soft-danger me-3 p-1">Terisi</span>
-                            <span class="badge rounded-pill badge-soft-secondary me-3 p-1">Perbaikan</span>
-                        </div>
                     </div>
+                    <div class="col-lg-8 d-flex flex-wrap align-items-center">
+                        <span class="badge rounded-pill badge-soft-success me-3 p-1">Kosong</span>
+                        <span class="badge rounded-pill badge-soft-warning me-3 p-1">Reservasi</span>
+                        <span class="badge rounded-pill badge-soft-danger me-3 p-1">Terisi</span>
+                        <span class="badge rounded-pill badge-soft-secondary me-3 p-1">Perbaikan</span>
+                    </div>
+                </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-warning waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-danger waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-danger waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-secondary waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-warning waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-warning waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-danger waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-danger waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-secondary waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-warning waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                            <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                                <h5 class="text-white">101</h5>
-                            </a>
-                        </div>
+                <div class="card">
+                    <div class="card-body">
+                        @foreach ($kamar as $k)
+                        @if ($k->status_kamar === 'kosong')
+                        <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
+                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
+                        </a>
+                        @elseif ( $k->status_kamar === 'kosong' && $k->status_transaksi === 'terima')
+                        <a type="button" class="btn btn-warning waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
+                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
+                        </a>
+                        @elseif ( $k->status_kamar === 'terisi')
+                        <a type="button" class="btn btn-danger waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
+                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
+                        </a>
+                        @elseif ( $k->status_kamar === 'perbaikan')
+                        <a type="button" class="btn btn-secondary waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
+                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
+                        </a>
+                        @endif
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 <!-- container-fluid -->

@@ -76,7 +76,7 @@
                                 <li class="{{ Route::currentRouteName() == 'Tkontak' ? 'active' : '' }}"><a href="{{ url('/kontak') }}">Kontak</a></li>
                                 @if (Route::has('login'))
                                 @auth
-                                <li class="{{ Route::currentRouteName() == 'riwayat_tamu' ? 'active' : '' }}"><a href="{{ url('/riwayat-transaksi') }}">Riwayat Transaksi</a></li>
+                                <li class="{{ Route::currentRouteName() == 'riwayat_tamu' ? 'active' : '' }}"><a href="{{ url('/tamu/riwayat-transaksi') }}">Riwayat Transaksi</a></li>
                                 @else
 
                                 @endauth

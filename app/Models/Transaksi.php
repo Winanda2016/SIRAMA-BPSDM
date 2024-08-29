@@ -34,6 +34,10 @@ class Transaksi extends Model
         return $this->hasMany(detailTRuangan::class);
     }
 
+    public function jinstansi(): BelongsTo
+    {
+        return $this->belongsTo(JInstansi::class, 'jinstansi_id', 'id');
+    }
 
     public function user(): BelongsTo
     {

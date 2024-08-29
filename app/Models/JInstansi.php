@@ -6,18 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Instansi extends Model
+class JInstansi extends Model
 {
     use HasFactory;
-    protected $table = 'instansi';
+    protected $table = 'jenis_instansi';
     protected $fillable = ['id', 'nama_instansi', 'harga'];
 
     public $timestamps = false;
 
 
-    public function detailTKamar()
+    public function Transaksi()
     {
-        return $this->hasMany(detailTKamar::class);
+        return $this->hasMany(Transaksi::class);
     }
 
     public function getFormattedHargaAttribute()

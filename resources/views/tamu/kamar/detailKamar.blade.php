@@ -1,6 +1,6 @@
 @extends('tamu.themes.app')
 @php
-$ar_judul = ['No','Nama Instansi','Harga'];
+$ar_judul = ['No','Jenis Instansi','Harga'];
 $no = 1;
 @endphp
 @section('content')
@@ -59,9 +59,18 @@ $no = 1;
                     <div class="rd-text">
                         <div class="rd-title">
                             <h3>Kamar Asrama</h3>
-                            <div class="rdt-right">
-                                <a href="{{ url('/kamar/form-reservasi') }}">Reservasi</a>
+                        </div>
+                        <div>
+                            @if($message = Session::get('success'))
+                            <div class="alert alert-success">
+                                <p>{{ $message }}</p>
                             </div>
+                            @endif
+                            @if($message = Session::get('error'))
+                            <div class="alert alert-danger">
+                                <p>{{ $message }}</p>
+                            </div>
+                            @endif
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered dt-responsive table-check nowrap">
@@ -71,7 +80,7 @@ $no = 1;
                                     @endforeach
                                 </thead>
                                 <tbody>
-                                    @foreach($instansi as $jt)
+                                    @foreach($jinstansi as $jt)
                                     <tr>
                                         <td align="center" style="width: 10%;">{{ $no++ }}</td>
                                         <td style="width: 60%;">{{ $jt->nama_instansi }}</td>
@@ -118,7 +127,10 @@ $no = 1;
                             </div>
                             <button type="submit" class="cek-ketersediaan">Cek Ketersediaan</button><br>
                             <h6 id="hasil-cek-ketersediaan"></h6>
-                        </form>
+                        </form><br>
+                        <div class="rdt-right">
+                            <button id="btn-reservasi">Reservasi</button>
+                        </div>
                     </div>
                 </div><br>
             </div>
@@ -126,7 +138,6 @@ $no = 1;
 
     </div>
 </section>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -135,6 +146,12 @@ $no = 1;
 
             var form = $(this);
             var formData = form.serialize(); // Mengambil data dari form
+            var tglCheckin = $('#date-in').val();
+            var tglCheckout = $('#date-out').val();
+
+            // Simpan tanggal ke local storage
+            localStorage.setItem('tglCheckin', tglCheckin);
+            localStorage.setItem('tglCheckout', tglCheckout);
 
             $.ajax({
                 url: form.attr('action'),
@@ -142,11 +159,28 @@ $no = 1;
                 data: formData,
                 success: function(response) {
                     $('#hasil-cek-ketersediaan').text('Jumlah kamar tersedia: ' + response.jumlah_kamar_tersedia);
+
+                    // Tampilkan tombol reservasi jika ada kamar tersedia
+                    if (response.jumlah_kamar_tersedia > 0) {
+                        $('#btn-reservasi').show();
+                    } else {
+                        $('#btn-reservasi').hide();
+                    }
                 },
                 error: function(xhr) {
                     $('#hasil-cek-ketersediaan').text('Terjadi kesalahan.');
+                    $('#btn-reservasi').hide();
                 }
             });
+        });
+
+        // Sembunyikan tombol reservasi secara default
+        $('#btn-reservasi').hide();
+
+        // Klik tombol reservasi
+        $('#btn-reservasi').on('click', function() {
+            // Redirect ke halaman formulir reservasi
+            window.location.href = '/kamar/form-reservasi';
         });
     });
 </script>

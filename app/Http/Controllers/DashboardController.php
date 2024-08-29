@@ -1,25 +1,60 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Ruangan;
+use App\Models\Gedung;
+use App\Models\kamar;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function indexAdmin()
+    public function indexAdmin(Request $request)
     {
+        // Ambil tahun dari request atau gunakan tahun sekarang sebagai default
+        $year = $request->input('year', date('Y'));
+
         $totalKTerisi = DB::table('kamar')
-            ->where('status', 'terisi')
+            ->join('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->join('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+            ->where('kamar.status', 'terisi')
+            ->where('transaksi.status_transaksi', 'checkin')
             ->count();
-        $totalKKosong = DB::table('kamar')
-            ->where('status', 'kosong')
-            ->count();
+
         $totalKReservasi = DB::table('kamar')
-            ->where('status', 'reservasi')
+            ->join('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->join('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+            ->where('kamar.status', 'kosong')
+            ->where('transaksi.status_transaksi', 'terima')
+            ->whereDate('tgl_checkin', Carbon::today())
             ->count();
+
+        // Total kamar kosong di luar kondisi terisi dan reservasi
+        $totalKKosong = DB::table('kamar')
+            ->leftJoin('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->leftJoin('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+            ->where('kamar.status', 'kosong')
+            ->whereNotIn('kamar.id', function ($query) {
+                $query->select('kamar.id')
+                    ->from('kamar')
+                    ->join('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+                    ->join('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+                    ->where(function ($query) {
+                        $query->where('kamar.status', 'terisi')
+                            ->where('transaksi.status_transaksi', 'checkin')
+                            ->orWhere(function ($query) {
+                                $query->where('kamar.status', 'kosong')
+                                    ->where('transaksi.status_transaksi', 'terima')
+                                    ->whereDate('tgl_checkin', Carbon::today());
+                            });
+                    });
+            })
+            ->count();
+
         $totalKPerbaikan = DB::table('kamar')
             ->where('status', 'perbaikan')
             ->count();
@@ -34,6 +69,7 @@ class DashboardController extends Controller
         $pieChartdata = DB::table('detail_transaksi_ruangan as detail')
             ->join('ruangan as r', 'detail.ruangan_id', '=', 'r.id')
             ->join('transaksi as t', 'detail.transaksi_id', '=', 't.id')
+            ->whereIn('t.status_transaksi', ['terima', 'checkin', 'checkout'])
             ->select('r.nama_ruangan', DB::raw('COUNT(t.id) as total_transaksi'))
             ->groupBy('r.nama_ruangan')
             ->get();
@@ -46,21 +82,18 @@ class DashboardController extends Controller
             'backgroundColor' => ["#777aca", "#5156be", "#6f42c1", "#a8aada"]
         ];
 
-        //COLUMN CHART
+        // COLUMN CHART: Transaksi Kamar dan Ruangan dengan status 'checkout'
         $columnChartData = DB::table(DB::raw('(
             SELECT 1 AS bulan UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL 
             SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL 
             SELECT 11 UNION ALL SELECT 12
         ) AS m'))
-            ->leftJoin('transaksi as t', function ($join) {
+            ->leftJoin('transaksi as t', function ($join) use ($year) {
                 $join->on(DB::raw('MONTH(t.tgl_checkout)'), '=', 'm.bulan')
-                    ->on(DB::raw('YEAR(t.tgl_checkout)'), '=', DB::raw('YEAR(CURRENT_DATE())'));
+                    ->where('t.status_transaksi', '=', 'checkout')
+                    ->whereYear('t.tgl_checkout', '=', $year);
             })
-            ->leftJoin('detail_transaksi_kamar as dt', 't.id', '=', 'dt.transaksi_id')
-            ->leftJoin('kamar as k', 'dt.kamar_id', '=', 'k.id')
-            ->leftJoin('gedung as g', 'k.gedung_id', '=', 'g.id')
             ->select(
-                'g.nama_gedung',
                 DB::raw('CASE
                     WHEN m.bulan = 1 THEN "Januari"
                     WHEN m.bulan = 2 THEN "Februari"
@@ -75,40 +108,38 @@ class DashboardController extends Controller
                     WHEN m.bulan = 11 THEN "November"
                     WHEN m.bulan = 12 THEN "Desember"
                 END AS bulan'),
-                DB::raw('COALESCE(COUNT(t.id), 0) AS jumlah_transaksi')
+                DB::raw('SUM(CASE WHEN t.jenis_transaksi = "kamar" THEN 1 ELSE 0 END) AS total_transaksi_kamar'),
+                DB::raw('SUM(CASE WHEN t.jenis_transaksi = "ruangan" THEN 1 ELSE 0 END) AS total_transaksi_ruangan')
             )
-            ->groupBy('g.nama_gedung', 'bulan')
-            ->orderBy('g.nama_gedung')
+            ->groupBy('bulan')
             ->orderBy('m.bulan')
             ->get();
 
-        // Ubah data menjadi format yang sesuai untuk chart
-        $chartData = [];
-        foreach ($columnChartData as $data) {
-            // Gunakan indeks bulan (1-12) sebagai kunci array
-            $chartData[$data->nama_gedung][$data->bulan] = $data->jumlah_transaksi;
-        }
-
-        // Format data untuk categories (bulan) dan series (data per gedung)
         $categories = [
-            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember"
         ];
-        $series = [];
-        foreach ($chartData as $gedung => $data) {
-            $seriesData = [];
-            // Loop melalui semua bulan
-            foreach ($categories as $bulan) {
-                // Jika data untuk bulan tertentu tidak tersedia, gunakan nilai 0
-                $jumlah = isset($data[$bulan]) ? $data[$bulan] : 0;
-                $seriesData[] = $jumlah;
-            }
-            $series[] = [
-                'name' => $gedung,
-                'data' => $seriesData
-            ];
-        }
 
+        $series = [
+            [
+                'name' => 'Transaksi Kamar',
+                'data' => $columnChartData->pluck('total_transaksi_kamar')->toArray()
+            ],
+            [
+                'name' => 'Transaksi Ruangan',
+                'data' => $columnChartData->pluck('total_transaksi_ruangan')->toArray()
+            ]
+        ];
 
         return view(
             'admin.dashboard',
@@ -119,9 +150,86 @@ class DashboardController extends Controller
                 'totalKReservasi',
                 'totalKPerbaikan',
                 'totalTransaksiRuangan',
-                'pieChartData', // pastikan variabel ini termasuk dengan benar
+                'pieChartData',
                 'categories',
-                'series'
+                'series',
+                'year'
+            )
+        );
+    }
+
+    public function indexPegawai(Request $request)
+    {
+
+        $totalKTerisi = DB::table('kamar')
+            ->join('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->join('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+            ->where('kamar.status', 'terisi')
+            ->where('transaksi.status_transaksi', 'checkin')
+            ->count();
+
+        $totalKReservasi = DB::table('kamar')
+            ->join('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->join('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+            ->where('kamar.status', 'kosong')
+            ->where('transaksi.status_transaksi', 'terima')
+            ->whereDate('tgl_checkin', Carbon::today())
+            ->count();
+
+        // Total kamar kosong di luar kondisi terisi dan reservasi
+        $totalKKosong = DB::table('kamar')
+            ->leftJoin('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->leftJoin('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+            ->where('kamar.status', 'kosong')
+            ->whereNotIn('kamar.id', function ($query) {
+                $query->select('kamar.id')
+                    ->from('kamar')
+                    ->join('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+                    ->join('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+                    ->where(function ($query) {
+                        $query->where('kamar.status', 'terisi')
+                            ->where('transaksi.status_transaksi', 'checkin')
+                            ->orWhere(function ($query) {
+                                $query->where('kamar.status', 'kosong')
+                                    ->where('transaksi.status_transaksi', 'terima')
+                                    ->whereDate('tgl_checkin', Carbon::today());
+                            });
+                    });
+            })
+            ->count();
+
+        $totalKPerbaikan = DB::table('kamar')
+            ->where('status', 'perbaikan')
+            ->count();
+
+        // Menampilkan semua kamar
+        $gedungId = $request->input('gedung_id');
+        $gedung = Gedung::all();
+
+        $kamar = Kamar::when($gedungId, function ($query, $gedungId) {
+            return $query->whereHas('gedung', function ($query) use ($gedungId) {
+                $query->where('id', $gedungId);
+            });
+        })
+            ->select('kamar.id as kamar_id', 'kamar.nomor_kamar', 'kamar.kapasitas', 
+                    'kamar.status as status_kamar', 'gedung.nama_gedung','transaksi.status_transaksi')
+            ->leftJoin('gedung', 'gedung.id', '=', 'kamar.gedung_id')
+            ->leftJoin('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->leftJoin('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+            ->orderBy('nomor_kamar', 'asc')
+            ->filter(request(['search']))
+            ->paginate(10)
+            ->withQueryString();
+
+        return view(
+            'admin.dashboardPegawai',
+            compact(
+                'totalKTerisi',
+                'totalKKosong',
+                'totalKReservasi',
+                'totalKPerbaikan',
+                'gedung',
+                'kamar'
             )
         );
     }

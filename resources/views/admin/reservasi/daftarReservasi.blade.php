@@ -1,6 +1,6 @@
 @extends('admin.themes.app')
 @php
-$ar_judul = ['No','Jenis Transaksi','Tanggal Reservasi','Nama','Instansi','Tanggal Check In','Tanggal Check Out','Aksi'];
+$ar_judul = ['No','Jenis Transaksi','Nama','Instansi','Tanggal Check In','Tanggal Check Out','Aksi'];
 $no = 1;
 @endphp
 @section('content')
@@ -31,21 +31,24 @@ $no = 1;
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
-                                <a type="button" href="{{ url('/tambah-reservasi') }}" class="btn btn-primary waves-effect btn-label waves-light">
+                                <a type="button" href="{{ url('/tambah-reservasi-kamar') }}" class="btn btn-primary waves-effect btn-label waves-light">
                                     <i class="bx bx-plus label-icon"></i>
-                                    Tambah Reservasi
+                                    Reservasi Kamar
+                                </a>
+                                <a type="button" href="{{ url('/tambah-reservasi') }}" class="btn btn-info waves-effect btn-label waves-light mx-2">
+                                    <i class="bx bx-plus label-icon"></i>
+                                    Reservasi Ruangan
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <!-- end row -->
-                    
+
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">
                             <thead>
-                                <tr class="bg-transparent" align="center">
+                                <tr class="table-primary">
                                     @foreach($ar_judul as $jdl)
-                                    <th>{{ $jdl }}</th>
+                                    <th align="center">{{ $jdl }}</th>
                                     @endforeach
                                 </tr>
                             </thead>
@@ -54,17 +57,16 @@ $no = 1;
                                 <tr style="text-transform: capitalize;">
                                     <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
                                     @if ($t->jenis_transaksi === 'ruangan')
-                                    <td>{{ $t->nama_transaksi }}</td>
+                                    <td>Ruangan</td>
                                     @elseif ($t->jenis_transaksi === 'kamar')
                                     <td>Kamar</td>
                                     @endif
-                                    <td>{{ $t->tgl_reservasi }}</td>
                                     <td>{{ $t->nama }}</td>
                                     <td>{{ $t->nama_instansi }}</td>
-                                    <td>{{ $t->tgl_reservasi }}</td>
+                                    <td>{{ $t->tgl_checkin }}</td>
                                     <td>{{ $t->tgl_checkout }}</td>
                                     <td>
-                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ route('detail_DReservasi', ['jenis_transaksi' => $t->jenis_transaksi, 'id' => $t->detail_id]) }}">
+                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ route('detail_transaksi', ['jenis_transaksi' => $t->jenis_transaksi, 'id' => $t->transaksi_id]) }}">
                                             <i class="bx bx-file label-icon"></i>
                                             Detail
                                         </a>
