@@ -37,13 +37,13 @@ $no = 1;
                             </ol>
                             <div class="carousel-inner" role="listbox" style="height: 100%; display: flex;">
                                 <div class="carousel-item active">
-                                    <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/kamar/kamar-1.png') }}" alt="First slide" style="height: 100%; width: 100%; object-fit: cover;">
+                                    <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/kamar/kamar-1.jpg') }}" alt="First slide" style="height: 100%; width: 100%; object-fit: cover;">
                                 </div>
                                 <div class="carousel-item">
-                                    <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/kamar/kamar-2.png') }}" alt="Second slide" style="height: 100%; width: 100%; object-fit: cover;">
+                                    <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/kamar/kamar-2.jpg') }}" alt="Second slide" style="height: 100%; width: 100%; object-fit: cover;">
                                 </div>
                                 <div class="carousel-item">
-                                    <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/kamar/kamar-3.png') }}" alt="Third slide" style="height: 100%; width: 100%; object-fit: cover;">
+                                    <img class="d-block img-fluid w-100" src="{{ asset('tamu/assets/img/kamar/kamar-3.jpg') }}" alt="Third slide" style="height: 100%; width: 100%; object-fit: cover;">
                                 </div>
                             </div>
                             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
@@ -97,12 +97,12 @@ $no = 1;
                                 <tr>
                                     <td>Kapasitas</td>
                                     <td> : </td>
-                                    <td>2 Orang Dewasa</td>
+                                    <td>2/3 Orang Dewasa</td>
                                 </tr>
                                 <tr>
                                     <td>Fasilitas</td>
                                     <td> : </td>
-                                    <td>2 Tempat tidur (Single Bed), AC, TV, Water heater</td>
+                                    <td>2/3 Tempat tidur (Single Bed), AC, TV, Water heater</td>
                                 </tr>
                             </tbody>
                         </table>

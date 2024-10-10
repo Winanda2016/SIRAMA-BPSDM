@@ -1,6 +1,6 @@
 @extends('tamu.themes.app')
 @php
-$ar_judul = ['No','Jenis Transaksi','Tanggal Reservasi','Tanggal Check In','Tanggal Check Out','Total Harga','Status','Aksi'];
+$ar_judul = ['No','Nama','Jenis Transaksi','Tanggal Reservasi','Tanggal Check In','Tanggal Check Out','Total Harga','Status','Aksi'];
 $no = 1;
 @endphp
 @section('content')
@@ -38,11 +38,12 @@ $no = 1;
                                 @foreach($transaksi as $t)
                                 <tr align="center">
                                     <td>{{ $no++ }}</td>
+                                    <td>{{ $t->nama }}</td>
                                     <td>{{ $t->jenis_transaksi }}</td>
                                     <td>{{ $t->tgl_reservasi }}</td>
                                     <td>{{ $t->tgl_checkin }}</td>
                                     <td>{{ $t->tgl_checkout }}</td>
-                                    <td>Rp. {{ $t->formatted_harga }}</td>
+                                    <td>{{ $t->formatted_harga }}</td>
                                     <td>
                                         @if ($t->status === 'pending')
                                         <span style="background-color: #b1b1b1;color: #e5e5e5;font-size:12px;">Pending</span>

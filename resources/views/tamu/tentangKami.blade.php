@@ -77,7 +77,7 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <div class="gallery-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-1.png') }}">
+                <div class="gallery-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-1.jpg') }}">
                     <div class="gi-text">
                         <h3>Ruang Aula</h3>
                     </div>
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="gallery-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-4.png') }}">
+                        <div class="gallery-item set-bg" data-setbg="{{ asset('tamu/assets/img/gallery/gallery-4.jpg') }}">
                             <div class="gi-text">
                                 <h3>Kamar Asrama</h3>
                             </div>

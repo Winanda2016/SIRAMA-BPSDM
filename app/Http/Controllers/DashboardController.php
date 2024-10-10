@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Ruangan;
 use App\Models\Gedung;
 use App\Models\kamar;
+use App\Models\Transaksi;
+use App\Models\Komentar;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; // jika pakai query builder
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -202,24 +204,24 @@ class DashboardController extends Controller
             ->where('status', 'perbaikan')
             ->count();
 
-        // Menampilkan semua kamar
-        $gedungId = $request->input('gedung_id');
-        $gedung = Gedung::all();
+        $transaksiPending = Transaksi::select(
+            'transaksi.*',
+            'transaksi.status_transaksi as status',
+            'transaksi.id as transaksi_id'
+        )
+            ->where('transaksi.status_transaksi', 'pending')
+            ->orderBy('tgl_reservasi', 'asc')
+            ->get();
 
-        $kamar = Kamar::when($gedungId, function ($query, $gedungId) {
-            return $query->whereHas('gedung', function ($query) use ($gedungId) {
-                $query->where('id', $gedungId);
-            });
-        })
-            ->select('kamar.id as kamar_id', 'kamar.nomor_kamar', 'kamar.kapasitas', 
-                    'kamar.status as status_kamar', 'gedung.nama_gedung','transaksi.status_transaksi')
-            ->leftJoin('gedung', 'gedung.id', '=', 'kamar.gedung_id')
-            ->leftJoin('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
-            ->leftJoin('transaksi', 'detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
-            ->orderBy('nomor_kamar', 'asc')
-            ->filter(request(['search']))
-            ->paginate(10)
-            ->withQueryString();
+        $transaksiCheckIn = Transaksi::select(
+            'transaksi.*',
+            'transaksi.status_transaksi as status',
+            'transaksi.id as transaksi_id'
+        )
+            ->where('transaksi.status_transaksi', 'checkin')
+            ->orderBy('tgl_checkout', 'asc')
+            ->get();
+
 
         return view(
             'admin.dashboardPegawai',
@@ -228,8 +230,8 @@ class DashboardController extends Controller
                 'totalKKosong',
                 'totalKReservasi',
                 'totalKPerbaikan',
-                'gedung',
-                'kamar'
+                'transaksiPending',
+                'transaksiCheckIn'
             )
         );
     }
@@ -237,6 +239,34 @@ class DashboardController extends Controller
     public function indexTamu()
     {
         $ruangan = Ruangan::all();
-        return view('tamu.dashboard', compact('ruangan'));
+        $komentar = Komentar::select(
+            'komentar.*',
+            'u.name as nama_user'
+        )
+            ->leftJoin('users AS u', 'komentar.users_id', '=', 'u.id')
+            ->orderBy('tanggal', 'desc')
+            ->take(5)
+            ->get();
+
+        $totalKomentar = Komentar::count();
+
+        return view('tamu.dashboard', compact('ruangan', 'komentar', 'totalKomentar'));
+    }
+
+    public function storeKomentar(Request $request)
+    {
+        $validatedData = $request->validate([
+            'komentar' => 'required|max:200',
+            'tanggal' => 'required|date_format:Y-m-d'
+        ]);
+
+        $komentar = new Komentar();
+        $komentar->komentar = $validatedData['komentar'];
+        $komentar->tanggal = $validatedData['tanggal'];
+        $komentar->users_id = auth()->user()->id;
+        $komentar->status = 'tampil';
+        $komentar->save();
+
+        return redirect()->route('Tdashboard');
     }
 }

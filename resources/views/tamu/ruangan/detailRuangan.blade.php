@@ -35,9 +35,6 @@
                     <div class="rd-text">
                         <div class="rd-title">
                             <h3>{{ $ruangan->nama_ruangan }}</h3>
-                            <div class="rdt-right">
-                                <a href="{{ route('reservasi_ruangan', $ruangan->id) }}">Reservasi</a>
-                            </div>
                         </div>
                         <h2>RP. {{ $ruangan->formatted_harga}}<span>/ Hari</span></h2>
                         <table style="font-size: 16px;">

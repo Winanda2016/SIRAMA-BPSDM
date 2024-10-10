@@ -58,6 +58,7 @@
             @include('admin.themes.footer')
         </div>
     </div>
+
     @include('admin.themes.rightSidebar')
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
@@ -98,6 +99,11 @@
     <script src="{{ asset('admin/assets/js/pages/dashboard.init.js') }}"></script>
     <script src="{{ asset('admin/assets/js/pages/invoices-list.init.js') }}"></script>
     <script src="{{ asset('admin/assets/js/pages/form-advanced.init.js') }}"></script>
+
+    <!-- pristine js -->
+    <script src="{{ asset('admin/assets/libs/pristinejs/pristine.min.js') }}"></script>
+    <!-- form validation -->
+    <script src="{{ asset('admin/assets/js/pages/form-validation.init.js') }}"></script>
 
     <script src="{{ asset('admin/assets/js/app.js') }}"></script>
 

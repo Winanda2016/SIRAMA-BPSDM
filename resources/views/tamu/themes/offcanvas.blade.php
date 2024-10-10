@@ -14,8 +14,12 @@
         @auth
         <div class="mt-5">
             <button type="button" class="btn header-item topbar-light bg-light-subtle border-start border-end" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="rounded-circle header-profile-user" src="{{ asset('admin/assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
-                <span class="d-none d-xl-inline-block ms-1 fw-medium">Shawn L.</span>
+                @if (Auth::user()->foto)
+                <img class="rounded-circle header-profile-user" src="{{ asset( Auth::user()->foto) }}" alt="Header Avatar">
+                @else
+                <img class="rounded-circle header-profile-user" src="{{ asset('tamu/assets/img/profile/no_profile.png') }}" alt="Header Avatar">
+                @endif
+                <span>{{ Auth::user()->name }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="10" height="10" style="margin: 0px 5px 0px 5px;">
                     <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                 </svg>

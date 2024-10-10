@@ -3861,7 +3861,7 @@ div.dataTables_wrapper div.dataTables_info {
     z-index: 1;
 }
 .auth-bg {
-    background-image: url(../images/auth-bg.jpg);
+    background-image: url('/tamu/assets/img/about/about-1.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

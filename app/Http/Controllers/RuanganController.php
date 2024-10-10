@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Gedung;
 use App\Models\Ruangan;
 
@@ -21,11 +24,11 @@ class RuanganController extends Controller
                 $query->where('id', $gedungId);
             });
         })
-            ->select('ruangan.id as ruangan_id','ruangan.*', 'gedung.nama_gedung')
+            ->select('ruangan.id as ruangan_id', 'ruangan.*', 'gedung.nama_gedung')
             ->leftJoin('gedung', 'gedung.id', '=', 'ruangan.gedung_id')
             ->orderBy('nama_ruangan', 'asc')
             ->filter(request(['search']))
-            ->paginate(10)
+            ->paginate(100)
             ->withQueryString();
 
         return view('admin.ruangan.kelolaRuangan', compact('gedung', 'ruangan'));
@@ -176,5 +179,40 @@ class RuanganController extends Controller
         // Redirect or return a response as needed
         return redirect()->route('kelola_ruangan')
             ->with('success', 'Ruangan Berhasil Diubah');
+    }
+
+    // ------------------------------------------------------------
+    public function cekRuangan(Request $request)
+    {
+
+        // Menampilkan semua ruangan
+        $tgl_checkin = Carbon::parse($request->input('tgl_checkin'))->format('Y-m-d');
+        $tgl_checkout = Carbon::parse($request->input('tgl_checkout'))->format('Y-m-d');
+
+        // Menampilkan status ketersediaan ruangan
+        $ruangan = Ruangan::select(
+            'ruangan.id as ruangan_id',
+            'ruangan.nama_ruangan',
+            'ruangan.kapasitas',
+            'ruangan.status as status_ruangan',
+            'gedung.nama_gedung',
+            DB::raw("COALESCE(transaksi.status_transaksi, 'kosong') as status_transaksi"),
+            'transaksi.tgl_checkin',
+            'transaksi.tgl_checkout'
+        )
+            ->leftJoin('gedung', 'gedung.id', '=', 'ruangan.gedung_id')
+            ->leftJoin('detail_transaksi_ruangan', 'ruangan.id', '=', 'detail_transaksi_ruangan.ruangan_id')
+            ->leftJoin('transaksi', function ($join) use ($tgl_checkin, $tgl_checkout) {
+                $join->on('detail_transaksi_ruangan.transaksi_id', '=', 'transaksi.id')
+                    ->where(function ($query) use ($tgl_checkin, $tgl_checkout) {
+                        $query->where('transaksi.tgl_checkin', '<=', $tgl_checkout)
+                            ->where('transaksi.tgl_checkout', '>=', $tgl_checkin);
+                    });
+            })
+            ->orderBy('ruangan.nama_ruangan', 'asc')
+            ->paginate(100)
+            ->withQueryString();
+
+        return view('admin.ruangan.cekKetersediaan', compact('ruangan'));
     }
 }

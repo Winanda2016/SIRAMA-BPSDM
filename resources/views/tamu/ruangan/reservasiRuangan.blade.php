@@ -32,13 +32,18 @@
                         <form method="POST" action="{{ route('ruangan_tamu') }}" enctype="multipart/form-data" id="reservationForm">
                             @csrf
                             <input type="hidden" name="ruangan_id" value="{{ $ruangan->id }}">
-                            <div class="text-input">
+                            <div class="text-input mb-3">
                                 <label for="tglReservasi">Tanggal Reservasi:</label>
                                 <input type="date" id="tglReservasi" name="tgl_reservasi" value="{{ date('Y-m-d') }}" readonly>
                             </div>
-                            <div class="text-input">
+                            <div class="text-input mb-3">
                                 <label for="nama">Nama:</label>
-                                <input type="text" id="nama" name="nama" placeholder="masukkan nama anda">
+                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama') }}" placeholder="masukkan nama anda">
+                                @error('nama')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
                             <div class="select-option">
                                 <label for="jinstansi">Jenis Instansi:</label>
@@ -48,37 +53,63 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="text-input">
-                                <label for="nama_instansi">Nama Instansi:</label>
-                                <input type="text" id="nama_instansi" name="nama_instansi" placeholder="masukkan nama Instansi anda">
+                            <div class="text-input mb-3">
+                                <label for="namaInstansi">Nama Instansi:</label>
+                                <input type="text" class="form-control @error('nama_instansi') is-invalid @enderror" id="namaInstansi" name="nama_instansi" value="{{ old ('nama_instansi') }}" placeholder="Dinas..">
+                                @error('nama_instansi')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <p>*Jika Umum silahkan isi 'Umum' </p>
                             </div>
-                            <div class="text-input">
-                                <label for="nohp">Nomor HP:</label>
-                                <input type="text" id="nohp" name="nohp" placeholder="08...">
+                            <div class="text-input mb-3">
+                                <label for="noHP">Nomor HP:</label>
+                                <input type="text" class="form-control @error('nohp') is-invalid @enderror" id="noHP" name="nohp" value="{{ old ('nohp') }}" placeholder="08..">
+                                @error('nohp')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
                             <div class="row">
-                            <div class="col-6">
+                                <div class="col-6">
                                     <div class="tanggal">
                                         <label for="tglCheckIn">Check In:</label>
-                                        <input type="date" name="tgl_checkin" id="tglCheckIn" placeholder="YYYY-MM-DD">
+                                        <input type="date" class="form-control @error('tgl_checkin') is-invalid @enderror" name="tgl_checkin" id="tglCheckIn">
+                                        @error('tgl_checkin')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="tanggal">
                                         <label for="tglCheckOut">Check Out:</label>
-                                        <input type="date" name="tgl_checkout" id="tglCheckOut" placeholder="YYYY-MM-DD">
+                                        <input type="date" class="form-control @error('tgl_checkout') is-invalid @enderror" name="tgl_checkout" id="tglCheckOut">
+                                        @error('tgl_checkout')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="text-input">
-                                        <label for="number">Jumlah Orang:</label>
-                                        <input type="number" id="number" name="jumlah_orang" placeholder="0">
+                                    <div class="text-input mb-3">
+                                        <label for="jumlahOrang">Jumlah Orang:</label>
+                                        <input type="number" class="form-control @error('jumlah_orang') is-invalid @enderror" id="jumlahOrang" name="jumlah_orang" value="{{ old ('jumlah_orang') }}" placeholder="0">
+                                        @error('jumlah_orang')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="text-input">
+                                    <div class="text-input mb-3">
                                         <label for="harga">Harga Ruangan:</label>
                                         <input type="text" id="harga" value="RP.{{ $ruangan->formatted_harga }}" disabled>
                                     </div>
@@ -86,8 +117,13 @@
                             </div>
                             <div class="dokumen">
                                 <label for="dokumen_reservasi">Dokumen:</label>
-                                <input type="file" class="form-control" id="dokumen_reservasi" name="dokumen_reservasi">
-                                <p>*File reservasi berupa pdf/doc/docs, ukuran file maks 1 mb </p>
+                                <input type="file" class="form-control mt-2 @error('dokumen_reservasi') is-invalid @enderror" id="dokumen_reservasi" name="dokumen_reservasi">
+                                @error('dokumen_reservasi')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <p>*File reservasi berupa pdf/doc/docs, ukuran file maks 2 mb </p>
                             </div>
                             <div class="button-container">
                                 <button type="submit" class="BPrimary">Reservasi</button>
@@ -98,19 +134,8 @@
                 </div>
             </div>
             <div id="description" class="col-lg-6 mx-3">
-                <h3 class="mb-2">Deskripsi</h3>
-                <p class="f-para">Motorhome or Trailer that is the question for you. Here are some of the
-                    advantages and disadvantages of both, so you will be confident when purchasing an RV.
-                    When comparing Rvs, a motorhome or a travel trailer, should you buy a motorhome or fifth
-                    wheeler? The advantages and disadvantages of both are studied so that you can make your
-                    choice wisely when purchasing an RV. Possessing a motorhome or fifth wheel is an
-                    achievement of a lifetime. It can be similar to sojourning with your residence as you
-                    search the various sites of our great land, America.</p>
-                <p>The two commonly known recreational vehicle classes are the motorized and towable.
-                    Towable rvs are the travel trailers and the fifth wheel. The rv travel trailer or fifth
-                    wheel has the attraction of getting towed by a pickup or a car, thus giving the
-                    adaptability of possessing transportation for you when you are parked at your campsite.
-                </p>
+                <h3 class="mb-2">Keterangan</h3>
+                <p class="f-para">1. Untuk reservasi ruangan diwajibkan menyertakan surat permintaan reservasi</p>
             </div>
         </div>
     </div>

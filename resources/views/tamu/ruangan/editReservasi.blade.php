@@ -39,7 +39,12 @@
 
                             <div class="text-input">
                                 <label for="nama">Nama:</label>
-                                <input type="text" id="nama" name="nama" value="{{ old('nama', $data->nama) }}">
+                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama', $data->nama) }}">
+                                @error('nama')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
 
                             <div class="select-option">
@@ -55,12 +60,23 @@
 
                             <div class="text-input">
                                 <label for="namaInstansi">Nama Instansi:</label>
-                                <input type="text" id="namaInstansi" name="nama_instansi" value="{{ old('nama_instansi', $data->nama_instansi) }}">
+                                <input type="text" class="form-control @error('nama_instansi') is-invalid @enderror" id="namaInstansi" name="nama_instansi" value="{{ old('nama_instansi', $data->nama_instansi) }}">
+                                @error('nama_instansi')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <p>*Jika Umum silahkan isi 'Umum' </p>
                             </div>
 
                             <div class="text-input">
                                 <label for="noHP">Nomor HP:</label>
-                                <input type="text" id="noHP" name="nohp" value="{{ old('nohp', $data->nohp) }}">
+                                <input type="text" class="form-control @error('nohp') is-invalid @enderror" id="noHP" name="nohp" value="{{ old('nohp', $data->nohp) }}">
+                                @error('nohp')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
 
                             <div class="row">
@@ -81,7 +97,12 @@
                                 <div class="col-6">
                                     <div class="text-input">
                                         <label for="jumlahOrang">Jumlah Orang:</label>
-                                        <input type="number" id="jumlahOrang" name="jumlah_orang" value="{{ old('jumlah_orang', $data->jumlah_orang) }}">
+                                        <input type="number" class="form-control @error('jumlah_orang') is-invalid @enderror" id="jumlahOrang" name="jumlah_orang" value="{{ old('jumlah_orang', $data->jumlah_orang) }}">
+                                        @error('jumlah_orang')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -106,7 +127,7 @@
                                 <span class="text-danger mb-3" style="font-size: 12px;"><u>dokumen reservasi tidak tersedia.</u></span>
                                 @endif
 
-                                <input type="file" class="form-control mt-2" id="dokumen_reservasi" name="dokumen_reservasi">
+                                <input type="file" class="form-control mt-2 @error('dokumen_reservasi') is-invalid @enderror" class="form-control mt-2" id="dokumen_reservasi" name="dokumen_reservasi">
                                 <p class="keterangan_input">
                                     *upload file baru jika perlu <br>
                                     *ukuran file maksimal 1 mb || ekstensi file pdf/doc/docx

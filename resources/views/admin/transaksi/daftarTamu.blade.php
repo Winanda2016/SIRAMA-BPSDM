@@ -27,7 +27,7 @@ $no = 1;
         <div class="col-12">
             <div class="card card-h-100">
                 <div class="card-body">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
                                 <a type="button" href="{{ route('kamar_checkin.create') }}" class="btn btn-primary waves-effect btn-label waves-light">
@@ -36,7 +36,7 @@ $no = 1;
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">

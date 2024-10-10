@@ -42,7 +42,7 @@
                                 <div class="mt-5 mt-md-5 text-center">
                                     <p class="mb-0">© 2024 - <script>
                                             document.write(new Date().getFullYear())
-                                        </script> SIRAMA. by Winanda Afrilia Harisya</p>
+                                        </script> BPSDM Prov.Sumbar . by W.A.H</p>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                 </div>
                 <!-- end col -->
                 <div class="col-xxl-9 col-lg-8 col-md-7">
-                    <div class="auth-bg pt-md-5 p-4 d-flex">
+                    <div class="auth-bg pt-md-5 p-4 d-flex" align="center">
                         <div class="bg-overlay" style="background-color:#4c5c7e ;"></div>
                         <ul class="bg-bubbles">
                             <li></li>
@@ -66,13 +66,23 @@
                             <li></li>
                         </ul>
                         <!-- end bubble effect -->
+
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-xl-7">
+                                <div class="p-0 p-sm-4 px-xl-0">
+                                    <img src="{{ asset('admin/assets/images/logo_dark.png') }}" alt="" height="200">
+                                </div>
+                                <!-- end review carousel -->
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- end col -->
             </div>
-            <!-- end row -->
+            <!-- end col -->
         </div>
-        <!-- end container fluid -->
+        <!-- end row -->
+    </div>
+    <!-- end container fluid -->
     </div>
 
 

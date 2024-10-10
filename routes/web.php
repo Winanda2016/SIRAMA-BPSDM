@@ -13,6 +13,8 @@ use App\Http\Controllers\tamuTransaksiController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CetakDokumenController;
+use App\Models\Dashboard;
 use App\Models\JInstansi;
 use Illuminate\Support\Facades\Route;
 
@@ -27,14 +29,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardController::class, 'indexTamu'])->name('Tdashboard');
 Route::get('/admin-dashboard', [DashboardController::class, 'indexAdmin']);
-Route::get('/pegawai-dashboard', [DashboardController::class, 'indexPegawai'])->name('dashboard_pegawai');
-
+Route::get('/transaksi/{id}/faktur/download', [CetakDokumenController::class, 'downloadFaktur'])->name('transaksi.faktur.download');
 
 // --------------------------------------------------------------------------------------------
 //== Admin ==
 Route::middleware(['auth', 'role:admin'])->group(function () {
+
+    Route::get('/', [DashboardController::class, 'indexTamu'])->name('Tdashboard');
 
     //== Gedung ==
     Route::resource('/gedung', GedungController::class);
@@ -64,17 +66,33 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //== Komentar ==
     Route::resource('/komentar', KomentarController::class);
 
+    //Laporan
+    Route::get('/laporan/cetak-pdf', [CetakDokumenController::class, 'laporanPDF'])->name('laporan_pdf');
+    Route::get('/laporan/cetak-excel', [CetakDokumenController::class, 'laporanExcel'])->name('laporan_excel');
 });
 
+// -------------------------------------------------------------------------------------------------------------------------------
+//Pegawai
+Route::middleware(['auth', 'role:pegawai'])->group(function () {
+
+    Route::get('/pegawai-dashboard', [DashboardController::class, 'indexPegawai'])->name('dashboard_pegawai');
+    
+    Route::get('/cek/kamar', [KamarController::class, 'cekKamar'])->name('cek_kamar');
+    Route::get('/cek/ruangan', [RuanganController::class, 'cekRuangan'])->name('cek_ruangan');
+});
+
+// -------------------------------------------------------------------------------------------------------------------------------
 //== Admin & Pegawai ==
 Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
 
     //== Reservasi ==
     Route::get('/permintaan-reservasi', [TransaksiController::class, 'showPReservasi'])->name('permintaan_reservasi')->middleware('check.expired.transactions');
-    Route::get('/tambah-reservasi-kamar', [TransaksiController::class, 'createReservasiKamar'])->name('tambah_reservasi_kamar');
     Route::post('/tambah-kamar-transaksi/{jenis_transaksi}/{id}', [TransaksiController::class, 'tambahKamar'])->name('tambah_kamar_transaksi');
     Route::delete('/hapus-kamar-transaksi/{jenis_transaksi}/{id}', [TransaksiController::class, 'hapusKamar'])->name('hapus_kamar_transaksi');
+
     Route::get('/daftar-reservasi', [TransaksiController::class, 'showDReservasi'])->name('daftar_reservasi')->middleware('check.expired.transactions');
+    Route::get('/tambah-reservasi/{jenis_transaksi}', [TransaksiController::class, 'createReservasi'])->name('admin_reservasi.create');
+    Route::post('/simpan-reservasi/{jenis_transaksi}', [TransaksiController::class, 'storeReservasi'])->name('admin_reservasi.store');
 
     Route::get('/reservasi/kamar/edit/{id}', [transaksiKamarController::class, 'editReservasiAdmin'])->name('admin_reservasiKamar.edit');
     Route::put('/update-reservasi/kamar/{id}', [transaksiKamarController::class, 'updateReservasiAdmin'])->name('admin_reservasiKamar.update');
@@ -88,12 +106,15 @@ Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
     Route::get('/detail/{jenis_transaksi}/{id}', [TransaksiController::class, 'detailTransaksi'])->name('detail_transaksi')->middleware('check.expired.transactions');
     Route::put('/reservasi/tolak/{id}', [TransaksiController::class, 'tolakReservasi'])->name('tolak_reservasi');
     Route::put('/reservasi/terima/{jenis_transaksi}/{id}', [TransaksiController::class, 'terimaReservasiRuangan'])->name('terima_reservasiRuangan');
+    Route::put('/reservasi/cancel/{id}', [TransaksiController::class, 'cancelReservasi'])->name('cancel_reservasi');
     Route::put('/checkin/{jenis_transaksi}/{id}', [TransaksiController::class, 'CheckIn'])->name('checkin');
     Route::put('/checkout/{jenis_transaksi}/{id}', [TransaksiController::class, 'CheckOut'])->name('checkout');
     Route::put('/diskon/{jenis_transaksi}/{id}', [TransaksiController::class, 'diskon'])->name('diskon_transaksi');
 
     Route::get('/checkin/kamar', [transaksiKamarController::class, 'createCheckIn'])->name('kamar_checkin.create');
     Route::post('/checkin', [transaksiKamarController::class, 'storeCheckIn'])->name('kamar_checkin_store');
+
+    Route::get('/faktur/kirim-wa/{id}', [CetakDokumenController::class, 'fakturWhatsApp'])->name('faktur_wa');
 
     //== Daftar Tamu ==
     Route::get('/daftar-tamu', [TransaksiController::class, 'daftarTamu'])->name('daftar_tamu')->middleware('check.expired.transactions');
@@ -113,8 +134,8 @@ Route::middleware(['auth', 'role:tamu'])->group(function () {
     Route::get('/tamu/riwayat-transaksi', [tamuTransaksiController::class, 'riwayatTransaksi'])->name('riwayat_tamu');
     Route::get('/riwayat-transaksi/detail/{jenis_transaksi}/{id}', [tamuTransaksiController::class, 'showDetailRiwayat'])
         ->name('detail_riwayat');
-    Route::put('/reservasi/cancel/{jenis_transaksi}/{id}', [tamuTransaksiController::class, 'cancelReservasi'])
-        ->name('cancel_reservasi');
+    Route::put('/tamu/reservasi/cancel/{id}', [tamuTransaksiController::class, 'cancelReservasiTamu'])
+        ->name('cancel_reservasi_tamu');
     Route::put('/reservasi/bukti-bayar/{id}', [tamuTransaksiController::class, 'tambahBuktiBayar'])
         ->name('tambah_bbayar');
 
@@ -129,6 +150,8 @@ Route::middleware(['auth', 'role:tamu'])->group(function () {
     Route::post('/ruangan', [transaksiRuanganController::class, 'store'])->name('store_ruangan_tamu');
     Route::get('/ruangan/reservasi/edit/{id}', [transaksiRuanganController::class, 'edit'])->name('edit_RRuangan');
     Route::put('/ruangan/update-reservasi/{id}', [transaksiRuanganController::class, 'update'])->name('reservasi_ruangan.update');
+
+    Route::post('/komentar/tambah', [DashboardController::class, 'storeKomentar'])->name('komentar.store');
 });
 
 

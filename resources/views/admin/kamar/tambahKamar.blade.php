@@ -95,14 +95,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="fasilitas" class="form-label">Fasilitas</label>
                                     <textarea id="fasilitas" name="fasilitas" class="form-control" rows="5"></textarea>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">

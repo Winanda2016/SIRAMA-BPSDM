@@ -26,7 +26,8 @@ class tamuTransaksiController extends Controller
             'transaksi.tgl_checkout',
             'transaksi.total_harga',
             'transaksi.status_transaksi as status',
-            'transaksi.id as transaksi_id'
+            'transaksi.id as transaksi_id',
+            'transaksi.*'
         )
             ->where('transaksi.users_id', $userId)
             ->orderBy('tgl_reservasi', 'desc')
@@ -87,17 +88,9 @@ class tamuTransaksiController extends Controller
     }
 
 
-    public function cancelReservasi($jenis_transaksi, $id)
+    public function cancelReservasiTamu($id)
     {
-        if ($jenis_transaksi == 'kamar') {
-            $detailTransaksi = DetailTKamar::findOrFail($id);
-        } elseif ($jenis_transaksi == 'ruangan') {
-            $detailTransaksi = DetailTRuangan::findOrFail($id);
-        } else {
-            abort(404); // Tambahkan handle untuk jenis transaksi lainnya jika diperlukan
-        }
-
-        $transaksi = Transaksi::findOrFail($detailTransaksi->transaksi_id);
+        $transaksi = Transaksi::findOrFail($id);
 
         // Ubah status transaksi menjadi batal
         $transaksi->status_transaksi = 'batal'; // atau status sesuai kebutuhan
@@ -109,8 +102,8 @@ class tamuTransaksiController extends Controller
     public function tambahBuktiBayar(Request $request, $id)
     {
         // Ambil detail transaksi berdasarkan ID
-        $detailTransaksi = DetailTKamar::findOrFail($id);
-        $transaksi = Transaksi::findOrFail($detailTransaksi->transaksi_id);
+        // $detailTransaksi = DetailTKamar::findOrFail($id);
+        $transaksi = Transaksi::findOrFail($id);
 
         // Validasi bukti_bayar
         $request->validate([

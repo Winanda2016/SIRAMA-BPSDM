@@ -1,4 +1,8 @@
 @extends('admin.themes.app')
+@php
+$ar_judul = ['No','Nama','Instansi','Aksi'];
+$ar_judultc = ['No','Nama','Jenis Transaksi','Aksi'];
+@endphp
 @section('content')
 <div class="container-fluid">
 
@@ -92,148 +96,109 @@
                 </div><!-- end card body -->
             </div><!-- end card -->
         </div><!-- end col-->
-    </div><!-- end row-->
+    </div><br><!-- end row-->
+
 
     <div class="row">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h6>Tamu yang akan Check-Out hari ini</h6>
-                    <hr>
-                    <div class="table-responsive">
-                        <table class="table align-middle table-bordered table-check nowrap" style=" width: 100%;">
-                            <thead>
-                                <tr class="table-primary">
-                                    <th style=" width: 1%;text-align: center;">No</th>
-                                    <th style="text-align: center;">Nomor Kamar</th>
-                                    <th style="text-align: center;">Nama Tamu</th>
-                                    <th style="text-align: center;">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody align="center">
-                                <tr>
-                                    <td>1</td>
-                                    <td>101</td>
-                                    <td>Connie Franco</td>
-                                    <td>
-                                        <a type="button" class="btn btn-danger waves-effect waves-light p-1">Check Out</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- end table responsive -->
-                </div>
-                <!-- end card body -->
-            </div>
-            <!-- end card -->
+        <div class="mb-4">
+            <a type="button" href="{{ route('admin_reservasi.create', ['jenis_transaksi' => 'kamar']) }}" class="btn btn-primary waves-effect btn-label waves-light m-1">
+                <i class="bx bx-plus label-icon"></i>
+                Reservasi Kamar
+            </a>
+            <a type="button" href="{{ route('admin_reservasi.create', ['jenis_transaksi' => 'ruangan']) }}" class="btn btn-info waves-effect btn-label waves-light m-1">
+                <i class="bx bx-plus label-icon"></i>
+                Reservasi Ruangan
+            </a>
+            <a type="button" href="{{ route('kamar_checkin.create') }}" class="btn btn-primary waves-effect btn-label waves-light m-1">
+                <i class="bx bx-plus label-icon"></i>
+                Check In Kamar
+            </a>
         </div>
-        <!-- end col -->
 
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-
-                    <h6>Permintaan Reservasi yang belum di Konfirmasi</h6>
-                    <hr>
-
-                    <div class="table-responsive">
-                        <table class="table align-middle table-bordered table-check nowrap" style=" width: 100%;">
-                            <thead>
-                                <tr class="table-primary">
-                                    <th style=" width: 1%;text-align: center;">No</th>
-                                    <th style="text-align: center;">Nama Tamu</th>
-                                    <th style="text-align: center;">Tanggal Reservasi</th>
-                                    <th style="text-align: center;">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody align="center">
-                                <tr>
-                                    <td>1</td>
-                                    <td>101</td>
-                                    <td>Connie Franco</td>
-                                    <td>
-                                        <a type="button" class="btn btn-primary waves-effect btn-label waves-light" href="{{ url('/detail-permintaan-reservasi') }}">
-                                            <i class="bx bx-file label-icon"></i>
-                                            Detail
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- end table responsive -->
-                </div>
-                <!-- end card body -->
-            </div>
-            <!-- end card -->
-        </div>
-        <!-- end col -->
-    </div>
-    <!-- end row -->
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <!-- filter gedung -->
-                            <div class="btn-group dropend mb-3">
-                                <button type="button" class="btn btn-info waves-effect waves-light">
-                                    Filter
-                                </button>
-                                <button type="button" class="btn btn-info waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="mdi mdi-chevron-right"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    {{-- <a selected hidden >{{request('search')}}</a> --}}
-                                    <a class="dropdown-item" href="{{ route('dashboard_pegawai') }}">Semua</a>
-                                    @foreach ($gedung as $gd)
-                                    <a class="dropdown-item" href="{{ route('dashboard_pegawai', ['gedung_id' => $gd->id]) }}">
-                                        {{ $gd->nama_gedung }}
-                                    </a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 d-flex flex-wrap align-items-center">
-                        <span class="badge rounded-pill badge-soft-success me-3 p-1">Kosong</span>
-                        <span class="badge rounded-pill badge-soft-warning me-3 p-1">Reservasi</span>
-                        <span class="badge rounded-pill badge-soft-danger me-3 p-1">Terisi</span>
-                        <span class="badge rounded-pill badge-soft-secondary me-3 p-1">Perbaikan</span>
-                    </div>
-                </div>
-
+        <div class="row">
+            <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        @foreach ($kamar as $k)
-                        @if ($k->status_kamar === 'kosong')
-                        <a type="button" class="btn btn-success waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
-                        </a>
-                        @elseif ( $k->status_kamar === 'kosong' && $k->status_transaksi === 'terima')
-                        <a type="button" class="btn btn-warning waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
-                        </a>
-                        @elseif ( $k->status_kamar === 'terisi')
-                        <a type="button" class="btn btn-danger waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
-                        </a>
-                        @elseif ( $k->status_kamar === 'perbaikan')
-                        <a type="button" class="btn btn-secondary waves-effect waves-light p-1 m-2" style="width: 45px; height:30px;" href="#">
-                            <h5 class="text-white">{{ $k->nomor_kamar }}</h5>
-                        </a>
-                        @endif
-                        @endforeach
+                        <h6>Tamu yang akan Check-Out hari ini</h6>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table align-middle table-bordered table-check nowrap" style=" width: 100%; text-transform:capitalize">
+                                <thead>
+                                    <tr class="table-primary">
+                                        @foreach($ar_judultc as $jdltc)
+                                        <th style="text-align: center;">{{ $jdltc }}</th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody align="center">
+                                    @foreach ($transaksiCheckIn as $tc)
+                                    @php
+                                    $no = 1;
+                                    @endphp
+                                    <tr>
+                                        <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                        <td>{{ $tc->nama }}</td>
+                                        <td>{{ $tc->jenis_transaksi }}</td>
+                                        <td>
+                                            <a href="{{ route('detail_transaksi', ['jenis_transaksi' => $tc->jenis_transaksi, 'id' => $tc->transaksi_id]) }}" type="button" class="btn btn-danger waves-effect waves-light p-1">Check Out</a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h6>Permintaan Reservasi yang belum di Konfirmasi</h6>
+                        <hr>
+
+                        <div class="table-responsive">
+                            <table class="table align-middle table-bordered table-check nowrap" style=" width: 100%;">
+                                <thead>
+                                    <tr class="table-primary">
+                                        @foreach($ar_judul as $jdl)
+                                        <th style="text-align: center;">{{ $jdl }}</th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody align="center">
+                                    @foreach ($transaksiPending as $tp)
+                                    @php
+                                    $no = 1;
+                                    @endphp
+                                    <tr>
+                                        <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                        <td>{{ $tp->nama }}</td>
+                                        <td>{{ $tp->nama_instansi }}</td>
+                                        <td>
+                                            <a href="{{ route('detail_transaksi', ['jenis_transaksi' => $tp->jenis_transaksi, 'id' => $tp->transaksi_id]) }}" type="button" class="btn btn-info waves-effect waves-light p-1">Konfirmasi</a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
-<!-- container-fluid -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function showFilter(filterId) {
+        // Sembunyikan semua form filter
+        $('.filter-data').hide();
+
+        // Tampilkan form filter yang dipilih
+        $('#' + filterId).show();
+    }
+</script>
 @endsection

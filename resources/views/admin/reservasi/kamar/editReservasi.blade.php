@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <h4 align="center">Formulir Reservasi</h4>
                     <hr>
-                    <form method="POST" action="{{ route('admin_reservasiK.update', ['id' => $data->transaksi_id]) }}" enctype="multipart/form-data" class="reservationForm">
+                    <form method="POST" action="{{ route('admin_reservasiKamar.update', ['id' => $data->transaksi_id]) }}" enctype="multipart/form-data" class="reservationForm">
                         @csrf
                         @method('PUT')
                         <div class="row">

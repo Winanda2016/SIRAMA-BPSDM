@@ -24,7 +24,25 @@
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
-                @endif
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="search"></i>
+                        <span data-key="t-cekketersediaan">Cek Ketersediaan</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li>
+                            <a href="{{ url('/cek/kamar') }}">
+                                <span data-key="t-cekkamar">Kamar</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('/cek/ruangan') }}">
+                                <span data-key="t-cekruangan">Ruangan</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -52,11 +70,12 @@
                         <span data-key="t-dtamu">Daftar Tamu</span>
                     </a>
                 </li>
+                @endif
 
                 <li>
                     <a href="{{ url('/riwayat-transaksi') }}">
                         <i data-feather="file-text"></i>
-                        <span data-key="t-riwayat">Riwayat</span>
+                        <span data-key="t-riwayat">Riwayat Transaksi</span>
                     </a>
                 </li>
 
@@ -73,29 +92,29 @@
 
                 <li class="@if (Route::currentRouteName() == 'kelola-kamar') active @endif">
                     <a href="{{ route('kelola_kamar') }}">
-                        <i data-feather="slack" ></i>
+                        <i data-feather="slack"></i>
                         <span data-key="t-kamar">Data Kamar</span>
                     </a>
                 </li>
 
                 <li class="@if (Route::currentRouteName() == 'instansi') active @endif">
-                    <a href="{{ url('/instansi') }}">
-                        <i data-feather="tag" ></i>
+                    <a href="{{ url('/jinstansi') }}">
+                        <i data-feather="tag"></i>
                         <span data-key="t-instansi">Data Instansi</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ url('/kelola-ruangan') }}">
-                        <i data-feather="cpu" ></i>
+                        <i data-feather="cpu"></i>
                         <span data-key="t-ruangan">Data Ruangan</span>
                     </a>
                 </li>
-                
+
                 <li class="@if (Route::currentRouteName() == 'komentar') active @endif">
                     <a href="{{ url('/komentar') }}">
-                        <i data-feather="message-circle" ></i>
-                        <span data-key="t-kkomen">Kelola Komentar</span>
+                        <i data-feather="message-circle"></i>
+                        <span data-key="t-kkomen">Saran dan Pengadun</span>
                     </a>
                 </li>
 

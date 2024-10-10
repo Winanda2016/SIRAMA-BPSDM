@@ -52,6 +52,14 @@ class TransaksiController extends Controller
                 ->where('transaksi.id', $id)
                 ->first();
 
+            $no_hp = $data->nohp;
+
+            // Cek apakah nomor sudah memiliki kode negara
+            if (!preg_match('/^\+\d+/', $no_hp)) {
+                // Tambahkan kode negara jika belum ada
+                $no_hp = '+62' . ltrim($no_hp, '0'); // Misalnya +62 untuk Indonesia
+            }
+
             $kamar = detailTKamar::select(
                 'detail_transaksi_kamar.id as detail_id',
                 'kamar.nomor_kamar',
@@ -91,7 +99,7 @@ class TransaksiController extends Controller
             $tgl_checkout = \Carbon\Carbon::parse($data->tgl_checkout);
             $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
 
-            return view('admin.transaksi.detailTransaksi', compact('data', 'kamar', 'AddKamar', 'jenis_transaksi', 'total_hari'));
+            return view('admin.transaksi.detailTransaksi', compact('data', 'kamar', 'AddKamar', 'jenis_transaksi', 'total_hari', 'no_hp'));
         } elseif ($jenis_transaksi == 'ruangan') {
             $data = Transaksi::select(
                 'i.nama_instansi AS jinstansi',
@@ -113,12 +121,21 @@ class TransaksiController extends Controller
                 ->where('transaksi.id', $id)
                 ->first();
 
+
+            $no_hp = $data->nohp;
+
+            // Cek apakah nomor sudah memiliki kode negara
+            if (!preg_match('/^\+\d+/', $no_hp)) {
+                // Tambahkan kode negara jika belum ada
+                $no_hp = '+62' . ltrim($no_hp, '0'); // Misalnya +62 untuk Indonesia
+            }
+
             // Perhitungan total hari
             $tgl_checkin = \Carbon\Carbon::parse($data->tgl_checkin);
             $tgl_checkout = \Carbon\Carbon::parse($data->tgl_checkout);
             $total_hari = $tgl_checkin->diffInDays($tgl_checkout) + 1;
 
-            return view('admin.transaksi.detailTransaksi', compact('data', 'jenis_transaksi', 'total_hari'));
+            return view('admin.transaksi.detailTransaksi', compact('data', 'jenis_transaksi', 'total_hari', 'no_hp'));
         } else {
             abort(404); // Tambahkan handle untuk jenis transaksi lainnya jika diperlukan
         }
@@ -142,6 +159,17 @@ class TransaksiController extends Controller
         $transaksi->save();
 
         return redirect()->route('riwayat_transaksi')->with('success', 'Reservasi ditolak!');
+    }
+
+    public function cancelReservasi($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Ubah status transaksi menjadi batal
+        $transaksi->status_transaksi = 'batal'; // atau status sesuai kebutuhan
+        $transaksi->save();
+
+        return redirect()->route('riwayat_transaksi')->with('success', 'Reservasi berhasil dibatalkan!');
     }
 
     //terima reservasi kamar
@@ -290,8 +318,9 @@ class TransaksiController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $jenisTransaksi = $request->input('jenis_transaksi');
+        $statusTransaksi = $request->input('status_transaksi'); // Untuk filter status
 
-        // Query untuk transaksi dengan filter tanggal checkin dan checkout
         $query = Transaksi::select(
             'transaksi.*',
             'transaksi.status_transaksi as status',
@@ -299,15 +328,20 @@ class TransaksiController extends Controller
         )
             ->orderBy('transaksi.tgl_checkout', 'asc');
 
-        // Tambahkan filter jika parameter tanggal ada
+        // Filter berdasarkan tanggal jika ada
         if ($startDate && $endDate) {
             $query->whereBetween('transaksi.tgl_checkin', [$startDate, $endDate])
                 ->whereBetween('transaksi.tgl_checkout', [$startDate, $endDate]);
         }
 
-        // Filter berdasarkan jenis transaksi
-        if ($request->has('jenis_transaksi') && $request->input('jenis_transaksi') !== '') {
-            $query->where('jenis_transaksi', $request->input('jenis_transaksi'));
+        // Filter berdasarkan jenis transaksi jika ada
+        if ($jenisTransaksi && $jenisTransaksi !== '') {
+            $query->where('jenis_transaksi', $jenisTransaksi);
+        }
+
+        // Filter berdasarkan status transaksi jika ada
+        if ($statusTransaksi && is_array($statusTransaksi)) {
+            $query->whereIn('status_transaksi', $statusTransaksi);
         }
 
         $transaksi = $query->get();
@@ -330,9 +364,96 @@ class TransaksiController extends Controller
         return view('admin.transaksi.daftarTamu', compact('transaksi'));
     }
 
-    public function createReservasiKamar()
+    //== Transaksi langsung ==
+    public function createReservasi($jenis_transaksi)
     {
         $jinstansi = JInstansi::all();
-        return view('admin.reservasi.kamar.tambahReservasi', compact('jinstansi'));
+        $ruangan = Ruangan::all();
+        return view('admin.reservasi.tambahReservasi', compact('jinstansi', 'ruangan', 'jenis_transaksi'));
+    }
+
+    public function storeReservasi(Request $request, $jenis_transaksi)
+    {
+        Log::info('Store method called');
+        Log::info('Request data: ', $request->all());
+
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:100',
+            'jinstansi_id' => 'required|exists:jenis_instansi,id',
+            'ruangan_id' => 'nullable|exists:ruangan,id',
+            'nohp' => 'required|string|max:15',
+            'nama_instansi' => 'required|string|max:100',
+            'tgl_reservasi' => 'required|date_format:Y-m-d',
+            'tgl_checkin' => 'required|date_format:Y-m-d',
+            'tgl_checkout' => 'required|date_format:Y-m-d',
+            'jumlah_orang' => 'required|integer|min:1',
+            'dokumen_reservasi' => 'nullable|file|max:2024|mimes:pdf,doc,docx',
+            'keterangan' => 'nullable|string|max:255'
+        ]);
+
+        // Jika jenis transaksi adalah kamar, tambahkan validasi jumlah_ruangan
+        if ($jenis_transaksi == 'kamar') {
+            $rules['jumlah_ruangan'] = 'required|integer|min:1';
+        }
+        Log::info('Data yang tervalidasi:', $validatedData);
+
+        $tgl_checkin = Carbon::parse($validatedData['tgl_checkin']);
+        $tgl_checkout = Carbon::parse($validatedData['tgl_checkout']);
+        $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
+
+        if ($jenis_transaksi == 'kamar') {
+            $jinstansi = JInstansi::findOrFail($validatedData['jinstansi_id']);
+            $total_harga = $jinstansi->harga * $validatedData['jumlah_orang'] * $total_hari;
+        } elseif ($jenis_transaksi == 'ruangan') {
+            $ruangan = Ruangan::findOrFail($validatedData['ruangan_id']);
+            $total_harga = $ruangan->harga * ($total_hari + 1);
+        }
+
+        // Cek jumlah ruangan jika jenis transaksi adalah kamar
+        $jumlah_ruangan = isset($validatedData['jumlah_ruangan']) ? $validatedData['jumlah_ruangan'] : 1;
+
+        // Simpan transaksi
+        $transaksi = new Transaksi();
+        $transaksi->users_id = auth()->user()->id;
+        $transaksi->nama = $validatedData['nama'];
+        $transaksi->nohp = $validatedData['nohp'];
+        $transaksi->nama_instansi = $validatedData['nama_instansi'];
+        $transaksi->tgl_reservasi = $validatedData['tgl_reservasi'];
+        $transaksi->tgl_checkin = $validatedData['tgl_checkin'];
+        $transaksi->tgl_checkout = $validatedData['tgl_checkout'];
+        $transaksi->jumlah_orang = $validatedData['jumlah_orang'];
+        $transaksi->jumlah_orang = $jumlah_ruangan;
+        $transaksi->jinstansi_id = $validatedData['jinstansi_id'];
+        $transaksi->harga = $total_harga;
+        $transaksi->total_harga = $total_harga;
+        $transaksi->jenis_transaksi = $jenis_transaksi;
+        $transaksi->status_transaksi = 'pending';
+        $transaksi->diskon = 0;
+        // Upload dokumen jika ada
+        if ($request->hasFile('dokumen_reservasi')) {
+            $file = $request->file('dokumen_reservasi');
+
+            $datePrefix = now()->format('Ymd');
+            $fileName = $datePrefix . '_' . 'Reservasi' . $jenis_transaksi . '_' . $file->getClientOriginalName();
+
+            $file->storeAs('tamu/assets/dokumen_reservasi/', $fileName);
+            $transaksi->dokumen_reservasi = $fileName;
+            Log::info('File dokumen_reservasi diupload:', ['file_name' => $fileName]);
+        }
+
+        if ($jenis_transaksi == 'kamar') {
+            $transaksi->jumlah_ruangan = $validatedData['jumlah_ruangan'];
+            $transaksi->save();
+        } elseif ($jenis_transaksi == 'ruangan') {
+            $transaksi->jumlah_ruangan = 1;
+            $transaksi->save();
+            // Simpan detail transaksi ruangan
+            $detailTransaksi = new detailTRuangan();
+            $detailTransaksi->transaksi_id = $transaksi->id;
+            $detailTransaksi->ruangan_id = $ruangan->id;
+            $detailTransaksi->save();
+        }
+
+        return redirect()->route('daftar_reservasi')->with('success', 'Reservasi berhasil ditambahkan.');
     }
 }

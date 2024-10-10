@@ -255,17 +255,19 @@
                     </div>
                     <div class="d-print-none mt-3">
                         <div class="float-end">
-                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
+                            <a href="https://wa.me/{{ $no_hp }}" class="btn btn-success waves-effect waves-light m-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
 
+                            <!-- ============================================================= -->
+                            @if( Auth::user()->role == 'admin')
                             @if ($data->status_transaksi === 'terima')
                             <!-- == Edit Reservasi == -->
                             @if ($jenis_transaksi === 'kamar')
-                            <a href="{{ route('admin_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            <a href="{{ route('admin_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
                             @elseif ($jenis_transaksi === 'ruangan')
-                            <a href="{{ route('admin_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            <a href="{{ route('admin_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
                             @endif
 
-                            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#checkin"><b>Check In</b></button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkin"><b>Check In</b></button>
                             <!-- == Modal Check In == -->
                             <div class="modal fade" id="checkin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="checkinLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -289,9 +291,37 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <button type="button" class="btn btn-danger waves-effect waves-ligh m-1" data-bs-toggle="modal" data-bs-target="#cancel"><b>Cancel</b></button>
+                            <!-- == Modal Cancel == -->
+                            <div class="modal fade" id="cancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Cancel Reservasi!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <br>
+                                            <p align="center">Cancel (batalkan) Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
+                                            <div align="right">
+                                                <form id="cancelForm" action="{{ route('cancel_reservasi', ['id' => $data->transaksi_id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="reset" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Kembali</button>
+                                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================================================= -->
+
                             @elseif ($data->status_transaksi === 'pending')
                             @if ($jenis_transaksi === 'kamar')
-                            <button type="button" class="btn btn-success waves-effect waves-light" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRKamar">Terima</button>
+                            <button type="button" class="btn btn-success waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRKamar">Terima</button>
 
                             <!-- Modal Terima Reservasi Kamar -->
                             <div class="modal fade" id="terimaRKamar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="terimaRKamarLabel" aria-hidden="true">
@@ -333,7 +363,7 @@
                                 </div>
                             </div>
                             @elseif ($jenis_transaksi === 'ruangan')
-                            <button type="button" class="btn btn-success waves-effect waves-light" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRRuangan">Terima</button>
+                            <button type="button" class="btn btn-success waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRRuangan">Terima</button>
 
                             <!-- Modal Terima Reservasi Ruangan -->
                             <div class="modal fade" id="terimaRRuangan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="terimaRRuanganLabel" aria-hidden="true">
@@ -360,8 +390,7 @@
                             </div>
                             @endif
 
-                            <button type="button" class="btn btn-danger waves-effect waves-light" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#tolakReservasi">Tolak</button>
-
+                            <button type="button" class="btn btn-danger waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#tolakReservasi">Tolak</button>
                             <!-- Modal Tolak Reservasi -->
                             <div class="modal fade" id="tolakReservasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="tolakReservasiLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -385,8 +414,36 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <button type="button" class="btn btn-danger waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#cancel"><b>Cancel</b></button>
+                            <!-- == Modal Cancel == -->
+                            <div class="modal fade" id="cancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Cancel Reservasi!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <br>
+                                            <p align="center">Cancel (batalkan) Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
+                                            <div align="right">
+                                                <form id="cancelForm" action="{{ route('cancel_reservasi', ['id' => $data->transaksi_id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="reset" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Kembali</button>
+                                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================================================= -->
+
                             @elseif ($data->status_transaksi === 'checkin')
-                            <button type="button" class="btn btn-warning waves-effect waves-light me-1" data-bs-toggle="modal" data-bs-target="#diskon"><b>Diskon</b></button>
+                            <button type="button" class="btn btn-warning waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#diskon"><b>Diskon</b></button>
 
                             <!-- Modal Diskon -->
                             <div class="modal fade" id="diskon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="diskonLabel" aria-hidden="true">
@@ -425,7 +482,7 @@
                             <a href="{{ route('edit_RRuangan', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
                             @endif
 
-                            <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#checkout"><b>Check Out</b></button>
+                            <button type="button" class="btn btn-danger waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkout"><b>Check Out</b></button>
 
                             <!-- Modal Tolak Reservasi -->
                             <div class="modal fade" id="checkout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="checkoutLabel" aria-hidden="true">
@@ -449,13 +506,43 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- ============================================================= -->
+
                             @elseif ($data->status_transaksi === 'checkout')
-                            <a href="#" type="button" class="btn btn-primary waves-effect btn-label waves-light">
+                            <button type="button" class="btn btn-primary waves-effect btn-label waves-light m-1" data-bs-toggle="modal" data-bs-target="#faktur">
                                 <i class="bx bx-printer label-icon"></i>
                                 Faktur
-                            </a>
+                            </button>
+
+                            <!-- Modal Faktur -->
+                            <div class="modal fade" id="faktur" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="fakturLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white"" id=" fakturLabel">Faktur Transaksi</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body"><br>
+                                            <p align="center">Cetak atau Kirim Faktur transaksi ?</p><br>
+                                            <div align="right">
+                                                <a href="{{ route('faktur_wa', ['id' => $data->transaksi_id]) }}" class="btn btn-success waves-effect btn-label waves-light me-1">
+                                                    <i class="bx bxl-whatsapp label-icon"></i>
+                                                    Kirim
+                                                </a>
+                                                <a href="{{ route('transaksi.faktur.download', $data->transaksi_id) }}" type="button" class="btn btn-primary waves-effect btn-label waves-light">
+                                                    <i class="bx bx-printer label-icon"></i>
+                                                    Cetak
+                                                </a>
+                                                <a type="reset" class="btn btn-secondary waves-effect waves-light mx-1" onclick="kembali()">Kembali</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @endif
-                            <a type="reset" class="btn btn-secondary waves-effect waves-light mx-1" onclick="kembali()">Kembali</a>
+                            @endif
+                            <a type="reset" class="btn btn-secondary waves-effect waves-light m-1" onclick="kembali()">Kembali</a>
                         </div>
                     </div>
                 </div>

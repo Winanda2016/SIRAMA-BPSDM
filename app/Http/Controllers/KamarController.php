@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Kamar;
 use App\Models\Gedung;
 use App\Models\JInstansi;
+
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,8 +32,7 @@ class KamarController extends Controller
             ->leftJoin('gedung', 'gedung.id', '=', 'kamar.gedung_id')
             ->orderBy('nomor_kamar', 'asc')
             ->filter(request(['search']))
-            ->paginate(10)
-            ->withQueryString();
+            ->get();
 
         return view('admin.kamar.kelolaKamar', compact('gedung', 'kamar'));
     }
@@ -59,7 +61,6 @@ class KamarController extends Controller
             'nomor_kamar' => 'required|max:5',
             'status' => 'required',
             'kapasitas' => 'required|min:1',
-            'fasilitas' => 'nullable|string|max:255',
             'deskripsi' => 'nullable|string|max:255',
             'gedung_id' => 'required|uuid',
         ]);
@@ -70,7 +71,6 @@ class KamarController extends Controller
         $kamar->status = $validatedData['status'];
         $kamar->nomor_kamar = $validatedData['nomor_kamar'];
         $kamar->kapasitas = $validatedData['kapasitas'];
-        $kamar->fasilitas = $validatedData['fasilitas'];
         $kamar->deskripsi = $validatedData['deskripsi'];
         $kamar->gedung_id = $validatedData['gedung_id'];
 
@@ -113,7 +113,6 @@ class KamarController extends Controller
             'nomor_kamar' => 'required|max:5',
             'status' => 'required',
             'kapasitas' => 'required|min:1',
-            'fasilitas' => 'nullable|string|max:255',
             'deskripsi' => 'nullable|string|max:255',
             'gedung_id' => 'required|uuid',
         ]);
@@ -135,7 +134,6 @@ class KamarController extends Controller
         $kamar->status = $validatedData['status'];
         $kamar->nomor_kamar = $validatedData['nomor_kamar'];
         $kamar->kapasitas = $validatedData['kapasitas'];
-        $kamar->fasilitas = $validatedData['fasilitas'];
         $kamar->deskripsi = $validatedData['deskripsi'];
         $kamar->gedung_id = $validatedData['gedung_id'];
 
@@ -146,5 +144,39 @@ class KamarController extends Controller
             Log::error('Update failed: ' . $e->getMessage());
             return back()->with('error', 'Gagal mengubah kamar.');
         }
+    }
+
+    // ------------------------------------------------------------
+    public function cekKamar(Request $request)
+    {
+
+        // Menampilkan semua kamar
+        $tgl_checkin = Carbon::parse($request->input('tgl_checkin'))->format('Y-m-d');
+        $tgl_checkout = Carbon::parse($request->input('tgl_checkout'))->format('Y-m-d');
+
+        $kamar = Kamar::select(
+            'kamar.id as kamar_id',
+            'kamar.nomor_kamar',
+            'kamar.kapasitas',
+            'kamar.status as status_kamar',
+            'gedung.nama_gedung',
+            DB::raw("COALESCE(transaksi.status_transaksi, 'kosong') as status_transaksi"),
+            'transaksi.tgl_checkin',
+            'transaksi.tgl_checkout'
+        )
+            ->leftJoin('gedung', 'gedung.id', '=', 'kamar.gedung_id')
+            ->leftJoin('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
+            ->leftJoin('transaksi', function ($join) use ($tgl_checkin, $tgl_checkout) {
+                $join->on('detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+                    ->where(function ($query) use ($tgl_checkin, $tgl_checkout) {
+                        $query->where('transaksi.tgl_checkin', '<=', $tgl_checkout)
+                            ->where('transaksi.tgl_checkout', '>=', $tgl_checkin);
+                    });
+            })
+            ->orderBy('kamar.nomor_kamar', 'asc')
+            ->paginate(100)
+            ->withQueryString();
+
+        return view('admin.kamar.cekKetersediaan', compact('kamar') );
     }
 }

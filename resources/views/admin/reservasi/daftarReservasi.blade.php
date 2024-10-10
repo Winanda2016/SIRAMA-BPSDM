@@ -28,20 +28,20 @@ $no = 1;
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
-                                <a type="button" href="{{ url('/tambah-reservasi-kamar') }}" class="btn btn-primary waves-effect btn-label waves-light">
+                                <a type="button" href="{{ route('admin_reservasi.create', ['jenis_transaksi' => 'kamar']) }}" class="btn btn-primary waves-effect btn-label waves-light">
                                     <i class="bx bx-plus label-icon"></i>
                                     Reservasi Kamar
                                 </a>
-                                <a type="button" href="{{ url('/tambah-reservasi') }}" class="btn btn-info waves-effect btn-label waves-light mx-2">
+                                <a type="button" href="{{ route('admin_reservasi.create', ['jenis_transaksi' => 'ruangan']) }}" class="btn btn-info waves-effect btn-label waves-light mx-2">
                                     <i class="bx bx-plus label-icon"></i>
                                     Reservasi Ruangan
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">

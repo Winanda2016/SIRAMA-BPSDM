@@ -44,7 +44,7 @@ class transaksiKamarController extends Controller
             'tgl_checkout' => 'required|date_format:Y-m-d',
             'jumlah_orang' => 'required|integer|min:1',
             'jumlah_ruangan' => 'required|integer|min:1',
-            'dokumen_reservasi' => 'nullable|file|max:1024|mimes:pdf,doc,docx'
+            'dokumen_reservasi' => 'nullable|file|max:2024|mimes:pdf,doc,docx'
         ]);
 
         Log::info('Data yang tervalidasi:', $validatedData);
@@ -76,9 +76,31 @@ class transaksiKamarController extends Controller
         $transaksi->jenis_transaksi = 'kamar';
         $transaksi->status_transaksi = 'pending';
         $transaksi->diskon = 0;
+        // Handle file upload
+        if ($request->hasFile('dokumen_reservasi')) {
+            // Cek apakah ada file lama
+            if ($transaksi->dokumen_reservasi && file_exists(public_path($transaksi->dokumen_reservasi))) {
+                // Hapus file lama
+                unlink(public_path($transaksi->dokumen_reservasi));
+            }
+
+            $file = $request->file('dokumen_reservasi');
+            $file->getClientOriginalExtension();
+
+            // Format tanggal saat ini
+            $datePrefix = now()->format('Ymd');
+            $newFileName = $datePrefix . '_' . 'Reservasi kamar' . '_' . $file->getClientOriginalName();
+
+            // Pindahkan file baru ke direktori penyimpanan
+            $file->move(public_path('dokumen/reservasi'), $newFileName);
+
+            // Perbarui path file baru di database
+            $transaksi->dokumen_reservasi = 'dokumen/reservasi/' . $newFileName;
+        }
+        
         $transaksi->save();
 
-        return redirect()->route('store_RKamar')->with('success', 'Reservasi berhasil dilakukan.');
+        return redirect()->route('riwayat_tamu')->with('success', 'Reservasi berhasil dilakukan.');
     }
 
     public function edit($id)
@@ -152,14 +174,14 @@ class transaksiKamarController extends Controller
             $file->getClientOriginalExtension();
 
             // Format tanggal saat ini
-            $datePrefix = now()->format('YmdHis');
-            $newFileName = $datePrefix . '_' . $file->getClientOriginalName();
+            $datePrefix = now()->format('Ymd');
+            $newFileName = $datePrefix . '_' . 'Reservasi kamar' . '_' . $file->getClientOriginalName();
 
             // Pindahkan file baru ke direktori penyimpanan
-            $file->move(public_path('tamu/assets/dokumen_reservasi/ruangan'), $newFileName);
+            $file->move(public_path('dokumen/reservasi'), $newFileName);
 
             // Perbarui path file baru di database
-            $transaksi->dokumen_reservasi = 'tamu/assets/dokumen_reservasi/ruangan/' . $newFileName;
+            $transaksi->dokumen_reservasi = 'dokumen/reservasi/' . $newFileName;
         }
 
         $transaksi->save();

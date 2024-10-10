@@ -29,13 +29,18 @@
                         <hr>
                         <form method="POST" action="{{ url('/kamar') }}" enctype="multipart/form-data" id="reservationForm">
                             @csrf
-                            <div class="text-input">
+                            <div class="text-input mb-3">
                                 <label for="tglReservasi">Tanggal Reservasi:</label>
                                 <input type="date" id="tglReservasi" name="tgl_reservasi" value="{{ date('Y-m-d') }}" readonly>
                             </div>
-                            <div class="text-input">
+                            <div class="text-input mb-3">
                                 <label for="nama">Nama:</label>
-                                <input type="text" id="nama" name="nama" placeholder="masukkan nama anda">
+                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama') }}" placeholder="masukkan nama anda">
+                                @error('nama')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
                             <div class="select-option">
                                 <label for="jinstansi">Jenis Instansi:</label>
@@ -45,46 +50,84 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="text-input">
+                            <div class="text-input mb-3">
                                 <label for="namaInstansi">Nama Instansi:</label>
-                                <input type="text" id="namaInstansi" name="nama_instansi" placeholder="Badan Pengembangan Sumber Daya Manusia">
+                                <input type="text" class="form-control @error('nama_instansi') is-invalid @enderror" id="namaInstansi" name="nama_instansi" value="{{ old ('nama_instansi') }}">
+                                @error('nama_instansi')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
-                            <div class="text-input">
+                            <div class="text-input mb-3">
                                 <label for="noHP">Nomor HP:</label>
-                                <input type="text" id="noHP" name="nohp" placeholder="08...">
+                                <input type="text" class="form-control @error('nohp') is-invalid @enderror" id="noHP" name="nohp" value="{{ old ('nohp') }}">
+                                @error('nohp')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <div class="tanggal">
                                         <label for="tglCheckIn">Check In:</label>
-                                        <input type="date" name="tgl_checkin" id="tglCheckIn" placeholder="YYYY-MM-DD">
+                                        <input type="date" class="form-control @error('tgl_checkin') is-invalid @enderror" name="tgl_checkin" id="tglCheckIn">
+                                        @error('tgl_checkin')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="tanggal">
                                         <label for="tglCheckOut">Check Out:</label>
-                                        <input type="date" name="tgl_checkout" id="tglCheckOut" placeholder="YYYY-MM-DD">
+                                        <input type="date" class="form-control @error('tgl_checkout') is-invalid @enderror" name="tgl_checkout" id="tglCheckOut">
+                                        @error('tgl_checkout')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="text-input">
+                                    <div class="text-input mb-3">
                                         <label for="jumlahOrang">Jumlah Orang:</label>
-                                        <input type="number" id="jumlahOrang" name="jumlah_orang" placeholder="0">
+                                        <input type="number" class="form-control @error('jumlah_orang') is-invalid @enderror" id="jumlahOrang" name="jumlah_orang" value="{{ old ('jumlah_orang') }}">
+                                        @error('jumlah_orang')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="text-input">
+                                    <div class="text-input mb-3">
                                         <label for="jumlahKamar">Jumlah Kamar:</label>
-                                        <input type="number" id="jumlahKamar" name="jumlah_ruangan" placeholder="0">
+                                        <input type="number" class="form-control @error('jumlah_orang') is-invalid @enderror" id="jumlahKamar" name="jumlah_ruangan" value="{{ old ('jumlah_ruangan') }}">
+                                        @error('jumlah_ruangan')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="dokumen">
                                 <label for="dokumen_reservasi">Dokumen:</label>
-                                <input type="file" class="form-control" id="dokumen_reservasi" name="dokumen_reservasi">
-                                <p>*Jika Umum tidak perlu dokumen reservasi </p>
+                                <input type="file" class="form-control mt-2 @error('dokumen_reservasi') is-invalid @enderror" id="dokumen_reservasi" name="dokumen_reservasi">
+                                @error('dokumen_reservasi')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <p class="keterangan_input">
+                                    *upload file baru jika perlu <br>
+                                    *ukuran file maksimal 2 mb || ekstensi file pdf/doc/docx
+                                </p>
                             </div>
                             <div class="button-container">
                                 <button type="submit" class="BPrimary">Reservasi</button>
@@ -96,12 +139,11 @@
             </div>
             <div id="description" class="col-lg-6 mx-3">
                 <h3 class="my-3"><b>Keterangan</b></h3>
-                <p class="f-para">1. Setiap kamar terdiri dari 2 buah kasur (single bed)</p>
-                <p class="f-para">2. Untuk melakukan reservasi silahkan hitung pemesanan berdasarkan jumlah bed yang dibutuhkan</p>
-                <p class="f-para">3. Harga yang tertera merupakan harga per bed</p>
-                <p class="f-para">4. Satu bed hanya dapat di tempati maksimal oleh satu orang dewasa</p>
-                <p class="f-para">5. Jika anda hanya menyewa untuk satu bed saja, tidak akan ada kemungkinan
-                    untuk anda menempati kamar yang sama dengan orang lain</p>
+                <p class="f-para">1. Setiap kamar terdiri dari 2 kasur (single bed)</p>
+                <p class="f-para">2. Jumlah orang, hitung berdasarkan kebutuhan bed</p>
+                <p class="f-para">3.Jumlah kamar, hitung berdasarkan berapa kamar yang diinginkan</p>
+                <p class="f-para">4. Harga yang tertera merupakan harga per orang atau per bed</p>
+                <p class="f-para">5. Satu bed hanya dapat di tempati maksimal oleh satu orang dewasa</p>
             </div>
         </div>
     </div>
