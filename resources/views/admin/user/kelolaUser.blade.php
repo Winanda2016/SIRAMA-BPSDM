@@ -1,6 +1,6 @@
 @extends('admin.themes.app')
 @php
-$ar_judul = ['No','Username','Email','NIK','No.HP','Role','Aksi'];
+$ar_judul = ['No','Username','Email','No.HP','Role','Aksi'];
 $no = 1;
 @endphp
 @section('content')
@@ -31,10 +31,89 @@ $no = 1;
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
-                                <a type="button" href="{{ url('/registrasi-user') }}" class="btn btn-primary waves-effect btn-label waves-light">
+                                <div>
+                                    @if($message = Session::get('success'))
+                                    <div class="alert alert-success">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                    @endif
+                                    @if($message = Session::get('error'))
+                                    <div class="alert alert-danger">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                    @endif
+                                </div>
+
+                                <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="modal" data-bs-target="#tambahJInstansi">
                                     <i class="bx bx-plus label-icon"></i>
                                     Tambah Pengguna
-                                </a>
+                                </button>
+
+                                <!-- Modal Tambah Users -->
+                                <div class="modal fade" id="tambahJInstansi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="tambahJInstansiLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content border-primary">
+                                            <div class="modal-header bg-gradient bg-primary">
+                                                <h5 class="modal-title text-white" id="tambahJInstansiLabel">Tambah Pengguna</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="row" method="POST" action="{{ route('kelola-users.store') }}">
+                                                    @csrf
+                                                    <div class="row mb-3">
+                                                        <div class="col-3">
+                                                            <label for="name" class="form-label">Nama</label>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input type="text" class="form-control" id="name" name="name" :value="old('name')" required autofocus autocomplete="name">
+                                                        </div>
+                                                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input type="email" class="form-control" id="email" name="email" :value="old('email')" required autocomplete="email">
+                                                        </div>
+                                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-3">
+                                                            <label for="no_hp" class="form-label">Nomor HP</label>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input type="no_hp" class="form-control" id="no_hp" name="no_hp" :value="old('no_hp')" required autocomplete="no_hp">
+                                                        </div>
+                                                        <x-input-error :messages="$errors->get('no_hp')" class="mt-2" />
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-3">
+                                                            <label for="password" class="form-label">Password</label>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input type="password" class="form-control" id="password" name="password" required autocomplete="new-password" />
+                                                        </div>
+                                                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-3">
+                                                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required autocomplete="new-password" />
+                                                        </div>
+                                                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                                    </div>
+                                                    <div class="mt-3 mb-3">
+                                                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-success mx-2">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,30 +130,51 @@ $no = 1;
                                 <tr>
                                     @foreach($kuser as $ku)
                                     <td style="width: 1%;"><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
-                                    <td>{{ $ku->username }}</td>
+                                    <td>{{ $ku->name }}</td>
                                     <td>{{ $ku->email }}</td>
-                                    <td>{{ $ku->nik }}</td>
                                     <td>{{ $ku->no_hp }}</td>
                                     <td>{{ $ku->role }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-danger waves-effect waves-light p-1" title="hapus" data-bs-toggle="modal" data-bs-target="#hapusPengguna{{ $ku->id }}" style="width: 35px; height:30px; margin-right:5px">
-                                            <i class="bx bx-trash font-size-16 align-middle"></i>
+                                        @php
+                                        $no_hp = $ku->no_hp;
+                                        if (!preg_match('/^\+\d+/', $no_hp)) {
+                                        $no_hp = '+62' . ltrim($no_hp, '0'); 
+                                        }
+                                        @endphp
+                                        <a href="https://wa.me/{{ $no_hp }}" class="btn btn-success waves-effect waves-light m-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
+
+                                        <button type="button" class="btn btn-warning waves-effect waves-light m-1" title="edit" data-bs-toggle="modal" data-bs-target="#editJInstansi{{ $ku->id }}">
+                                            <i class="bx bxs-edit font-size-20 align-middle"></i>
                                         </button>
-                                        <!-- Modal Hapus Instansi -->
-                                        <div class="modal fade" id="hapusPengguna{{ $ku->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <!-- Modal Edit JInstansi -->
+                                        <div class="modal fade" id="editJInstansi{{ $ku->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editJInstansiLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content border-danger" style="width: fit-content;">
-                                                    <div class="modal-header bg-danger">
-                                                        <h5 class="modal-title text-white" id="hapusPenggunaLabel">PERINGATAN!!!</h5>
+                                                <div class="modal-content border-primary">
+                                                    <div class="modal-header bg-gradient bg-primary">
+                                                        <h5 class="modal-title text-white" id="editJInstansiLabel">FORM EDIT JENIS INSTANSI</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="modal-body m-2">
-                                                        <h6>Yakin akan menghapus pengguna dengan username "{{ $ku->username }}"?</h6>
-                                                        <p>(Data yang dihapus tidak dapat dikembalikan lagi.)</p>
-                                                        <div align="right">
-                                                            <button type="reset" class="btn btn-secondary m-1" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-danger m-1">Hapus</button>
-                                                        </div>
+                                                    <div class="modal-body" align="left">
+                                                        <form class="row" method="POST" action="{{ route('kelola-users.update', ['kelola_user' => $ku->id]) }}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="mb-3">
+                                                                <label for="name" class="form-label">Nama</label>
+                                                                <input class="form-control" type="text" name="name" value="{{ $ku->name }}" id="name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="eemail" class="form-label">Jenis Instansi</label>
+                                                                <input class="form-control" type="text" name="email" value="{{ $ku->email }}" id="email">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="no_hp" class="form-label">Nomor HP</label>
+                                                                <input class="form-control" type="text" name="no_hp" value="{{ $ku->no_hp }}" id="no_hp">
+                                                            </div>
+                                                            <div class="mt-3 mb-3">
+                                                                <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary mx-2">Simpan</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

@@ -121,7 +121,7 @@
                 <li class="@if (Route::currentRouteName() == 'kelola-users') active @endif">
                     <a href="{{ url('/kelola-users') }}">
                         <i data-feather="users" ></i>
-                        <span data-key="t-kusers">Kelola Users</span>
+                        <span data-key="t-kusers">Kelola Pengguna</span>
                     </a>
                 </li>
                 @endif

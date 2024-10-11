@@ -40,7 +40,6 @@ class TransaksiController extends Controller
                 'u.name AS nama_users',
                 'u.email AS email_users',
                 'u.no_hp AS nohp_users',
-                'u.foto AS foto_users',
                 'transaksi.total_harga',
                 'transaksi.*'
             )
@@ -110,7 +109,6 @@ class TransaksiController extends Controller
                 'u.name AS nama_users',
                 'u.email AS email_users',
                 'u.no_hp AS nohp_users',
-                'u.foto AS foto_users',
                 'transaksi.*'
             )
                 ->leftJoin('detail_transaksi_ruangan AS dtr', 'transaksi.id', '=', 'dtr.transaksi_id')
@@ -362,6 +360,35 @@ class TransaksiController extends Controller
             ->get();
 
         return view('admin.transaksi.daftarTamu', compact('transaksi'));
+    }
+
+    public function tambahBuktiBayar(Request $request,$jenis_transaksi,$id)
+    {
+        // Ambil detail transaksi berdasarkan ID
+        // $detailTransaksi = DetailTKamar::findOrFail($id);
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Validasi bukti_bayar
+        $request->validate([
+            'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // Upload dokumen jika ada
+        try {
+            if ($request->hasFile('bukti_bayar')) {
+                $file = $request->file('bukti_bayar');
+                $extension = $file->getClientOriginalExtension();
+                $fileName = 'Transaksi_' . time() . '.' . $extension;
+                $file->move(public_path('public/dokumen/bukti_bayar'), $fileName);
+                $transaksi->bukti_bayar = 'public/dokumen/bukti_bayar/' . $fileName;
+            }
+        } catch (\Exception $e) {
+            return back()->withError('Gagal mengupload bukti pembayaran: ' . $e->getMessage())->withInput();
+        }
+
+        $transaksi->save();
+
+        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
     }
 
     //== Transaksi langsung ==

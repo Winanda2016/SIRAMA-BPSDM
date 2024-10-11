@@ -48,12 +48,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function Transaksi(){
-        return $this->hasMany(Transaksi::class,'id');
+    public function Transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'id');
     }
 
-    public function Komentar(){
-        return $this->hasMany(Komentar::class,'id');
+    public function Komentar()
+    {
+        return $this->hasMany(Komentar::class, 'id');
     }
 
     public $incrementing = false; // karena id tidak auto increment
@@ -65,5 +67,10 @@ class User extends Authenticatable
         static::creating(function ($model) {
             $model->{$model->getKeyName()} = (string) Str::uuid();
         });
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
     }
 }

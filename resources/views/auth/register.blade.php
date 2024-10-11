@@ -17,8 +17,15 @@
         <!-- Email Address -->
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" :value="old('email')" required autocomplete="username">
+            <input type="email" class="form-control" id="email" name="email" :value="old('email')" required autocomplete="email">
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- No HP -->
+        <div class="mb-3">
+            <label for="no_hp" class="form-label">Nomor HP</label>
+            <input type="no_hp" class="form-control" id="no_hp" name="no_hp" :value="old('no_hp')" required autocomplete="no_hp">
+            <x-input-error :messages="$errors->get('no_hp')" class="mt-2" />
         </div>
 
         <!-- Password -->

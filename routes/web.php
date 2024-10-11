@@ -18,25 +18,39 @@ use App\Models\Dashboard;
 use App\Models\JInstansi;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// ============================================================================================================================
 
-Route::get('/admin-dashboard', [DashboardController::class, 'indexAdmin']);
-Route::get('/transaksi/{id}/faktur/download', [CetakDokumenController::class, 'downloadFaktur'])->name('transaksi.faktur.download');
+Route::middleware('guest')->group(function () {
 
-// --------------------------------------------------------------------------------------------
+    Route::get('/', [DashboardController::class, 'indexTamu'])->name('Tdashboard');
+
+    //== Tamu==
+    Route::get('/tentang-kami', function () {
+        return view('tamu.tentangKami');
+    })->name('Ptentang');
+
+    //== Kamar Tamu ==
+    Route::post('/cek-ketersediaan-kamar', [transaksiKamarController::class, 'cekKetersediaan'])->name('cek-ketersediaan-kamar');
+    Route::get('/kamar', [transaksiKamarController::class, 'index'])->name('kamar_tamu');
+
+    //== Ruangan Tamu ==
+    Route::get('/ruangan', [transaksiRuanganController::class, 'index'])->name('ruangan_tamu');
+    Route::get('/ruangan/detail/{id}', [transaksiRuanganController::class, 'show'])->name('detail_ruangan_tamu');
+    Route::post('/cek-ketersediaan-ruangan/{id}', [transaksiRuanganController::class, 'cekKetersediaan'])
+        ->name('cek_ketersediaan_ruangan');
+
+    //== Kontak ==
+    Route::get('/kontak', function () {
+        return view('tamu.kontak');
+    })->name('Pkontak');
+});
+
+// ============================================================================================================================
+
 //== Admin ==
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::get('/', [DashboardController::class, 'indexTamu'])->name('Tdashboard');
+    Route::get('/admin-dashboard', [DashboardController::class, 'indexAdmin']);
 
     //== Gedung ==
     Route::resource('/gedung', GedungController::class);
@@ -71,21 +85,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/laporan/cetak-excel', [CetakDokumenController::class, 'laporanExcel'])->name('laporan_excel');
 });
 
-// -------------------------------------------------------------------------------------------------------------------------------
-//Pegawai
+// ============================================================================================================================
+//== Pegawai ==
 Route::middleware(['auth', 'role:pegawai'])->group(function () {
 
     Route::get('/pegawai-dashboard', [DashboardController::class, 'indexPegawai'])->name('dashboard_pegawai');
-    
+
     Route::get('/cek/kamar', [KamarController::class, 'cekKamar'])->name('cek_kamar');
     Route::get('/cek/ruangan', [RuanganController::class, 'cekRuangan'])->name('cek_ruangan');
-});
 
-// -------------------------------------------------------------------------------------------------------------------------------
-//== Admin & Pegawai ==
-Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
-
-    //== Reservasi ==
+    //== Transaksi ==
     Route::get('/permintaan-reservasi', [TransaksiController::class, 'showPReservasi'])->name('permintaan_reservasi')->middleware('check.expired.transactions');
     Route::post('/tambah-kamar-transaksi/{jenis_transaksi}/{id}', [TransaksiController::class, 'tambahKamar'])->name('tambah_kamar_transaksi');
     Route::delete('/hapus-kamar-transaksi/{jenis_transaksi}/{id}', [TransaksiController::class, 'hapusKamar'])->name('hapus_kamar_transaksi');
@@ -100,13 +109,10 @@ Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
     Route::get('/reservasi/ruangan/edit/{id}', [transaksiRuanganController::class, 'editReservasiAdmin'])->name('admin_reservasiRuangan.edit');
     Route::put('/update-reservasi/ruangan/{id}', [transaksiRuanganController::class, 'updateReservasiAdmin'])->name('admin_reservasiRuangan.update');
 
-    //== Transaksi ==
-    Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayatTransaksi'])->name('riwayat_transaksi')->middleware('check.expired.transactions');
-
-    Route::get('/detail/{jenis_transaksi}/{id}', [TransaksiController::class, 'detailTransaksi'])->name('detail_transaksi')->middleware('check.expired.transactions');
     Route::put('/reservasi/tolak/{id}', [TransaksiController::class, 'tolakReservasi'])->name('tolak_reservasi');
     Route::put('/reservasi/terima/{jenis_transaksi}/{id}', [TransaksiController::class, 'terimaReservasiRuangan'])->name('terima_reservasiRuangan');
     Route::put('/reservasi/cancel/{id}', [TransaksiController::class, 'cancelReservasi'])->name('cancel_reservasi');
+
     Route::put('/checkin/{jenis_transaksi}/{id}', [TransaksiController::class, 'CheckIn'])->name('checkin');
     Route::put('/checkout/{jenis_transaksi}/{id}', [TransaksiController::class, 'CheckOut'])->name('checkout');
     Route::put('/diskon/{jenis_transaksi}/{id}', [TransaksiController::class, 'diskon'])->name('diskon_transaksi');
@@ -114,22 +120,28 @@ Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
     Route::get('/checkin/kamar', [transaksiKamarController::class, 'createCheckIn'])->name('kamar_checkin.create');
     Route::post('/checkin', [transaksiKamarController::class, 'storeCheckIn'])->name('kamar_checkin_store');
 
-    Route::get('/faktur/kirim-wa/{id}', [CetakDokumenController::class, 'fakturWhatsApp'])->name('faktur_wa');
+    Route::put('/bukti-bayar/{jenis_transaksi}/{id}', [TransaksiController::class, 'tambahBuktiBayar'])
+        ->name('bukti_bayar');
 
     //== Daftar Tamu ==
     Route::get('/daftar-tamu', [TransaksiController::class, 'daftarTamu'])->name('daftar_tamu')->middleware('check.expired.transactions');
 });
+
 // ============================================================================================================================
 
-//================================ CONTROLLER TAMU ================================
-//== Tamu==
-Route::get('/tentang-kami', function () {
-    return view('tamu.tentangKami');
-})->name('Ptentang');
-// --------------------------------------------------------------------------------------------
+//== Admin & Pegawai ==
+Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
+    Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayatTransaksi'])->name('riwayat_transaksi')->middleware('check.expired.transactions');
+    Route::get('/detail/{jenis_transaksi}/{id}', [TransaksiController::class, 'detailTransaksi'])->name('detail_transaksi')->middleware('check.expired.transactions');
+    Route::get('/faktur/kirim-wa/{id}', [CetakDokumenController::class, 'fakturWhatsApp'])->name('faktur_wa');
+});
 
+// ============================================================================================================================
 //== Tamu ==
 Route::middleware(['auth', 'role:tamu'])->group(function () {
+
+    Route::get('/transaksi/{id}/faktur/download', [CetakDokumenController::class, 'downloadFaktur'])->name('transaksi.faktur.download');
+
     //Riwayat
     Route::get('/tamu/riwayat-transaksi', [tamuTransaksiController::class, 'riwayatTransaksi'])->name('riwayat_tamu');
     Route::get('/riwayat-transaksi/detail/{jenis_transaksi}/{id}', [tamuTransaksiController::class, 'showDetailRiwayat'])
@@ -157,26 +169,6 @@ Route::middleware(['auth', 'role:tamu'])->group(function () {
 
 // --------------------------------------------------------------------------------------------
 
-//== Kamar Tamu ==
-Route::post('/cek-ketersediaan-kamar', [transaksiKamarController::class, 'cekKetersediaan'])->name('cek-ketersediaan-kamar');
-Route::get('/kamar', [transaksiKamarController::class, 'index'])->name('kamar_tamu');
-// Route::post('/kamar', [transaksiKamarController::class, 'checkAvailability'])->name('cek-kamar.check');
-// --------------------------------------------------------------------------------------------
-
-//== Ruangan Tamu ==
-Route::get('/ruangan', [transaksiRuanganController::class, 'index'])->name('ruangan_tamu');
-Route::get('/ruangan/detail/{id}', [transaksiRuanganController::class, 'show'])->name('detail_ruangan_tamu');
-Route::post('/cek-ketersediaan-ruangan/{id}', [transaksiRuanganController::class, 'cekKetersediaan'])
-    ->name('cek_ketersediaan_ruangan');
-
-// --------------------------------------------------------------------------------------------
-
-//== Kontak ==
-Route::get('/kontak', function () {
-    return view('tamu.kontak');
-})->name('Pkontak');
-
-// --------------------------------------------------------------------------------------------
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

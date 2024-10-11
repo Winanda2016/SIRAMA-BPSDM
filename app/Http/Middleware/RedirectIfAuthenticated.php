@@ -21,7 +21,15 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect('kamar');
+                // Ambil user yang sedang login
+                $user = Auth::user();
+
+                // Cek peran pengguna dan redirect sesuai dengan perannya
+                if ($user->role == 'admin') {
+                    return redirect('/admin-dashboard');
+                } elseif ($user->role == 'pegawai') {
+                    return redirect('/pegawai-dashboard');
+                }
             }
         }
 

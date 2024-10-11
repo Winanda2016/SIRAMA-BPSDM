@@ -28,10 +28,20 @@
                         <div class="d-flex align-items-start">
                             <div class="flex-grow-1">
                                 <div class="mb-4">
-                                    @if ($data->foto_users)
-                                    <img src="{{ asset($data->foto_users) }}" alt="" height="24"><span class="logo-txt">{{ $data->nama_users }}</span>
-                                    @else
-                                    <img src="{{ asset('tamu/assets/img/profile/no_profile.png') }}" alt="" height="24"><span class="logo-txt">{{ $data->nama_users }}</span>
+                                    <img src="{{ asset('tamu/assets/img/profile/no_profile.png') }}" alt="" height="24"><span class="logo-txt">{{ $data->nama_users }} | </span>
+
+                                    @if ($data->status_transaksi === 'pending')
+                                    <div class="badge badge-soft-secondary font-size-12">pending</div>
+                                    @elseif ($data->status_transaksi === 'checkin')
+                                    <div class="badge badge-soft-primary font-size-12">check in</div>
+                                    @elseif ($data->status_transaksi === 'checkout')
+                                    <div class="badge badge-soft-danger font-size-12">check out</div>
+                                    @elseif ($data->status_transaksi === 'terima')
+                                    <div class="badge badge-soft-success font-size-12">di terima</div>
+                                    @elseif ($data->status_transaksi === 'tolak')
+                                    <div class="badge badge-soft-danger font-size-12">di tolak</div>
+                                    @elseif ($data->status_transaksi === 'batal')
+                                    <div class="badge badge-soft-danger font-size-12">di batalkan</div>
                                     @endif
                                 </div>
                             </div>
@@ -55,20 +65,7 @@
                         <div class="col-sm-4">
                             <div>
                                 <h5 class="font-size-15 mb-3">
-                                    Reservasi:
-                                    @if ($data->status_transaksi === 'pending')
-                                    <div class="badge badge-soft-secondary font-size-12">pending</div>
-                                    @elseif ($data->status_transaksi === 'checkin')
-                                    <div class="badge badge-soft-primary font-size-12">check in</div>
-                                    @elseif ($data->status_transaksi === 'checkout')
-                                    <div class="badge badge-soft-danger font-size-12">check out</div>
-                                    @elseif ($data->status_transaksi === 'terima')
-                                    <div class="badge badge-soft-success font-size-12">di terima</div>
-                                    @elseif ($data->status_transaksi === 'tolak')
-                                    <div class="badge badge-soft-danger font-size-12">di tolak</div>
-                                    @elseif ($data->status_transaksi === 'batal')
-                                    <div class="badge badge-soft-danger font-size-12">di batalkan</div>
-                                    @endif
+                                    Transaksi:
                                 </h5>
                                 <h5 class="font-size-14 mb-2">{{ $data->nama }}</h5>
                                 <p class="mb-1">{{ $data->nama_instansi }}</p>
@@ -204,6 +201,23 @@
                             @endif
                         </a>
                     </div>
+                    <div class="py-2">
+                        <h5 class="font-size-15">Bukti Bayar :</h5>
+                        <a type="button" class="mb-1">
+                            <i class="bx bxs-file-jpg font-size-20 align-middle" style="color: rgba(75, 166, 239, 0.4);"></i>
+                            @if($data->bukti_bayar)
+                            @php
+                            $filePath = asset($data->bukti_bayar);
+                            $fileName = basename($data->bukti_bayar);
+                            @endphp
+                            <a href="{{ $filePath }}" download="{{ $fileName }}" style="font-size: 12px;">
+                                <u>{{ $fileName }}</u>
+                            </a>
+                            @else
+                            <span class="text-info" style="font-size: 12px;"><u>bukti bayar tidak tersedia.</u></span>
+                            @endif
+                        </a>
+                    </div>
 
                     <div class="py-2 mt-3">
                         <h5 class="font-size-15">Ringkasan Transaksi</h5>
@@ -255,10 +269,16 @@
                     </div>
                     <div class="d-print-none mt-3">
                         <div class="float-end">
-                            <a href="https://wa.me/{{ $no_hp }}" class="btn btn-success waves-effect waves-light m-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
+                            @php
+                            $whatsappNumber = $data->no_hp;
+                            if (!str_starts_with($whatsappNumber, '+62')) {
+                            $whatsappNumber = '+62' . ltrim($whatsappNumber, '0');
+                            }
+                            @endphp
+                            <a href="https://wa.me/{{ $whatsappNumber }}" class="btn btn-success waves-effect waves-light m-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
 
                             <!-- ============================================================= -->
-                            @if( Auth::user()->role == 'admin')
+                            @if( Auth::user()->role == 'pegawa')
                             @if ($data->status_transaksi === 'terima')
                             <!-- == Edit Reservasi == -->
                             @if ($jenis_transaksi === 'kamar')
@@ -508,8 +528,40 @@
                             </div>
 
                             <!-- ============================================================= -->
-
+                            @endif
                             @elseif ($data->status_transaksi === 'checkout')
+                            
+                            <button type="button" class="btn btn-info waves-effect btn-label waves-light m-1" data-bs-toggle="modal" data-bs-target="#bukti_bayar">
+                                <i class="bx bxs-file-jpg label-icon"></i>
+                                Bukti Bayar
+                            </button>
+                            <!-- Modal Bukti Bayar -->
+                            <div class="modal fade" id="bukti_bayar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="bukti_bayarLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white"" id=" bukti_bayarLabel">Tambah Bukti Bayar</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body"><br>
+                                            <form id="bbayarForm" action="{{ route('bukti_bayar', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="mb-3">
+                                                    <label for="bukti_bayar" class="form-label">Bukti Bayar</label>
+                                                    <input type="file" class="form-control" id="bukti_bayar" name="bukti_bayar">
+                                                    <div class="text-muted" style="font-size: 11px;">*file berupa JPEG/PNG/JPG/dan sebagainya.</div>
+                                                </div>
+                                                <div class="mb-3" align="right">
+                                                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-success mx-2">Simpan</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <button type="button" class="btn btn-primary waves-effect btn-label waves-light m-1" data-bs-toggle="modal" data-bs-target="#faktur">
                                 <i class="bx bx-printer label-icon"></i>
                                 Faktur
@@ -540,7 +592,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @endif
                             @endif
                             <a type="reset" class="btn btn-secondary waves-effect waves-light m-1" onclick="kembali()">Kembali</a>
                         </div>
