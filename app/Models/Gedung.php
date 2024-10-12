@@ -22,7 +22,7 @@ class Gedung extends Model
         return $this->hasMany(Ruangan::class);
     }
 
-    public $incrementing = false; // karena id tidak auto increment
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected static function boot()

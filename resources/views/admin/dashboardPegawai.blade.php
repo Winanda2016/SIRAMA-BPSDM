@@ -119,7 +119,7 @@ $ar_judultc = ['No','Nama','Jenis Transaksi','Aksi'];
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h6>Tamu yang akan Check-Out hari ini</h6>
+                        <h6>Tamu yang akan Check-Out</h6>
                         <hr>
                         <div class="table-responsive">
                             <table class="table align-middle table-bordered table-check nowrap" style=" width: 100%; text-transform:capitalize">

@@ -278,7 +278,7 @@
                             <a href="https://wa.me/{{ $whatsappNumber }}" class="btn btn-success waves-effect waves-light m-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>
 
                             <!-- ============================================================= -->
-                            @if( Auth::user()->role == 'pegawa')
+                            @if( Auth::user()->role == 'pegawai')
                             @if ($data->status_transaksi === 'terima')
                             <!-- == Edit Reservasi == -->
                             @if ($jenis_transaksi === 'kamar')

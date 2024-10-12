@@ -224,7 +224,7 @@ class transaksiKamarController extends Controller
         return response()->json(['jumlah_kamar_tersedia' => $jumlah_kamar_tersedia]);
     }
 
-    // == ADMIN / PEGAWAI ==
+    // == PEGAWAI ==
     public function editReservasiAdmin($id)
     {
         $jinstansi = JInstansi::all();
@@ -339,7 +339,7 @@ class transaksiKamarController extends Controller
         $transaksi->jinstansi_id = $validatedData['jinstansi_id'];
         $transaksi->tgl_reservasi = Carbon::now()->toDateString();
         $transaksi->jenis_transaksi = 'kamar';
-        $transaksi->status_transaksi = 'terima';
+        $transaksi->status_transaksi = 'checkin';
         $transaksi->diskon = 0;
         $transaksi->save();
 

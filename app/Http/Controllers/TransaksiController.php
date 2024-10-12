@@ -420,7 +420,10 @@ class TransaksiController extends Controller
 
         // Jika jenis transaksi adalah kamar, tambahkan validasi jumlah_ruangan
         if ($jenis_transaksi == 'kamar') {
-            $rules['jumlah_ruangan'] = 'required|integer|min:1';
+            $request->validate([
+                'jumlah_ruangan' => 'required|integer|min:1',
+            ]);
+            $validatedData['jumlah_ruangan'] = $request->input('jumlah_ruangan');
         }
         Log::info('Data yang tervalidasi:', $validatedData);
 
@@ -449,7 +452,7 @@ class TransaksiController extends Controller
         $transaksi->tgl_checkin = $validatedData['tgl_checkin'];
         $transaksi->tgl_checkout = $validatedData['tgl_checkout'];
         $transaksi->jumlah_orang = $validatedData['jumlah_orang'];
-        $transaksi->jumlah_orang = $jumlah_ruangan;
+        $transaksi->jumlah_ruangan = $jumlah_ruangan;
         $transaksi->jinstansi_id = $validatedData['jinstansi_id'];
         $transaksi->harga = $total_harga;
         $transaksi->total_harga = $total_harga;
@@ -481,6 +484,6 @@ class TransaksiController extends Controller
             $detailTransaksi->save();
         }
 
-        return redirect()->route('daftar_reservasi')->with('success', 'Reservasi berhasil ditambahkan.');
+        return redirect()->route('permintaan_reservasi')->with('success', 'Reservasi berhasil ditambahkan.');
     }
 }
