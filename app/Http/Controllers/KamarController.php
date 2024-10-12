@@ -61,7 +61,6 @@ class KamarController extends Controller
             'nomor_kamar' => 'required|max:5',
             'status' => 'required',
             'kapasitas' => 'required|min:1',
-            'deskripsi' => 'nullable|string|max:255',
             'gedung_id' => 'required|uuid',
         ]);
 
@@ -71,7 +70,6 @@ class KamarController extends Controller
         $kamar->status = $validatedData['status'];
         $kamar->nomor_kamar = $validatedData['nomor_kamar'];
         $kamar->kapasitas = $validatedData['kapasitas'];
-        $kamar->deskripsi = $validatedData['deskripsi'];
         $kamar->gedung_id = $validatedData['gedung_id'];
 
         if ($kamar->save()) {
@@ -113,7 +111,6 @@ class KamarController extends Controller
             'nomor_kamar' => 'required|max:5',
             'status' => 'required',
             'kapasitas' => 'required|min:1',
-            'deskripsi' => 'nullable|string|max:255',
             'gedung_id' => 'required|uuid',
         ]);
 
@@ -134,7 +131,6 @@ class KamarController extends Controller
         $kamar->status = $validatedData['status'];
         $kamar->nomor_kamar = $validatedData['nomor_kamar'];
         $kamar->kapasitas = $validatedData['kapasitas'];
-        $kamar->deskripsi = $validatedData['deskripsi'];
         $kamar->gedung_id = $validatedData['gedung_id'];
 
         try {

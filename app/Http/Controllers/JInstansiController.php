@@ -26,7 +26,7 @@ class JInstansiController extends Controller
 
         // Validasi input
         $request->validate([
-            'nama_instansi' => 'required|string|unique:jinstansi,nama_instansi',
+            'nama_instansi' => 'required|string|unique:jenis_instansi,nama_instansi',
             'harga' => 'required|numeric'
         ]);
 
