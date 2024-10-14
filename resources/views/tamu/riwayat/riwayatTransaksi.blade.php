@@ -27,6 +27,18 @@ $no = 1;
         <div class="room-details-item">
             <div class="rd-text">
                 <div class="card p-4">
+                    <div>
+                        @if($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <p>{{ $message }}</p>
+                        </div>
+                        @endif
+                        @if($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ $message }}</p>
+                        </div>
+                        @endif
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered datatable dt-responsive table-check nowrap" style="width: 100%;">
                             <thead>

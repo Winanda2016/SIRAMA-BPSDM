@@ -122,7 +122,7 @@ $ar_judultc = ['No','Nama','Jenis Transaksi','Aksi'];
                         <h6>Tamu yang akan Check-Out</h6>
                         <hr>
                         <div class="table-responsive">
-                            <table class="table align-middle table-bordered table-check nowrap" style=" width: 100%; text-transform:capitalize">
+                            <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%; text-transform:capitalize">
                                 <thead>
                                     <tr class="table-primary">
                                         @foreach($ar_judultc as $jdltc)
@@ -131,12 +131,9 @@ $ar_judultc = ['No','Nama','Jenis Transaksi','Aksi'];
                                     </tr>
                                 </thead>
                                 <tbody align="center">
-                                    @foreach ($transaksiCheckIn as $tc)
-                                    @php
-                                    $no = 1;
-                                    @endphp
+                                    @foreach ($transaksiCheckIn as $key => $tc)
                                     <tr>
-                                        <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                        <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $key + 1 }}</a> </td>
                                         <td>{{ $tc->nama }}</td>
                                         <td>{{ $tc->jenis_transaksi }}</td>
                                         <td>
@@ -159,7 +156,7 @@ $ar_judultc = ['No','Nama','Jenis Transaksi','Aksi'];
                         <hr>
 
                         <div class="table-responsive">
-                            <table class="table align-middle table-bordered table-check nowrap" style=" width: 100%;">
+                            <table class="table align-middle table-bordered datatable dt-responsive table-check nowrap" style=" width: 100%;">
                                 <thead>
                                     <tr class="table-primary">
                                         @foreach($ar_judul as $jdl)
@@ -168,12 +165,9 @@ $ar_judultc = ['No','Nama','Jenis Transaksi','Aksi'];
                                     </tr>
                                 </thead>
                                 <tbody align="center">
-                                    @foreach ($transaksiPending as $tp)
-                                    @php
-                                    $no = 1;
-                                    @endphp
+                                    @foreach ($transaksiPending as $key => $tp)
                                     <tr>
-                                        <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $no++ }}</a> </td>
+                                        <td><a href="javascript: void(0);" class="text-body fw-medium">{{ $key + 1 }}</a> </td>
                                         <td>{{ $tp->nama }}</td>
                                         <td>{{ $tp->nama_instansi }}</td>
                                         <td>
