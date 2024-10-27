@@ -29,29 +29,35 @@ $no = 1;
                             <div class="mb-4">
                                 <div>
                                     @if($message = Session::get('success'))
-                                    <div class="alert alert-success">
+                                    <div class="alert alert-success alert-dismissible">
                                         <p>{{ $message }}</p>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     @endif
                                     @if($message = Session::get('error'))
-                                    <div class="alert alert-danger">
+                                    <div class="alert alert-danger alert-dismissible">
                                         <p>{{ $message }}</p>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     @endif
                                 </div>
 
-                                <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="modal" 
+                                <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="modal"
                                     data-bs-target="#tambahGedung">
                                     <i class="bx bx-plus label-icon"></i>
                                     Tambah Gedung
                                 </button>
 
                                 <!-- Modal Tambah Gedung -->
-                                <div class="modal fade" id="tambahGedung" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+                                <div class="modal fade" id="tambahGedung" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                     role="dialog" aria-labelledby="tambahGedungLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content border-primary">
-                                            <div class="modal-header  bg-gradient bg-primary" >
+                                            <div class="modal-header  bg-gradient bg-primary">
                                                 <h5 class="modal-title text-white" id="tambahGedungLabel">Form Tambah Gedung</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
@@ -91,13 +97,13 @@ $no = 1;
                                     <td style="width: 74%;">{{ $gd->nama_gedung }}</td>
                                     <td style="width: 25%;">
                                         <div class="d-flex justify-content-center" align="center">
-                                            <button type="button" class="btn btn-warning waves-effect waves-light p-1" title="edit" data-bs-toggle="modal" 
+                                            <button type="button" class="btn btn-warning waves-effect waves-light p-1" title="edit" data-bs-toggle="modal"
                                                 data-bs-target="#editGedung{{ $gd->id }}" style="width: 35px; height:30px; margin-right:15px">
                                                 <i class="bx bxs-edit font-size-16 align-middle"></i>
                                             </button>
 
                                             <!-- Modal Edit Gedung -->
-                                            <div class="modal fade" id="editGedung{{ $gd->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+                                            <div class="modal fade" id="editGedung{{ $gd->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                 role="dialog" aria-labelledby="editGedungLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content border-primary">
@@ -111,8 +117,8 @@ $no = 1;
                                                                 @method('PUT')
                                                                 <div class="mb-3">
                                                                     <label for="nama_gedung" class="form-label">Nama Gedung</label>
-                                                                    <input class="form-control" type="text" name="nama_gedung" value="{{ $gd->nama_gedung }}" 
-                                                                    id="example-text-input">
+                                                                    <input class="form-control" type="text" name="nama_gedung" value="{{ $gd->nama_gedung }}"
+                                                                        id="example-text-input">
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
@@ -135,6 +141,6 @@ $no = 1;
             </div>
         </div>
     </div>
-    
+
 </div>
 @endsection

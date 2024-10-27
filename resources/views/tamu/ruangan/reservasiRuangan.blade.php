@@ -33,11 +33,11 @@
                             @csrf
                             <input type="hidden" name="ruangan_id" value="{{ $ruangan->id }}">
                             <div class="text-input mb-3">
-                                <label for="tglReservasi">Tanggal Reservasi:</label>
+                                <label for="tglReservasi">Tanggal Reservasi <span style="color: red;">*</span></label>
                                 <input type="date" id="tglReservasi" name="tgl_reservasi" value="{{ date('Y-m-d') }}" readonly>
                             </div>
                             <div class="text-input mb-3">
-                                <label for="nama">Nama:</label>
+                                <label for="nama">Nama <span style="color: red;">*</span></label>
                                 <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama') }}" placeholder="masukkan nama anda">
                                 @error('nama')
                                 <span class="invalid-feedback" role="alert">
@@ -46,7 +46,7 @@
                                 @enderror
                             </div>
                             <div class="select-option">
-                                <label for="jinstansi">Jenis Instansi:</label>
+                                <label for="jinstansi">Jenis Instansi <span style="color: red;">*</span></label>
                                 <select id="jinstansi" name="jinstansi_id">
                                     @foreach ($jinstansi as $in)
                                     <option value="{{ $in->id }}" data-price="{{ $in->harga }}">{{ $in->nama_instansi }}</option>
@@ -54,7 +54,7 @@
                                 </select>
                             </div>
                             <div class="text-input mb-3">
-                                <label for="namaInstansi">Nama Instansi:</label>
+                                <label for="namaInstansi">Nama Instansi <span style="color: red;">*</span></label>
                                 <input type="text" class="form-control @error('nama_instansi') is-invalid @enderror" id="namaInstansi" name="nama_instansi" value="{{ old ('nama_instansi') }}" placeholder="Dinas..">
                                 @error('nama_instansi')
                                 <span class="invalid-feedback" role="alert">
@@ -64,7 +64,7 @@
                                 <p>*Jika Umum silahkan isi 'Umum' </p>
                             </div>
                             <div class="text-input mb-3">
-                                <label for="noHP">Nomor HP:</label>
+                                <label for="noHP">Nomor HP <span style="color: red;">*</span></label>
                                 <input type="text" class="form-control @error('nohp') is-invalid @enderror" id="noHP" name="nohp" value="{{ old ('nohp') }}" placeholder="08..">
                                 @error('nohp')
                                 <span class="invalid-feedback" role="alert">
@@ -75,7 +75,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="tanggal">
-                                        <label for="tglCheckIn">Check In:</label>
+                                        <label for="tglCheckIn">Tanggal Mulai</label>
                                         <input type="date" class="form-control @error('tgl_checkin') is-invalid @enderror" name="tgl_checkin" id="tglCheckIn">
                                         @error('tgl_checkin')
                                         <span class="invalid-feedback" role="alert">
@@ -86,7 +86,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="tanggal">
-                                        <label for="tglCheckOut">Check Out:</label>
+                                        <label for="tglCheckOut">Tanggal Selesai</label>
                                         <input type="date" class="form-control @error('tgl_checkout') is-invalid @enderror" name="tgl_checkout" id="tglCheckOut">
                                         @error('tgl_checkout')
                                         <span class="invalid-feedback" role="alert">
@@ -99,7 +99,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="text-input mb-3">
-                                        <label for="jumlahOrang">Jumlah Orang:</label>
+                                        <label for="jumlahOrang">Jumlah Orang <span style="color: red;">*</span></label>
                                         <input type="number" class="form-control @error('jumlah_orang') is-invalid @enderror" id="jumlahOrang" name="jumlah_orang" value="{{ old ('jumlah_orang') }}" placeholder="0">
                                         @error('jumlah_orang')
                                         <span class="invalid-feedback" role="alert">
@@ -110,13 +110,13 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="text-input mb-3">
-                                        <label for="harga">Harga Ruangan:</label>
+                                        <label for="harga">Harga Ruangan</label>
                                         <input type="text" id="harga" value="RP.{{ $ruangan->formatted_harga }}" disabled>
                                     </div>
                                 </div>
                             </div>
                             <div class="dokumen">
-                                <label for="dokumen_reservasi">Dokumen:</label>
+                                <label for="dokumen_reservasi">Dokumen <span style="color: red;">*</span></label>
                                 <input type="file" class="form-control mt-2 @error('dokumen_reservasi') is-invalid @enderror" id="dokumen_reservasi" name="dokumen_reservasi">
                                 @error('dokumen_reservasi')
                                 <span class="invalid-feedback" role="alert">
@@ -136,6 +136,8 @@
             <div id="description" class="col-lg-6 mx-3">
                 <h3 class="mb-2">Keterangan</h3>
                 <p class="f-para">1. Untuk reservasi ruangan diwajibkan menyertakan surat permintaan reservasi</p>
+                <p class="f-para">2. Jika ingin mengganti tanggal mulai dan tanggal selesai silahkan 
+                    lakukan cek ketersediaan kembali pada halaman sebelumnya</p>
             </div>
         </div>
     </div>

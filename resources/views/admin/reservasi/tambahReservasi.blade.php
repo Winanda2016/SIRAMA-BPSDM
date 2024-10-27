@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <h4 align="center">Formulir Tambah Reservasi <br> ( {{ $jenis_transaksi }} )</h4>
                     <hr>
-                    <form method="POST" action="{{ route('admin_reservasi.store', ['jenis_transaksi' => $jenis_transaksi]) }}" enctype="multipart/form-data" id="reservationForm">
+                    <form method="POST" action="{{ route('pegawai_reservasi.store', ['jenis_transaksi' => $jenis_transaksi]) }}" enctype="multipart/form-data" id="reservationForm">
                         @csrf
                         <input type="hidden" name="jenis_transaksi" value="{{ $jenis_transaksi }}">
                         <div class="row">

@@ -44,22 +44,18 @@
                                     <td>: {{ $ruangan->kapasitas }} Orang</td>
                                 </tr>
                                 <tr>
-                                    <td class="r-o">Fasilitas:</td>
+                                    <td class="r-o">Fasilitas</td>
                                     <td>: {!! nl2br(e($ruangan->fasilitas)) !!}</td>
                                 </tr>
+                                <tr></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <hr>
 
-                <h4 class="my-4">Keterangan</h4>
-                <p class="f-para">1. Setiap kamar terdiri dari 2 buah bed single</p>
-                <p class="f-para">2. Untuk melakukan reservasi silahkan hitung pemesanan berdasarkan jumlah bed yang dibutuhkan</p>
-                <p class="f-para">3. Harga yang tertera merupakan harga per bed</p>
-                <p class="f-para">4. Satu bed hanya dapat di tempati maksimal oleh satu orang dewasa</p>
-                <p class="f-para">5. Jika anda hanya menyewa untuk satu bed saja, tidak akan ada kemungkinan
-                    untuk anda menempati kamar yang sama dengan orang lain</p>
+                <h4 class="my-4">Deskripsi</h4>
+                <p class="f-para">{!! nl2br(e($ruangan -> deskripsi)) !!}</p>
             </div>
             <div class="col-lg-4">
                 <div class="card" style="padding: 44px 10px 50px 10px;">
@@ -70,11 +66,11 @@
                             @csrf
                             <input type="hidden" name="ruangan_id" value="{{ $ruangan->id }}"> <!-- Tambahkan ini -->
                             <div class="tanggal">
-                                <label for="date-in">Check In:</label>
+                                <label for="date-in">Tanggal Mulai:</label>
                                 <input type="date" id="date-in" name="cek_tgl_checkin" placeholder="YYYY-MM-DD" required>
                             </div>
                             <div class="tanggal">
-                                <label for="date-out">Check Out:</label>
+                                <label for="date-out">Tanggal Selesai:</label>
                                 <input type="date" id="date-out" name="cek_tgl_checkout" placeholder="YYYY-MM-DD" required>
                             </div>
                             <button type="submit" class="cek-ketersediaan">Cek Ketersediaan</button><br>

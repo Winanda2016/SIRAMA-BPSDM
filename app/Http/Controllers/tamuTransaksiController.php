@@ -18,7 +18,6 @@ class tamuTransaksiController extends Controller
     {
         $userId = auth()->user()->id;
 
-        // Query untuk transaksi kamar
         $transaksi = Transaksi::select(
             'transaksi.jenis_transaksi',
             'transaksi.tgl_reservasi',
@@ -51,7 +50,6 @@ class tamuTransaksiController extends Controller
                 )
                 ->first();
 
-            // Perhitungan total hari
             $tgl_checkin = \Carbon\Carbon::parse($data->tgl_checkin);
             $tgl_checkout = \Carbon\Carbon::parse($data->tgl_checkout);
             $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
@@ -76,14 +74,14 @@ class tamuTransaksiController extends Controller
                     't.*'
                 )
                 ->first();
-            // Perhitungan total hari
+                
             $tgl_checkin = \Carbon\Carbon::parse($data->tgl_checkin);
             $tgl_checkout = \Carbon\Carbon::parse($data->tgl_checkout);
             $total_hari = $tgl_checkin->diffInDays($tgl_checkout) + 1;
 
             return view('tamu.riwayat.detail', compact('data', 'jenis_transaksi', 'total_hari'));
         } else {
-            abort(404); // Tambahkan handle untuk jenis transaksi lainnya jika diperlukan
+            abort(404);
         }
     }
 
@@ -92,8 +90,7 @@ class tamuTransaksiController extends Controller
     {
         $transaksi = Transaksi::findOrFail($id);
 
-        // Ubah status transaksi menjadi batal
-        $transaksi->status_transaksi = 'batal'; // atau status sesuai kebutuhan
+        $transaksi->status_transaksi = 'batal';
         $transaksi->save();
 
         return redirect()->route('riwayat_tamu')->with('success', 'Reservasi berhasil dibatalkan!');
@@ -101,16 +98,12 @@ class tamuTransaksiController extends Controller
 
     public function tambahBuktiBayar(Request $request, $id)
     {
-        // Ambil detail transaksi berdasarkan ID
-        // $detailTransaksi = DetailTKamar::findOrFail($id);
         $transaksi = Transaksi::findOrFail($id);
 
-        // Validasi bukti_bayar
         $request->validate([
             'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Upload dokumen jika ada
         try {
             if ($request->hasFile('bukti_bayar')) {
                 $file = $request->file('bukti_bayar');

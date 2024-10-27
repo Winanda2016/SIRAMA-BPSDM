@@ -33,13 +33,19 @@ $no = 1;
                             <div class="mb-4">
                                 <div>
                                     @if($message = Session::get('success'))
-                                    <div class="alert alert-success">
+                                    <div class="alert alert-success alert-dismissible">
                                         <p>{{ $message }}</p>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     @endif
                                     @if($message = Session::get('error'))
-                                    <div class="alert alert-danger">
+                                    <div class="alert alert-danger alert-dismissible">
                                         <p>{{ $message }}</p>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     @endif
                                 </div>
@@ -138,7 +144,7 @@ $no = 1;
                                         @php
                                         $no_hp = $ku->no_hp;
                                         if (!preg_match('/^\+\d+/', $no_hp)) {
-                                        $no_hp = '+62' . ltrim($no_hp, '0'); 
+                                        $no_hp = '+62' . ltrim($no_hp, '0');
                                         }
                                         @endphp
                                         <a href="https://wa.me/{{ $no_hp }}" class="btn btn-success waves-effect waves-light m-1"><i class="bx bxl-whatsapp font-size-20 align-middle"></i></a>

@@ -36,12 +36,6 @@ class CheckExpiredTransactions
             ->where('tgl_checkin', '<=', $today)
             ->update(['status_transaksi' => 'checkin']);
 
-        // Update transaksi ruangan: status 'check in' menjadi 'check out' jika sudah melewati tgl_checkout
-        Transaksi::where('jenis_transaksi', 'ruangan')
-            ->where('status_transaksi', 'checkin')
-            ->where('tgl_checkout', '<', $today)
-            ->update(['status_transaksi' => 'checkout']);
-
         return $next($request);
     }
 }

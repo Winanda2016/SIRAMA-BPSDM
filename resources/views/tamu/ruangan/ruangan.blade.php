@@ -52,13 +52,6 @@
                 </div>
             </div>
             @endforeach
-            <div class="col-lg-12">
-                <div class="room-pagination">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">Next <i class="fa fa-long-arrow-right"></i></a>
-                </div>
-            </div>
         </div>
     </div>
 </section>

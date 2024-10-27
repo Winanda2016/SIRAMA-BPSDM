@@ -16,7 +16,6 @@ class transaksiKamarController extends Controller
 {
     public function index()
     {
-
         $jinstansi = JInstansi::orderBy('id', 'desc')->get();
         $kamarTersedia = Kamar::where('status', 'kosong')->count();
 
@@ -97,7 +96,7 @@ class transaksiKamarController extends Controller
             // Perbarui path file baru di database
             $transaksi->dokumen_reservasi = 'dokumen/reservasi/' . $newFileName;
         }
-        
+
         $transaksi->save();
 
         return redirect()->route('riwayat_tamu')->with('success', 'Reservasi berhasil dilakukan.');
@@ -225,7 +224,7 @@ class transaksiKamarController extends Controller
     }
 
     // == PEGAWAI ==
-    public function editReservasiAdmin($id)
+    public function editReservasiPegawai($id)
     {
         $jinstansi = JInstansi::all();
         $data = DB::table('transaksi as t')
@@ -241,7 +240,7 @@ class transaksiKamarController extends Controller
         return view('admin.reservasi.kamar.editReservasi', compact('data', 'jinstansi'));
     }
 
-    public function updateReservasiAdmin(Request $request, $id)
+    public function updateReservasiPegawai(Request $request, $id)
     {
         // Validasi input jika diperlukan
         $validatedData = $request->validate([
@@ -287,7 +286,10 @@ class transaksiKamarController extends Controller
         $transaksi->save();
 
         // Redirect ke halaman detail riwayat transaksi
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $transaksi->jenis_transaksi, 'id' => $id])->with('success', 'Data Reservasi berhasil diperbarui!');
+        return redirect()->route(
+            'detail_transaksi',
+            ['jenis_transaksi' => $transaksi->jenis_transaksi, 'id' => $id]
+        )->with('success', 'Data Reservasi berhasil diperbarui!');
     }
 
     public function createCheckIn()
@@ -345,6 +347,9 @@ class transaksiKamarController extends Controller
 
         Log::info('Transaksi berhasil disimpan:', ['transaksi_id' => $transaksi->id]);
 
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $transaksi->jenis_transaksi, 'id' => $transaksi->id])->with('success', 'Data Reservasi berhasil diperbarui!');
+        return redirect()->route(
+            'detail_transaksi',
+            ['jenis_transaksi' => $transaksi->jenis_transaksi, 'id' => $transaksi->id]
+        )->with('success', 'Data Reservasi berhasil diperbarui!');
     }
 }

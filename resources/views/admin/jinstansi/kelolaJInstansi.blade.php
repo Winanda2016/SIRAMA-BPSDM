@@ -32,13 +32,19 @@ $no = 1;
                             <div class="mb-4">
                                 <div>
                                     @if($message = Session::get('success'))
-                                    <div class="alert alert-success">
+                                    <div class="alert alert-success alert-dismissible">
                                         <p>{{ $message }}</p>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     @endif
                                     @if($message = Session::get('error'))
-                                    <div class="alert alert-danger">
+                                    <div class="alert alert-danger alert-dismissible">
                                         <p>{{ $message }}</p>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     @endif
                                 </div>
@@ -104,7 +110,7 @@ $no = 1;
                                             <!-- Modal Edit JInstansi -->
                                             <div class="modal fade" id="editJInstansi{{ $ji->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editJInstansiLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content border-primary">
+                                                    <div class="modal-content border-primary">
                                                         <div class="modal-header bg-gradient bg-primary">
                                                             <h5 class="modal-title text-white" id="editJInstansiLabel">FORM EDIT JENIS INSTANSI</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

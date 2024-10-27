@@ -63,10 +63,8 @@ class RuanganController extends Controller
             'gedung_id' => 'required|uuid',
         ]);
 
-        // Create a new ruangan instance
         $ruangan = new Ruangan();
 
-        // Assign values to the ruangan instance
         $ruangan->nama_ruangan = $validatedData['nama_ruangan'];
         $ruangan->harga = $validatedData['harga'];
         $ruangan->kapasitas = $validatedData['kapasitas'];
@@ -89,11 +87,8 @@ class RuanganController extends Controller
             return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
         }
 
-
-        // Save the ruangan instance to the database
         $ruangan->save();
 
-        // Redirect or return a response as needed
         return redirect()->route('kelola_ruangan')
             ->with('success', 'Ruangan Berhasil Ditambahkan');
     }
@@ -105,7 +100,6 @@ class RuanganController extends Controller
             ->where('ruangan.id', $id)
             ->first();
 
-        // Tampilkan formulir donasi
         return view('admin.ruangan.detailRuangan', compact('ruangan'));
     }
 
@@ -118,7 +112,6 @@ class RuanganController extends Controller
             ->where('ruangan.id', $id)
             ->first();
 
-        // Tampilkan formulir donasi
         return view('admin.ruangan.editRuangan', compact('gedung', 'ruangan'));
     }
 
@@ -135,7 +128,6 @@ class RuanganController extends Controller
             'gedung_id' => 'required|uuid',
         ]);
 
-        // Cek apakah ada ruangan lain dengan nama ruangan dan gedung yang sama
         $existingRuangan = Ruangan::where('nama_ruangan', $request->nama_ruangan)
             ->where('gedung_id', $request->gedung_id)
             ->where('id', '!=', $id) // Mengecualikan ruangan yang sedang diedit
@@ -146,10 +138,7 @@ class RuanganController extends Controller
             return back()->with('error', 'Ruangan dengan nama tersebut di gedung tersebut sudah tersedia.');
         }
 
-        // Find the Donasi record by ID
         $ruangan = Ruangan::findOrFail($id);
-
-        // Assign values to the ruangan instance
         $ruangan->nama_ruangan = $validatedData['nama_ruangan'];
         $ruangan->harga = $validatedData['harga'];
         $ruangan->kapasitas = $validatedData['kapasitas'];
@@ -172,11 +161,8 @@ class RuanganController extends Controller
             return back()->withError('Failed to upload image: ' . $e->getMessage())->withInput();
         }
 
-
-        // Save the ruangan instance to the database
         $ruangan->save();
 
-        // Redirect or return a response as needed
         return redirect()->route('kelola_ruangan')
             ->with('success', 'Ruangan Berhasil Diubah');
     }

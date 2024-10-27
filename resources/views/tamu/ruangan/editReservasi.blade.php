@@ -32,13 +32,13 @@
                         <form method="POST" action="{{ route('reservasi_ruangan.update', ['id' => $data->detail_id]) }}" enctype="multipart/form-data" class="reservationForm">
                             @csrf
                             @method('PUT')
-                            <div class="text-input">
-                                <label for="tglReservasi">Tanggal Reservasi:</label>
+                            <div class="text-input mb-3">
+                                <label for="tglReservasi">Tanggal Reservasi</label>
                                 <input type="date" id="tglReservasi" name="tgl_reservasi" value="{{ old('tgl_reservasi', $data->tgl_reservasi) }}" readonly>
                             </div>
 
-                            <div class="text-input">
-                                <label for="nama">Nama:</label>
+                            <div class="text-input mb-3">
+                                <label for="nama">Nama <span style="color: red;">*</span></label>
                                 <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama', $data->nama) }}">
                                 @error('nama')
                                 <span class="invalid-feedback" role="alert">
@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="select-option">
-                                <label for="jinstansi">Jenis Instansi:</label>
+                                <label for="jinstansi">Jenis Instansi <span style="color: red;">*</span></label>
                                 <select id="jinstansi" name="jinstansi_id">
                                     @foreach ($jinstansi as $in)
                                     <option value="{{ $in->id }}" data-price="{{ $in->harga }}" {{ $in->id == $data->jinstansi_id ? 'selected' : '' }}>
@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="text-input">
-                                <label for="namaInstansi">Nama Instansi:</label>
+                                <label for="namaInstansi">Nama Instansi <span style="color: red;">*</span></label>
                                 <input type="text" class="form-control @error('nama_instansi') is-invalid @enderror" id="namaInstansi" name="nama_instansi" value="{{ old('nama_instansi', $data->nama_instansi) }}">
                                 @error('nama_instansi')
                                 <span class="invalid-feedback" role="alert">
@@ -69,8 +69,8 @@
                                 <p>*Jika Umum silahkan isi 'Umum' </p>
                             </div>
 
-                            <div class="text-input">
-                                <label for="noHP">Nomor HP:</label>
+                            <div class="text-input mb-3">
+                                <label for="noHP">Nomor HP <span style="color: red;">*</span></label>
                                 <input type="text" class="form-control @error('nohp') is-invalid @enderror" id="noHP" name="nohp" value="{{ old('nohp', $data->nohp) }}">
                                 @error('nohp')
                                 <span class="invalid-feedback" role="alert">
@@ -82,21 +82,21 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="tanggal">
-                                        <label for="tglCheckIn">Check In:</label>
+                                        <label for="tglCheckIn">Tanggal Mulai</label>
                                         <input type="date" name="tgl_checkin" id="tglCheckIn" value="{{ old('tgl_checkin', $data->tgl_checkin) }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="tanggal">
-                                        <label for="tglCheckOut">Check Out:</label>
+                                        <label for="tglCheckOut">Tanggal Selesai</label>
                                         <input type="date" name="tgl_checkout" id="tglCheckOut" value="{{ old('tgl_checkout', $data->tgl_checkout) }}" readonly>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="text-input">
-                                        <label for="jumlahOrang">Jumlah Orang:</label>
+                                    <div class="text-input mb-3">
+                                        <label for="jumlahOrang">Jumlah Orang <span style="color: red;">*</span></label>
                                         <input type="number" class="form-control @error('jumlah_orang') is-invalid @enderror" id="jumlahOrang" name="jumlah_orang" value="{{ old('jumlah_orang', $data->jumlah_orang) }}">
                                         @error('jumlah_orang')
                                         <span class="invalid-feedback" role="alert">
@@ -106,8 +106,8 @@
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="text-input">
-                                        <label for="harga">Harga Ruangan:</label>
+                                    <div class="text-input mb-3">
+                                        <label for="harga">Harga Ruangan</label>
                                         <input type="text" id="harga" value="RP.{{ $data->harga }}" readonly>
                                     </div>
                                 </div>
@@ -143,19 +143,10 @@
                 </div>
             </div>
             <div id="description" class="col-lg-6 mx-3">
-                <h3 class="mb-2">Deskripsi</h3>
-                <p class="f-para">Motorhome or Trailer that is the question for you. Here are some of the
-                    advantages and disadvantages of both, so you will be confident when purchasing an RV.
-                    When comparing Rvs, a motorhome or a travel trailer, should you buy a motorhome or fifth
-                    wheeler? The advantages and disadvantages of both are studied so that you can make your
-                    choice wisely when purchasing an RV. Possessing a motorhome or fifth wheel is an
-                    achievement of a lifetime. It can be similar to sojourning with your residence as you
-                    search the various sites of our great land, America.</p>
-                <p>The two commonly known recreational vehicle classes are the motorized and towable.
-                    Towable rvs are the travel trailers and the fifth wheel. The rv travel trailer or fifth
-                    wheel has the
-                    adaptability of possessing transportation for you when you are parked at your campsite.
-                </p>
+                <h3 class="mb-2">Keterangan</h3>
+                <p class="f-para">1. Untuk reservasi ruangan diwajibkan menyertakan surat permintaan reservasi</p>
+                <p class="f-para">2. Jika ingin mengganti tanggal mulai dan tanggal selesai silahkan 
+                    lakukan cek ketersediaan kembali pada halaman sebelumnya</p>
             </div>
         </div>
     </div>

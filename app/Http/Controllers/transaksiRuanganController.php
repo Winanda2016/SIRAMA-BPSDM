@@ -25,11 +25,7 @@ class transaksiRuanganController extends Controller
         $ruanganId = $id;
         $ruangan = Ruangan::select(
             'ruangan.id',
-            'ruangan.nama_ruangan',
-            'ruangan.harga',
-            'ruangan.kapasitas',
-            'ruangan.fasilitas',
-            'ruangan.foto',
+            'ruangan.*',
             'gedung.nama_gedung'
         )
             ->leftjoin('gedung', 'ruangan.gedung_id', '=', 'gedung.id')
@@ -230,7 +226,7 @@ class transaksiRuanganController extends Controller
         ])->with('success', 'Data Reservasi berhasil diperbarui!');
     }
 
-    public function editReservasiAdmin($id)
+    public function editReservasiPegawai($id)
     {
         $jinstansi = JInstansi::all();
         $data = Transaksi::select(
@@ -251,7 +247,7 @@ class transaksiRuanganController extends Controller
         return view('admin.reservasi.ruangan.editreservasi', compact('data', 'jinstansi'));
     }
 
-    public function updateReservasiAdmin(Request $request, $id)
+    public function updateReservasiPegawai(Request $request, $id)
     {
         Log::info('Request data:', $request->all());
 
@@ -264,7 +260,8 @@ class transaksiRuanganController extends Controller
             'tgl_reservasi' => 'required|date_format:Y-m-d',
             'tgl_checkin' => 'required|date_format:Y-m-d',
             'tgl_checkout' => 'required|date_format:Y-m-d',
-            'jumlah_orang' => 'required|integer|min:1'
+            'jumlah_orang' => 'required|integer|min:1',
+            'dokumen_reservasi' => 'required|file|max:2024|mimes:pdf,doc,docx'
         ]);
 
         Log::info('Data yang tervalidasi:', $validatedData);
@@ -308,7 +305,27 @@ class transaksiRuanganController extends Controller
         $transaksi->jumlah_orang = $request->jumlah_orang;
         $transaksi->harga = $harga;
         $transaksi->total_harga = $total_harga;
+        // Handle file upload
+        if ($request->hasFile('dokumen_reservasi')) {
+            // Cek apakah ada file lama
+            if ($transaksi->dokumen_reservasi && file_exists(public_path($transaksi->dokumen_reservasi))) {
+                // Hapus file lama
+                unlink(public_path($transaksi->dokumen_reservasi));
+            }
 
+            $file = $request->file('dokumen_reservasi');
+            $file->getClientOriginalExtension();
+
+            // Format tanggal saat ini
+            $datePrefix = now()->format('Ymd');
+            $newFileName = $datePrefix . '_' . 'Reservasi Ruangan' . '_' . $file->getClientOriginalName();
+
+            // Pindahkan file baru ke direktori penyimpanan
+            $file->move(public_path('dokumen/reservasi'), $newFileName);
+
+            // Perbarui path file baru di database
+            $transaksi->dokumen_reservasi = 'dokumen/reservasi/' . $newFileName;
+        }
         $transaksi->save();
 
 

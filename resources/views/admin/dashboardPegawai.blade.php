@@ -101,11 +101,11 @@ $ar_judultc = ['No','Nama','Jenis Transaksi','Aksi'];
 
     <div class="row">
         <div class="mb-4">
-            <a type="button" href="{{ route('admin_reservasi.create', ['jenis_transaksi' => 'kamar']) }}" class="btn btn-primary waves-effect btn-label waves-light m-1">
+            <a type="button" href="{{ route('pegawai_reservasi.create', ['jenis_transaksi' => 'kamar']) }}" class="btn btn-primary waves-effect btn-label waves-light m-1">
                 <i class="bx bx-plus label-icon"></i>
                 Reservasi Kamar
             </a>
-            <a type="button" href="{{ route('admin_reservasi.create', ['jenis_transaksi' => 'ruangan']) }}" class="btn btn-info waves-effect btn-label waves-light m-1">
+            <a type="button" href="{{ route('pegawai_reservasi.create', ['jenis_transaksi' => 'ruangan']) }}" class="btn btn-info waves-effect btn-label waves-light m-1">
                 <i class="bx bx-plus label-icon"></i>
                 Reservasi Ruangan
             </a>

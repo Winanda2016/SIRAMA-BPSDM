@@ -28,7 +28,7 @@ $no = 1;
             <div class="card">
                 <div class="card-body">
                     <div class="mb-4">
-                        <a type="button" href="{{ route('admin_reservasi.create', ['jenis_transaksi' => 'ruangan']) }}" class="btn btn-primary waves-effect btn-label waves-light m-1">
+                        <a type="button" href="{{ route('pegawai_reservasi.create', ['jenis_transaksi' => 'ruangan']) }}" class="btn btn-primary waves-effect btn-label waves-light m-1">
                             <i class="bx bx-plus label-icon"></i>
                             Reservasi
                         </a>

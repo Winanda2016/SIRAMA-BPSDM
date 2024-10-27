@@ -204,7 +204,7 @@
                     <div class="py-2">
                         <h5 class="font-size-15">Bukti Bayar :</h5>
                         <a type="button" class="mb-1">
-                            <i class="bx bxs-file-jpg font-size-20 align-middle" style="color: rgba(75, 166, 239, 0.4);"></i>
+                            <i class="bx bxs-file-jpg font-size-20 align-middle text-info"></i>
                             @if($data->bukti_bayar)
                             @php
                             $filePath = asset($data->bukti_bayar);
@@ -213,8 +213,43 @@
                             <a href="{{ $filePath }}" download="{{ $fileName }}" style="font-size: 12px;">
                                 <u>{{ $fileName }}</u>
                             </a>
+                            <form action="{{ route('hapus_bukti_bayar', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger waves-effect waves-light mx-1" title="hapus" style="width: 25px; height:25px;padding:0px">
+                                    <i class="bx bx-trash font-size-14 align-middle"></i>
+                                </button>
+                            </form>
                             @else
                             <span class="text-info" style="font-size: 12px;"><u>bukti bayar tidak tersedia.</u></span>
+
+                            <i class="bx bxs-plus-square font-size-18 align-middle text-primary" title="tambah file" role="button" data-bs-toggle="modal" data-bs-target="#bukti_bayar" style="cursor: pointer;"></i>
+                            <!-- Modal Bukti Bayar -->
+                            <div class="modal fade" id="bukti_bayar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="bukti_bayarLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id=" bukti_bayarLabel">Tambah Bukti Bayar</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body"><br>
+                                            <form id="bbayarForm" action="{{ route('bukti_bayar', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="mb-3">
+                                                    <label for="bukti_bayar" class="form-label">Bukti Bayar</label>
+                                                    <input type="file" class="form-control" id="bukti_bayar" name="bukti_bayar">
+                                                    <div class="text-muted" style="font-size: 11px;">*file berupa JPEG/PNG/JPG/dan sebagainya.</div>
+                                                </div>
+                                                <div class="mb-3" align="right">
+                                                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-success mx-2">Simpan</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @endif
                         </a>
                     </div>
@@ -282,9 +317,9 @@
                             @if ($data->status_transaksi === 'terima')
                             <!-- == Edit Reservasi == -->
                             @if ($jenis_transaksi === 'kamar')
-                            <a href="{{ route('admin_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
                             @elseif ($jenis_transaksi === 'ruangan')
-                            <a href="{{ route('admin_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
                             @endif
 
                             <button type="button" class="btn btn-primary waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkin"><b>Check In</b></button>
@@ -460,6 +495,13 @@
                                 </div>
                             </div>
 
+                            <!-- == Edit Reservasi == -->
+                            @if ($jenis_transaksi === 'kamar')
+                            <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            @elseif ($jenis_transaksi === 'ruangan')
+                            <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            @endif
+
                             <!-- ============================================================= -->
 
                             @elseif ($data->status_transaksi === 'checkin')
@@ -497,9 +539,9 @@
 
                             <!-- == Edit Reservasi == -->
                             @if ($jenis_transaksi === 'kamar')
-                            <a href="{{ route('admin_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
                             @elseif ($jenis_transaksi === 'ruangan')
-                            <a href="{{ route('edit_RRuangan', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
                             @endif
 
                             <button type="button" class="btn btn-danger waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkout"><b>Check Out</b></button>
@@ -509,7 +551,7 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content border-primary">
                                         <div class="modal-header bg-gradient bg-primary">
-                                            <h5 class="modal-title text-white"" id=" checkoutLabel">Peringatan!</h5>
+                                            <h5 class="modal-title text-white" id=" checkoutLabel">Peringatan!</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body"><br>
@@ -530,7 +572,7 @@
                             <!-- ============================================================= -->
                             @endif
                             @elseif ($data->status_transaksi === 'checkout')
-                            
+
                             <button type="button" class="btn btn-info waves-effect btn-label waves-light m-1" data-bs-toggle="modal" data-bs-target="#bukti_bayar">
                                 <i class="bx bxs-file-jpg label-icon"></i>
                                 Bukti Bayar
@@ -540,7 +582,7 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content border-primary">
                                         <div class="modal-header bg-gradient bg-primary">
-                                            <h5 class="modal-title text-white"" id=" bukti_bayarLabel">Tambah Bukti Bayar</h5>
+                                            <h5 class="modal-title text-white" id=" bukti_bayarLabel">Tambah Bukti Bayar</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body"><br>

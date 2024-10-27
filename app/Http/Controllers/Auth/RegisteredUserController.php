@@ -20,7 +20,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $user = User::all();
+        return view('auth.register', compact('user'));
     }
 
     /**

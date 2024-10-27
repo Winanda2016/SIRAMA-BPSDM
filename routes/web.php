@@ -15,6 +15,10 @@ use App\Http\Controllers\CetakDokumenController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================================================================================================
+//== Cetak Faktur ==
+Route::get('/transaksi/{id}/faktur/download', [CetakDokumenController::class, 'downloadFaktur'])
+->name('transaksi.faktur.download');
+
 Route::middleware('guest')->group(function () {
 
     Route::get('/', [DashboardController::class, 'indexTamu'])->name('Tdashboard');
@@ -40,6 +44,7 @@ Route::middleware('guest')->group(function () {
     //== Kontak ==
     Route::get('/kontak', function () {return view('tamu.kontak');})
         ->name('Pkontak');
+
 });
 
 
@@ -117,19 +122,19 @@ Route::middleware(['auth', 'role:pegawai'])->group(function () {
         ->name('daftar_reservasi')
         ->middleware('check.expired.transactions');
     Route::get('/tambah-reservasi/{jenis_transaksi}', [TransaksiController::class, 'createReservasi'])
-        ->name('admin_reservasi.create');
+        ->name('pegawai_reservasi.create');
     Route::post('/simpan-reservasi/{jenis_transaksi}', [TransaksiController::class, 'storeReservasi'])
-        ->name('admin_reservasi.store');
+        ->name('pegawai_reservasi.store');
 
-    Route::get('/reservasi/kamar/edit/{id}', [transaksiKamarController::class, 'editReservasiAdmin'])
-        ->name('admin_reservasiKamar.edit');
-    Route::put('/update-reservasi/kamar/{id}', [transaksiKamarController::class, 'updateReservasiAdmin'])
-        ->name('admin_reservasiKamar.update');
+    Route::get('/reservasi/kamar/edit/{id}', [transaksiKamarController::class, 'editReservasiPegawai'])
+        ->name('pegawai_reservasiKamar.edit');
+    Route::put('/update-reservasi/kamar/{id}', [transaksiKamarController::class, 'updateReservasiPegawai'])
+        ->name('pegawai_reservasiKamar.update');
 
-    Route::get('/reservasi/ruangan/edit/{id}', [transaksiRuanganController::class, 'editReservasiAdmin'])
-        ->name('admin_reservasiRuangan.edit');
-    Route::put('/update-reservasi/ruangan/{id}', [transaksiRuanganController::class, 'updateReservasiAdmin'])
-        ->name('admin_reservasiRuangan.update');
+    Route::get('/reservasi/ruangan/edit/{id}', [transaksiRuanganController::class, 'editReservasiPegawai'])
+        ->name('pegawai_reservasiRuangan.edit');
+    Route::put('/update-reservasi/ruangan/{id}', [transaksiRuanganController::class, 'updateReservasiPegawai'])
+        ->name('pegawai_reservasiRuangan.update');
 
     Route::put('/reservasi/tolak/{id}', [TransaksiController::class, 'tolakReservasi'])
         ->name('tolak_reservasi');
@@ -152,6 +157,8 @@ Route::middleware(['auth', 'role:pegawai'])->group(function () {
 
     Route::put('/bukti-bayar/{jenis_transaksi}/{id}', [TransaksiController::class, 'tambahBuktiBayar'])
         ->name('bukti_bayar');
+        Route::delete('/bukti-bayar/{jenis_transaksi}/{id}', [TransaksiController::class, 'hapusBuktiBayar'])
+        ->name('hapus_bukti_bayar');
 
     //== Daftar Tamu ==
     Route::get('/daftar-tamu', [TransaksiController::class, 'daftarTamu'])
@@ -175,9 +182,6 @@ Route::middleware(['auth', 'role:admin,pegawai'])->group(function () {
 // ========================================================================================================================
 //== Tamu ==
 Route::middleware(['auth', 'role:tamu'])->group(function () {
-
-    Route::get('/transaksi/{id}/faktur/download', [CetakDokumenController::class, 'downloadFaktur'])
-        ->name('transaksi.faktur.download');
 
     //Riwayat
     Route::get('/tamu/riwayat-transaksi', [tamuTransaksiController::class, 'riwayatTransaksi'])

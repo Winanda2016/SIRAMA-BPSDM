@@ -21,6 +21,13 @@ class kelolaUserController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $existingUser = User::where('email', $request->email)
+            ->first();
+
+        if ($existingUser) {
+            return back()->with('error', 'Email tersebut sudah digunakan.');
+        }
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'no_hp' => ['required', 'string', 'max:15'],

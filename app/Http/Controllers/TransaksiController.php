@@ -52,11 +52,8 @@ class TransaksiController extends Controller
                 ->first();
 
             $no_hp = $data->nohp;
-
-            // Cek apakah nomor sudah memiliki kode negara
             if (!preg_match('/^\+\d+/', $no_hp)) {
-                // Tambahkan kode negara jika belum ada
-                $no_hp = '+62' . ltrim($no_hp, '0'); // Misalnya +62 untuk Indonesia
+                $no_hp = '+62' . ltrim($no_hp, '0');
             }
 
             $kamar = detailTKamar::select(
@@ -69,8 +66,6 @@ class TransaksiController extends Controller
                 ->where('detail_transaksi_kamar.transaksi_id', $id)
                 ->get();
 
-
-            //ambil tanggal check in dan check out
             $tglCheckin = $data->tgl_checkin;
             $tglCheckout = $data->tgl_checkout;
 
@@ -93,12 +88,14 @@ class TransaksiController extends Controller
                 ->orderBy('kamar.nomor_kamar')
                 ->get();
 
-            // Perhitungan total hari
             $tgl_checkin = \Carbon\Carbon::parse($data->tgl_checkin);
             $tgl_checkout = \Carbon\Carbon::parse($data->tgl_checkout);
             $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
 
-            return view('admin.transaksi.detailTransaksi', compact('data', 'kamar', 'AddKamar', 'jenis_transaksi', 'total_hari', 'no_hp'));
+            return view(
+                'admin.transaksi.detailTransaksi',
+                compact('data', 'kamar', 'AddKamar', 'jenis_transaksi', 'total_hari', 'no_hp')
+            );
         } elseif ($jenis_transaksi == 'ruangan') {
             $data = Transaksi::select(
                 'i.nama_instansi AS jinstansi',
@@ -122,20 +119,20 @@ class TransaksiController extends Controller
 
             $no_hp = $data->nohp;
 
-            // Cek apakah nomor sudah memiliki kode negara
             if (!preg_match('/^\+\d+/', $no_hp)) {
-                // Tambahkan kode negara jika belum ada
-                $no_hp = '+62' . ltrim($no_hp, '0'); // Misalnya +62 untuk Indonesia
+                $no_hp = '+62' . ltrim($no_hp, '0');
             }
 
-            // Perhitungan total hari
             $tgl_checkin = \Carbon\Carbon::parse($data->tgl_checkin);
             $tgl_checkout = \Carbon\Carbon::parse($data->tgl_checkout);
             $total_hari = $tgl_checkin->diffInDays($tgl_checkout) + 1;
 
-            return view('admin.transaksi.detailTransaksi', compact('data', 'jenis_transaksi', 'total_hari', 'no_hp'));
+            return view(
+                'admin.transaksi.detailTransaksi',
+                compact('data', 'jenis_transaksi', 'total_hari', 'no_hp')
+            );
         } else {
-            abort(404); // Tambahkan handle untuk jenis transaksi lainnya jika diperlukan
+            abort(404);
         }
     }
 
@@ -145,102 +142,94 @@ class TransaksiController extends Controller
         $transaksi->status_transaksi = 'terima';
         $transaksi->save();
 
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
+        return redirect()->route(
+            'detail_transaksi',
+            ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]
+        );
     }
 
     public function tolakReservasi($id)
     {
         $transaksi = Transaksi::findOrFail($id);
 
-        // Ubah status transaksi menjadi batal
-        $transaksi->status_transaksi = 'tolak'; // atau status sesuai kebutuhan
+        $transaksi->status_transaksi = 'tolak';
         $transaksi->save();
 
-        return redirect()->route('riwayat_transaksi')->with('success', 'Reservasi ditolak!');
+        return redirect()->route('riwayat_transaksi')
+            ->with('success', 'Reservasi ditolak!');
     }
 
     public function cancelReservasi($id)
     {
         $transaksi = Transaksi::findOrFail($id);
 
-        // Ubah status transaksi menjadi batal
-        $transaksi->status_transaksi = 'batal'; // atau status sesuai kebutuhan
+        $transaksi->status_transaksi = 'batal';
         $transaksi->save();
 
-        return redirect()->route('riwayat_transaksi')->with('success', 'Reservasi berhasil dibatalkan!');
+        return redirect()->route('riwayat_transaksi')
+            ->with('success', 'Reservasi berhasil dibatalkan!');
     }
 
     //terima reservasi kamar
     public function tambahKamar(Request $request, $jenis_transaksi, $id)
     {
-        // Validasi input dari form
         $validatedData = $request->validate([
             'kamar_ids' => 'required|array',
-            'kamar_ids.*' => 'exists:kamar,id', // Validasi setiap ID kamar harus ada di tabel kamar
+            'kamar_ids.*' => 'exists:kamar,id',
         ]);
 
         $transaksi = Transaksi::findOrFail($id);
 
-        // Ubah status transaksi menjadi
-        $transaksi->status_transaksi = 'terima'; // atau status sesuai kebutuhan
+        $transaksi->status_transaksi = 'terima';
         $transaksi->save();
 
-        // Simpan data baru
         foreach ($validatedData['kamar_ids'] as $kamarId) {
             $detailTransaksi = new DetailTKamar();
-            $detailTransaksi->transaksi_id = $id; // Menggunakan $id sebagai transaksi_id
+            $detailTransaksi->transaksi_id = $id;
             $detailTransaksi->kamar_id = $kamarId;
             $detailTransaksi->save();
         }
 
-        // Redirect ke route detail_transaksi dengan parameter yang diperlukan
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
+        return redirect()->route(
+            'detail_transaksi',
+            ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]
+        );
     }
 
     public function hapusKamar($jenis_transaksi, $id)
     {
-        // Temukan detail transaksi kamar yang akan dihapus
         $detailTransaksi = DetailTKamar::findOrFail($id);
 
-        // Temukan ID kamar dari detail transaksi
         $kamarId = $detailTransaksi->kamar_id;
 
-        // Hapus detail transaksi kamar
         $detailTransaksi->delete();
 
-        // Perbarui status kamar menjadi 'kosong'
         $statusKamar = Kamar::findOrFail($kamarId);
-        $statusKamar->status = 'kosong'; // Atur status kamar sesuai kebutuhan
+        $statusKamar->status = 'kosong';
         $statusKamar->save();
 
-        // Redirect ke halaman detail transaksi
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $detailTransaksi->transaksi_id]);
+        return redirect()->route(
+            'detail_transaksi',
+            ['jenis_transaksi' => $jenis_transaksi, 'id' => $detailTransaksi->transaksi_id]
+        );
     }
 
     public function CheckIn($jenis_transaksi, $id)
     {
-        // Cek jenis transaksi dan ambil detail transaksi yang relevan
         if ($jenis_transaksi == 'kamar') {
-            // Ambil ID kamar yang terkait dengan transaksi ini
             $kamarIds = DetailTKamar::where('transaksi_id', $id)
                 ->pluck('kamar_id');
-
-            // Perbarui status kamar menjadi 'terisi'
             Kamar::whereIn('id', $kamarIds)->update(['status' => 'terisi']);
         } elseif ($jenis_transaksi == 'ruangan') {
-            // Ambil ID ruangan yang terkait dengan transaksi ini
             $ruanganIds = DetailTRuangan::where('transaksi_id', $id)
                 ->pluck('ruangan_id');
-
-            // Perbarui status ruangan menjadi 'terisi'
             Ruangan::whereIn('id', $ruanganIds)->update(['status' => 'terisi']);
         } else {
-            abort(404); // Tambahkan handle untuk jenis transaksi lainnya jika diperlukan
+            abort(404);
         }
 
-        // Temukan transaksi dan perbarui statusnya
         $transaksi = Transaksi::findOrFail($id);
-        $transaksi->status_transaksi = 'checkin'; // Ubah status sesuai kebutuhan
+        $transaksi->status_transaksi = 'checkin';
         $transaksi->save();
 
         return redirect()->route('daftar_tamu');
@@ -248,26 +237,22 @@ class TransaksiController extends Controller
 
     public function CheckOut($jenis_transaksi, $id)
     {
-        // Cek jenis transaksi dan ambil detail transaksi yang relevan
         if ($jenis_transaksi == 'kamar') {
-            // Ambil ID kamar yang terkait dengan transaksi ini
             $kamarIds = DetailTKamar::where('transaksi_id', $id)
                 ->pluck('kamar_id');
 
             Kamar::whereIn('id', $kamarIds)->update(['status' => 'kosong']);
         } elseif ($jenis_transaksi == 'ruangan') {
-            // Ambil ID ruangan yang terkait dengan transaksi ini
             $ruanganIds = DetailTRuangan::where('transaksi_id', $id)
                 ->pluck('ruangan_id');
 
             Ruangan::whereIn('id', $ruanganIds)->update(['status' => 'kosong']);
         } else {
-            abort(404); // Tambahkan handle untuk jenis transaksi lainnya jika diperlukan
+            abort(404);
         }
 
-        // Temukan transaksi dan perbarui statusnya
         $transaksi = Transaksi::findOrFail($id);
-        $transaksi->status_transaksi = 'checkout'; // Ubah status sesuai kebutuhan
+        $transaksi->status_transaksi = 'checkout';
         $transaksi->save();
 
         return redirect()->route('riwayat_transaksi');
@@ -275,12 +260,10 @@ class TransaksiController extends Controller
 
     public function diskon(Request $request, $jenis_transaksi, $id)
     {
-        // Validasi input diskon
         $validatedData = $request->validate([
-            'diskon' => 'required|numeric|min:0|max:100' // Diskon dalam persen (0-100)
+            'diskon' => 'required|numeric|min:0|max:100'
         ]);
 
-        // Temukan transaksi berdasarkan ID
         $transaksi = Transaksi::findOrFail($id);
         $harga = $transaksi->harga;
 
@@ -294,12 +277,14 @@ class TransaksiController extends Controller
         $transaksi->save();
 
         // Redirect atau tampilkan pesan sukses
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
+        return redirect()->route(
+            'detail_transaksi',
+            ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]
+        );
     }
 
     public function showDReservasi()
     {
-        // Query untuk transaksi kamar
         $transaksi = Transaksi::select(
             'transaksi.*',
             'transaksi.status_transaksi as status',
@@ -317,14 +302,14 @@ class TransaksiController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $jenisTransaksi = $request->input('jenis_transaksi');
-        $statusTransaksi = $request->input('status_transaksi'); // Untuk filter status
+        $statusTransaksi = $request->input('status_transaksi');
 
         $query = Transaksi::select(
             'transaksi.*',
             'transaksi.status_transaksi as status',
             'transaksi.id as transaksi_id'
         )
-            ->orderBy('transaksi.tgl_checkout', 'asc');
+            ->orderBy('transaksi.updated_at', 'desc');
 
         // Filter berdasarkan tanggal jika ada
         if ($startDate && $endDate) {
@@ -349,7 +334,6 @@ class TransaksiController extends Controller
 
     public function daftarTamu()
     {
-        // Query untuk transaksi kamar
         $transaksi = Transaksi::select(
             'transaksi.*',
             'transaksi.status_transaksi as status',
@@ -362,13 +346,10 @@ class TransaksiController extends Controller
         return view('admin.transaksi.daftarTamu', compact('transaksi'));
     }
 
-    public function tambahBuktiBayar(Request $request,$jenis_transaksi,$id)
+    public function tambahBuktiBayar(Request $request, $jenis_transaksi, $id)
     {
-        // Ambil detail transaksi berdasarkan ID
-        // $detailTransaksi = DetailTKamar::findOrFail($id);
         $transaksi = Transaksi::findOrFail($id);
 
-        // Validasi bukti_bayar
         $request->validate([
             'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -386,6 +367,23 @@ class TransaksiController extends Controller
             return back()->withError('Gagal mengupload bukti pembayaran: ' . $e->getMessage())->withInput();
         }
 
+        $transaksi->save();
+
+        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
+    }
+
+    public function hapusBuktiBayar($jenis_transaksi, $id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Hapus file dari storage
+        $filePath = public_path($transaksi->bukti_bayar);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        // Update field bukti_bayar menjadi null
+        $transaksi->bukti_bayar = null;
         $transaksi->save();
 
         return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
@@ -484,6 +482,7 @@ class TransaksiController extends Controller
             $detailTransaksi->save();
         }
 
-        return redirect()->route('permintaan_reservasi')->with('success', 'Reservasi berhasil ditambahkan.');
+        return redirect()->route('permintaan_reservasi')
+            ->with('success', 'Reservasi berhasil ditambahkan.');
     }
 }
