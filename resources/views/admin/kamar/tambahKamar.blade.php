@@ -94,32 +94,7 @@
                                     <label class="form-check-label" for="status_perbaikan">Perbaikan</label>
                                 </div>
                             </div>
-                        </div>
-                        <!-- <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="fasilitas" class="form-label">Fasilitas</label>
-                                    <textarea id="fasilitas" name="fasilitas" class="form-control" rows="5"></textarea>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="foto" class="form-label">Foto</label>
-                                    <input type="file" class="form-control" id="foto" name="foto">
-                                </div>
-                            </div>
-                        </div> -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="basicpill-address-input" class="form-label">Deskripsi Tambahan</label>
-                                    <textarea id="basicpill-address-input" name="deskripsi" class="form-control" rows="3"></textarea>
-                                    <p>*kosongkan jika tidak ada</p>
-                                </div>
-                            </div>
-                        </div>
+                        </div><br>
 
                         <a type="reset" class="btn btn-danger waves-effect waves-light m-1"><b>Batal</b></a>
                         <button type="submit" class="btn btn-success waves-effect waves-light m-1">Simpan</button>

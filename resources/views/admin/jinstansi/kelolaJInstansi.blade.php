@@ -32,19 +32,17 @@ $no = 1;
                             <div class="mb-4">
                                 <div>
                                     @if($message = Session::get('success'))
-                                    <div class="alert alert-success alert-dismissible">
-                                        <p>{{ $message }}</p>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-check-all me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                     @endif
                                     @if($message = Session::get('error'))
-                                    <div class="alert alert-danger alert-dismissible">
-                                        <p>{{ $message }}</p>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-block-helper me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                     @endif
                                 </div>

@@ -97,12 +97,12 @@ $no = 1;
                                 <tr>
                                     <td>Kapasitas</td>
                                     <td> : </td>
-                                    <td>2/3 Orang Dewasa</td>
+                                    <td>2 sampai 3 Orang Dewasa</td>
                                 </tr>
                                 <tr>
                                     <td>Fasilitas</td>
                                     <td> : </td>
-                                    <td>2/3 Tempat tidur (Single Bed), AC, TV, Water heater</td>
+                                    <td>2 atau 3 Tempat tidur (Single Bed), AC, TV, Water heater</td>
                                 </tr>
                             </tbody>
                         </table>

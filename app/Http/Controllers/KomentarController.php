@@ -19,14 +19,30 @@ class KomentarController extends Controller
             ->get();
         return view('admin.komentar.kelolaKomentar', compact('komentar'));
     }
+    
+    public function storeKomentar(Request $request)
+    {
+        $validatedData = $request->validate([
+            'komentar' => 'required|max:200',
+            'tanggal' => 'required|date_format:Y-m-d'
+        ]);
+
+        $komentar = new Komentar();
+        $komentar->komentar = $validatedData['komentar'];
+        $komentar->tanggal = $validatedData['tanggal'];
+        $komentar->users_id = auth()->user()->id;
+        $komentar->status = 'tampil';
+        $komentar->save();
+
+        return redirect()->route('Tdashboard');
+    }
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        // Validasi input
         $request->validate([
             'komentar' => 'required|string',
             'balasan' => 'nullable|string',
+            'status' => 'required'
         ]);
 
         // Cari komentar berdasarkan ID
@@ -39,6 +55,7 @@ class KomentarController extends Controller
         // Update data komentar dan balasan
         $komentar->komentar = $request->input('komentar');
         $komentar->balasan = $request->input('balasan');
+        $komentar->status = $request->input('status');
         $komentar->save();
 
         return redirect()->route('komentar.index')

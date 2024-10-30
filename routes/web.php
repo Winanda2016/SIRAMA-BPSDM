@@ -65,8 +65,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/kelola-kamar/tambah-kamar', [KamarController::class, 'create']);
     Route::post('/kelola-kamar', [KamarController::class, 'store'])
         ->name('kelola_kamar2');
-    Route::get('/kelola-kamar/detail/{id}', [KamarController::class, 'showDetail'])
-        ->name('detail_kamar');
     Route::get('/kelola-kamar/edit/{id}', [KamarController::class, 'edit'])
         ->name('edit_kamar');
     Route::put('/kelola-kamar/update/{id}', [KamarController::class, 'update'])
@@ -190,7 +188,7 @@ Route::middleware(['auth', 'role:tamu'])->group(function () {
         ->name('detail_riwayat');
     Route::put('/tamu/reservasi/cancel/{id}', [tamuTransaksiController::class, 'cancelReservasiTamu'])
         ->name('cancel_reservasi_tamu');
-    Route::put('/reservasi/bukti-bayar/{id}', [tamuTransaksiController::class, 'tambahBuktiBayar'])
+    Route::put('/reservasi/bukti-bayar/{jenis_transaksi}/{id}', [tamuTransaksiController::class, 'tambahBuktiBayar'])
         ->name('tambah_bbayar');
 
     //Kamar
@@ -213,7 +211,7 @@ Route::middleware(['auth', 'role:tamu'])->group(function () {
     Route::put('/ruangan/update-reservasi/{id}', [transaksiRuanganController::class, 'update'])
         ->name('reservasi_ruangan.update');
 
-    Route::post('/komentar/tambah', [DashboardController::class, 'storeKomentar'])
+    Route::post('/komentar/tambah', [KomentarController::class, 'storeKomentar'])
         ->name('komentar.store');
 });
 

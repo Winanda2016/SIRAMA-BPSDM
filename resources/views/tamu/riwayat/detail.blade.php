@@ -160,6 +160,7 @@
                                 <span class="text-danger" style="font-size: 12px;"><u>bukti bayar tidak tersedia.</u></span>
                                 @endif
                             </div>
+
                             @if ($data->status_transaksi === 'pending')
                             <div class="button-container">
                                 @if ($jenis_transaksi === 'kamar')
@@ -228,12 +229,17 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form id="bbayarForm" action="{{ route('tambah_bbayar', ['id' => $data->transaksi_id]) }}" method="POST" enctype="multipart/form-data">
+                                                <form id="bbayarForm" action="{{ route('tambah_bbayar', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="dokumen">
                                                         <label for="bbayar">Bukti Bayar:</label>
-                                                        <input type="file" class="form-control" id="bbayar" name="bukti_bayar">
+                                                        <input type="file" class="form-control @error('bukti_bayar') is-invalid @enderror" id="bbayar" name="bukti_bayar">
+                                                        @error('bukti_bayar')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            {{ $message }}
+                                                        </span>
+                                                        @enderror
                                                         <p class="keterangan_input">*file foto berupa JPEG/PNG/JPG/dan sebagainya. </p>
                                                     </div>
                                                     <div class="button-container">

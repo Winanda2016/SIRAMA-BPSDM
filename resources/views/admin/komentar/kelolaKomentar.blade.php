@@ -1,6 +1,6 @@
 @extends('admin.themes.app')
 @php
-$ar_judul = ['No','Nama','Tanggal','Saran/Pengaduan','Balasan','Aksi'];
+$ar_judul = ['No','Nama','Tanggal','Saran/Pengaduan','Balasan','Status','Aksi'];
 $no = 1;
 @endphp
 @section('content')
@@ -32,19 +32,17 @@ $no = 1;
                             <div class="mb-4">
                                 <div>
                                     @if($message = Session::get('success'))
-                                    <div class="alert alert-success alert-dismissible">
-                                        <p>{{ $message }}</p>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-check-all me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                     @endif
                                     @if($message = Session::get('error'))
-                                    <div class="alert alert-danger alert-dismissible">
-                                        <p>{{ $message }}</p>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-block-helper me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                     @endif
                                 </div>
@@ -70,6 +68,13 @@ $no = 1;
                                     <td style="width: 10%;">{{ $km->tanggal }}</td>
                                     <td style="width: 30%;  word-wrap: break-word; white-space: normal;">{{ $km->komentar }}</td>
                                     <td style="width: 30%;  word-wrap: break-word; white-space: normal;">{{ $km->balasan }}</td>
+                                    <td>
+                                        @if ($km->status === 'tampil')
+                                        <div class="badge badge-soft-success font-size-12">Tampil</div>
+                                        @elseif ($km->status === 'sembunyi')
+                                        <div class="badge badge-soft-danger font-size-12">Sembunyi</div>
+                                        @endif
+                                    </td>
                                     <td style="width: 10%;">
                                         <div class="d-flex justify-content-center" align="center">
                                             <button type="button" class="btn btn-warning waves-effect waves-light p-1" title="edit" data-bs-toggle="modal" data-bs-target="#editSP{{ $km->komentar_id }}" style="width: 35px; height:30px; margin-right:15px">
@@ -88,13 +93,28 @@ $no = 1;
                                                             <form class="row g-3" method="POST" action="{{ route('komentar.update', ['komentar' => $km->komentar_id]) }}">
                                                                 @csrf
                                                                 @method('PUT')
-                                                                <div class="mb-3">
+                                                                <div class="mb-2">
                                                                     <label for="example-text-input" class="form-label">Saran dan Pengaduan</label>
-                                                                    <textarea id="fasilitas" name="komentar" class="form-control" rows="3" readonly>{{ $km->komentar }}</textarea>
+                                                                    <textarea id="fasilitas" name="komentar" class="form-control" rows="2" readonly>{{ $km->komentar }}</textarea>
                                                                 </div>
                                                                 <div class="mb-3">
-                                                                    <label for="example-text-input" class="form-label">Inputkan Balasan</label>
-                                                                    <textarea id="fasilitas" name="balasan" class="form-control" rows="3">{{ $km->balasan }}</textarea>
+                                                                    <label for="example-text-input" class="form-label">Balasan</label>
+                                                                    <textarea id="fasilitas" name="balasan" class="form-control" rows="2">{{ $km->balasan }}</textarea>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <label for="status" class="form-label">Status Komentar</label>
+                                                                    <div class="col-sm-3">
+                                                                        <div class="form-check mb-3">
+                                                                            <input class="form-check-input" type="radio" name="status" id="status_tampil" value="kosong" checked>
+                                                                            <label class="form-check-label" for="status_tampil">Tampilkan</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <div class="form-check mb-3">
+                                                                            <input class="form-check-input" type="radio" name="status" id="status_sembunyi" value="sembunyi">
+                                                                            <label class="form-check-label" for="status_sumbunyi">Sembunyikan</label>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
@@ -109,12 +129,12 @@ $no = 1;
                                             <button type="button" class="btn btn-danger waves-effect waves-light p-1" title="hapus" data-bs-toggle="modal" data-bs-target="#hapusSP{{ $km->komentar_id }}" style="width: 35px; height:30px; margin-right:5px">
                                                 <i class="bx bx-trash font-size-16 align-middle"></i>
                                             </button>
-                                            <!-- Modal Hapus Geudng -->
+                                            <!-- Modal Hapus Komentar -->
                                             <div class="modal fade" id="hapusSP{{ $km->komentar_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="hapusSPLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content" style="width: fit-content;">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="staticBackdropLabel">Peringatan Hapus!</h5>
+                                                    <div class="modal-content border-primary">
+                                                        <div class="modal-header  bg-gradient bg-primary">
+                                                            <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Hapus!</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">

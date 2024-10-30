@@ -96,7 +96,7 @@ class tamuTransaksiController extends Controller
         return redirect()->route('riwayat_tamu')->with('success', 'Reservasi berhasil dibatalkan!');
     }
 
-    public function tambahBuktiBayar(Request $request, $id)
+    public function tambahBuktiBayar(Request $request, $jenis_transaksi, $id)
     {
         $transaksi = Transaksi::findOrFail($id);
 
@@ -109,8 +109,8 @@ class tamuTransaksiController extends Controller
                 $file = $request->file('bukti_bayar');
                 $extension = $file->getClientOriginalExtension();
                 $fileName = 'Transaksi_' . time() . '.' . $extension;
-                $file->move(public_path('tamu/assets/img/bukti_bayar'), $fileName);
-                $transaksi->bukti_bayar = 'tamu/assets/img/bukti_bayar/' . $fileName;
+                $file->move(public_path('public/dokumen/bukti_bayar'), $fileName);
+                $transaksi->bukti_bayar = 'public/dokumen/bukti_bayar/' . $fileName;
             }
         } catch (\Exception $e) {
             return back()->withError('Gagal mengupload bukti pembayaran: ' . $e->getMessage())->withInput();
@@ -118,6 +118,7 @@ class tamuTransaksiController extends Controller
 
         $transaksi->save();
 
-        return redirect()->route('riwayat_tamu')->with('success', 'Reservasi berhasil dibatalkan dan bukti bayar berhasil diunggah!');
+        return redirect()->route('detail_riwayat', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id])
+            ->with('success', 'Reservasi berhasil dibatalkan dan bukti bayar berhasil diunggah!');
     }
 }

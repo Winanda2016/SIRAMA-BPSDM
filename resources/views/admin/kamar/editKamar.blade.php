@@ -27,17 +27,21 @@
                     <h4 align="center">Formulir Edit </br> Kamar {{ $kamar->nomor_kamar }} | {{ $kamar->nama_gedung }}</h4>
                     <hr><br>
                     <div>
-                        @if($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @endif
-                        @if($message = Session::get('error'))
-                        <div class="alert alert-danger">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @endif
-                    </div>
+                                    @if($message = Session::get('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-check-all me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    @endif
+                                    @if($message = Session::get('error'))
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-block-helper me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    @endif
+                                </div>
                     <form method="POST" action="{{ route('update_kamar', ['id' => $kamar->kamar_id]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
@@ -89,24 +93,7 @@
                                     <label class="form-check-label" for="status_perbaikan">Perbaikan</label>
                                 </div>
                             </div>
-                        </div>
-                        <!-- <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="fasilitas" class="form-label">Fasilitas</label>
-                                    <textarea id="fasilitas" name="fasilitas" class="form-control" rows="5" value="{{ $kamar->fasilitas }}"></textarea>
-                                </div>
-                            </div>
-                        </div> -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="basicpill-address-input" class="form-label">Deskripsi Tambahan</label>
-                                    <textarea id="basicpill-address-input" name="deskripsi" class="form-control" rows="3" value="{{ $kamar->deskripsi }}"></textarea>
-                                    <p>*kosongkan jika tidak ada</p>
-                                </div>
-                            </div>
-                        </div>
+                        </div><br>
 
                         <a type="reset" class="btn btn-danger waves-effect waves-light m-1"><b>Batal</b></a>
                         <button type="submit" class="btn btn-success waves-effect waves-light m-1">Simpan</button>

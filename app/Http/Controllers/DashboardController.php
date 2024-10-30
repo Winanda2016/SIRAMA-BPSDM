@@ -253,20 +253,4 @@ class DashboardController extends Controller
         return view('tamu.dashboard', compact('ruangan', 'komentar', 'totalKomentar'));
     }
 
-    public function storeKomentar(Request $request)
-    {
-        $validatedData = $request->validate([
-            'komentar' => 'required|max:200',
-            'tanggal' => 'required|date_format:Y-m-d'
-        ]);
-
-        $komentar = new Komentar();
-        $komentar->komentar = $validatedData['komentar'];
-        $komentar->tanggal = $validatedData['tanggal'];
-        $komentar->users_id = auth()->user()->id;
-        $komentar->status = 'tampil';
-        $komentar->save();
-
-        return redirect()->route('Tdashboard');
-    }
 }

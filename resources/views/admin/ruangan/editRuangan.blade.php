@@ -27,17 +27,21 @@
                     <h4 align="center">Formulir Edit </br> {{ $ruangan->nama_ruangan }} | {{ $ruangan->nama_gedung }}</h4>
                     <hr><br>
                     <div>
-                        @if($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @endif
-                        @if($message = Session::get('error'))
-                        <div class="alert alert-danger">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @endif
-                    </div>
+                                    @if($message = Session::get('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-check-all me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    @endif
+                                    @if($message = Session::get('error'))
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <i class="mdi mdi-block-helper me-2"></i>
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    @endif
+                                </div>
                     <form method="POST" action="{{ route('update_ruangan', ['id' => $ruangan->ruangan_id]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
