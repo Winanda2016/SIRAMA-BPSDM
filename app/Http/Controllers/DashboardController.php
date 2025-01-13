@@ -6,7 +6,7 @@ use App\Models\Ruangan;
 use App\Models\Gedung;
 use App\Models\kamar;
 use App\Models\Transaksi;
-use App\Models\Komentar;
+use App\Models\SaranPengaduan;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -239,18 +239,18 @@ class DashboardController extends Controller
     public function indexTamu()
     {
         $ruangan = Ruangan::all();
-        $komentar = Komentar::select(
-            'komentar.*',
+        $saran_pengaduan = SaranPengaduan::select(
+            'saran_pengaduan.*',
             'u.name as nama_user'
         )
-            ->leftJoin('users AS u', 'komentar.users_id', '=', 'u.id')
-            ->orderBy('tanggal', 'desc')
+            ->leftJoin('users AS u', 'saran_pengaduan.users_id', '=', 'u.id')
+            ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
 
-        $totalKomentar = Komentar::count();
+        $totalSaranPengaduan = SaranPengaduan::count();
 
-        return view('tamu.dashboard', compact('ruangan', 'komentar', 'totalKomentar'));
+        return view('tamu.dashboard', compact('ruangan', 'saran_pengaduan', 'totalSaranPengaduan'));
     }
 
 }

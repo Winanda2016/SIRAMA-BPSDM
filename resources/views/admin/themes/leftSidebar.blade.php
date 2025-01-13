@@ -111,10 +111,10 @@
                     </a>
                 </li>
 
-                <li class="@if (Route::currentRouteName() == 'komentar') active @endif">
-                    <a href="{{ url('/komentar') }}">
+                <li class="@if (Route::currentRouteName() == 'saran_pengaduan') active @endif">
+                    <a href="{{ url('/saran-pengaduan') }}">
                         <i data-feather="message-circle"></i>
-                        <span data-key="t-kkomen">Saran dan Pengadun</span>
+                        <span data-key="t-kkomen">Saran dan Pengaduan</span>
                     </a>
                 </li>
 

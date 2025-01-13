@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Komentar;
+use App\Models\SaranPengaduan;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('auth.app', function ($view) {
-            $komentar = Komentar::latest()->take(3)->get();
-            $view->with('komentar', $komentar);
+            $saran_pengaduan = SaranPengaduan::latest()->take(3)->get();
+            $view->with('saran_pengaduan', $saran_pengaduan);
         });
     }
 }

@@ -5,11 +5,12 @@
     <meta charset="utf-8" />
     <title>SIRAMA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="Themesbrand" name="author" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('admin/assets/images/logo.png') }}">
+    
+    <!-- preloader css -->
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/preloader.min.css') }}" type="text/css" />
 
     <!-- flatpickr css -->
     <link href="{{ asset('admin/assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css">
@@ -31,8 +32,8 @@
     <!-- plugin css -->
     <link href="{{ asset('admin/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}" rel="stylesheet" type="text/css" />
 
-    <!-- preloader css -->
-    <link rel="stylesheet" href="{{ asset('admin/assets/css/preloader.min.css') }}" type="text/css" />
+    <!-- Sweet Alert-->
+    <link href="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Bootstrap Css -->
     <link href="{{ asset('admin/assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -47,7 +48,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 </head>
 
-<body>
+<body data-success="{{ session('success') }}" data-error="{{ session('error') }}">
     <div id="layout-wrapper">
         @include('admin.themes.navbar')
         @include('admin.themes.leftSidebar')
@@ -95,10 +96,12 @@
     <script src="{{ asset('admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script src="{{ asset('admin/assets/js/pages/dashboard.init.js') }}"></script>
     <script src="{{ asset('admin/assets/js/pages/invoices-list.init.js') }}"></script>
     <script src="{{ asset('admin/assets/js/pages/form-advanced.init.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/pages/sweetalert.init.js') }}"></script>
 
     <!-- pristine js -->
     <script src="{{ asset('admin/assets/libs/pristinejs/pristine.min.js') }}"></script>

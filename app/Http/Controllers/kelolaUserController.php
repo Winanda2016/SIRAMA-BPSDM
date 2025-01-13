@@ -55,9 +55,9 @@ class kelolaUserController extends Controller
     {
         // Validasi input
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'no_hp' => 'required|string|max:15',
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|max:45',
+            'no_hp' => 'required|string|max:12',
         ]);
 
         // Cek apakah email sudah digunakan oleh user lain
@@ -81,4 +81,16 @@ class kelolaUserController extends Controller
         return redirect()->route('kelola-users.index')
             ->with('success', 'Data Pengguna Berhasil Diubah');
     }
+
+    public function updatePassword(Request $request, $id)
+{
+    $request->validate([
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->update(['password' => Hash::make($request->password)]);
+
+    return redirect()->back()->with('success', 'Password berhasil diperbarui!');
+}
 }

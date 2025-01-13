@@ -189,7 +189,7 @@ class transaksiKamarController extends Controller
         return redirect()->route('detail_riwayat', [
             'jenis_transaksi' => $transaksi->jenis_transaksi,
             'id' => $transaksi->id
-        ])->with('success', 'Data Reservasi berhasil diperbarui!');
+        ])->with('success', 'Data berhasil diperbarui!');
     }
 
     public function cekKetersediaan(Request $request)
@@ -350,6 +350,6 @@ class transaksiKamarController extends Controller
         return redirect()->route(
             'detail_transaksi',
             ['jenis_transaksi' => $transaksi->jenis_transaksi, 'id' => $transaksi->id]
-        )->with('success', 'Data Reservasi berhasil diperbarui!');
+        )->with('success', 'Check In berhasil dilakukan!');
     }
 }

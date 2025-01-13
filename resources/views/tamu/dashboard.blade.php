@@ -76,10 +76,10 @@
                             <h3 class="mt-2">Sistem Informasi Asrama (SIRAMA) </h3>
                         </div>
                         <p class="f-para">SIRAMA adalah salah satu sistem informasi yang ada di Badan Pengembangan Sumber Daya Manusia
-                            Provinsi Sumatera Barat yang bertujuan untuk meningkatkan pelayanan retribusi daerah pada Asrama Badan Pengembangan Sumber Daya
+                            Provinsi Sumatera Barat yang bertujuan untuk meningkatkan pelayanan retribusi daerah pada Badan Pengembangan Sumber Daya
                             Manusia Provinsi Sumatera Barat.
                         </p>
-                        <a href="#" class="primary-btn about-btn">Baca Selengkapnya</a>
+                        <a href="{{ url('/tentang-kami') }}" class="primary-btn about-btn">Baca Selengkapnya</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -166,13 +166,13 @@
                     <div class="card">
                         <div class="rd-reviews">
                             <h4>Saran dan Pengaduan</h4>
-                            <div id="komentar-list">
-                                @foreach ($komentar as $index => $km)
+                            <div id="saran_pengaduan-list">
+                                @foreach ($saran_pengaduan as $index => $km)
                                 <div class="review-item">
                                     <div class="ri-text">
                                         <span>{{ $km->tanggal }}</span>
                                         <h5>{{ $km->nama_user }}</h5>
-                                        <h6 class="text-komen">{{ $km->komentar }}.</h6>
+                                        <h6 class="text-komen">{{ $km->saran_pengaduan }}.</h6>
                                     </div>
                                     @if (!empty($km->balasan))
                                     <div class="ri-text" style="margin-left: 80px; margin-top: 10px">
@@ -189,14 +189,14 @@
                 <div class="col-md-5" style="border-left: 1px solid #4c5c7e;padding-left: 20px;">
                     <div class="review-add">
                         <h4>Tambah Saran/Pengaduan</h4>
-                        <form class="ra-form" method="POST" action="{{ route('komentar.store') }}">
+                        <form class="ra-form" method="POST" action="{{ route('saran-pengaduan.store') }}">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-6">
                                     <input type="date" id="tanggal" name="tanggal" value="{{ date('Y-m-d') }}" readonly>
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea placeholder="Komentar Kamu" name="komentar"></textarea>
+                                    <textarea placeholder="SaranPengaduan Kamu" name="saran_pengaduan"></textarea>
                                     <button type="submit">Kirim</button>
                                 </div>
                             </div>

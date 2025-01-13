@@ -24,8 +24,7 @@ class User extends Authenticatable
         'password',
         'role',
         'nik',
-        'no_hp',
-        'foto',
+        'no_hp'
     ];
 
     /**
@@ -53,9 +52,9 @@ class User extends Authenticatable
         return $this->hasMany(Transaksi::class, 'id');
     }
 
-    public function Komentar()
+    public function SaranPengaduan()
     {
-        return $this->hasMany(Komentar::class, 'id');
+        return $this->hasMany(SaranPengaduan::class, 'id');
     }
 
     public $incrementing = false; // karena id tidak auto increment

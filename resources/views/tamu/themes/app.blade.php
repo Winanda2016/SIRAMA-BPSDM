@@ -40,10 +40,13 @@
     <!-- DataTables -->
     <link href="{{ asset('admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 
+    <!-- Sweet Alert-->
+    <link href="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+
 
 </head>
 
-<body>
+<body data-success="{{ session('success') }}" data-error="{{ session('error') }}">
 
     @include('tamu.themes.preloder')
 
@@ -76,6 +79,8 @@
     <script src="{{ asset('admin/assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/pages/invoices-list.init.js') }}"></script>
+    <script src="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/pages/sweetalert.init.js') }}"></script>
 
 </body>
 

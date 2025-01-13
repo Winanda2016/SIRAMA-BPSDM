@@ -31,22 +31,6 @@ $no = 1;
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-4">
-                                <div>
-                                    @if($message = Session::get('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <i class="mdi mdi-check-all me-2"></i>
-                                        {{ $message }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                    @endif
-                                    @if($message = Session::get('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <i class="mdi mdi-block-helper me-2"></i>
-                                        {{ $message }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                    @endif
-                                </div>
 
                                 <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="modal" data-bs-target="#tambahJInstansi">
                                     <i class="bx bx-plus label-icon"></i>
@@ -150,7 +134,7 @@ $no = 1;
                                         <button type="button" class="btn btn-warning waves-effect waves-light m-1" title="edit" data-bs-toggle="modal" data-bs-target="#editJInstansi{{ $ku->id }}">
                                             <i class="bx bxs-edit font-size-20 align-middle"></i>
                                         </button>
-                                        <!-- Modal Edit JInstansi -->
+                                        <!-- Modal Edit User -->
                                         <div class="modal fade" id="editJInstansi{{ $ku->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editJInstansiLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content border-primary">
@@ -173,6 +157,50 @@ $no = 1;
                                                             <div class="mb-3">
                                                                 <label for="no_hp" class="form-label">Nomor HP</label>
                                                                 <input class="form-control" type="text" name="no_hp" value="{{ $ku->no_hp }}" id="no_hp">
+                                                            </div>
+                                                            <div class="mt-3 mb-3">
+                                                                <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary mx-2">Simpan</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <button type="button" class="btn btn-primary waves-effect waves-light m-1" title="ubah password" data-bs-toggle="modal" data-bs-target="#ubahPassword{{ $ku->id }}">
+                                            <i class="bx bxs-key font-size-20 align-middle"></i>
+                                        </button>
+                                        <!-- Modal Edit User -->
+                                        <div class="modal fade" id="ubahPassword{{ $ku->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="ubahPasswordLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content border-primary">
+                                                    <div class="modal-header bg-gradient bg-primary">
+                                                        <h5 class="modal-title text-white" id="ubahPasswordLabel">FORM MEMBUAT PASSWORD BARU</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body" align="left">
+                                                        <form method="post" action="{{ route('admin.password.update', $ku->id) }}" class="mt-6 space-y-6">
+                                                            @csrf
+                                                            @method('put')
+                                                            <div class="mb-3">
+                                                                <label for="update_password_password" class="form-label">Password Baru</label>
+                                                                <input class="form-control @error('password') is-invalid @enderror" id="update_password_password" name="password" type="password">
+                                                                @error('password')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    {{ $message }}
+                                                                </span>
+                                                                @enderror
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="update_password_password_confirmation" class="form-label">Konfirmasi Password</label>
+                                                                <input class="form-control @error('password_confirmation') is-invalid @enderror" id="update_password_password_confirmation" name="password_confirmation" type="password">
+                                                                @error('password_confirmation')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    {{ $message }}
+                                                                </span>
+                                                                @enderror
                                                             </div>
                                                             <div class="mt-3 mb-3">
                                                                 <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>

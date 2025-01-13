@@ -129,7 +129,8 @@
                                         @endforeach
                                     </table>
                                     @if ( $data->status_transaksi === 'terima' || $data->status_transaksi === 'checkin')
-                                    <button type="button" class="btn btn-primary waves-effect waves-light px-1 mt-2" data-bs-toggle="modal" data-bs-target="#tambahKamar" style="width: fit-content; height:25px;padding:0px">
+                                    @if ($jumlah_kamar_pilih != $data->jumlah_ruangan)
+                                    <button type="button" id="btnTambahKamar" class="btn btn-primary waves-effect waves-light px-1 mt-2" data-bs-toggle="modal" data-bs-target="#tambahKamar" style="width: fit-content; height:25px;padding:0px">
                                         tambah kamar
                                     </button>
 
@@ -146,19 +147,14 @@
                                                         @csrf
                                                         <input type="hidden" name="transaksi_id" value="{{ $data->id }}">
                                                         <input type="hidden" name="jinstansi_id" value="{{ $data->jinstansi_id }}">
+
                                                         <div class="mb-3">
                                                             <label for="example-text-input" class="form-label">Pilih kamar :</label>
                                                             <select id="kamar_ids" name="kamar_ids[]" class="selectpicker" multiple data-live-search="true" data-width="75%" data-size="5">
                                                                 @foreach ($AddKamar as $ak)
-                                                                @if (($ak->status_transaksi === 'pending' || $ak->status_transaksi === 'kosong') && $ak->status_kamar === 'kosong')
-                                                                <option value="{{ $ak->kamar_id }}" @if (in_array($ak->kamar_id, old('kamar_ids', []))) selected @endif>
+                                                                <option value="{{ $ak->kamar_id }}">
                                                                     {{ $ak->nomor_kamar }} | {{ $ak->nama_gedung }}
                                                                 </option>
-                                                                @else
-                                                                <option class="bg-light" disabled>
-                                                                    {{ $ak->nomor_kamar }} | {{ $ak->nama_gedung }}
-                                                                </option>
-                                                                @endif
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -172,6 +168,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
                                     @endif
                                 </div>
                                 @elseif ($jenis_transaksi === 'ruangan')
@@ -314,295 +311,260 @@
 
                             <!-- ============================================================= -->
                             @if( Auth::user()->role == 'pegawai')
-                                @if ($data->status_transaksi === 'terima')
-                                    <!-- == Edit Reservasi == -->
-                                    @if ($jenis_transaksi === 'kamar')
-                                    <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
-                                    @elseif ($jenis_transaksi === 'ruangan')
-                                    <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
-                                    @endif
+                            @if ($data->status_transaksi === 'terima')
+                            <!-- == Edit Reservasi == -->
+                            @if ($jenis_transaksi === 'kamar')
+                            <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            @elseif ($jenis_transaksi === 'ruangan')
+                            <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light m-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            @endif
 
-                                    <button type="button" class="btn btn-primary waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkin"><b>Check In</b></button>
-                                    <!-- == Modal Check In == -->
-                                    <div class="modal fade" id="checkin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="checkinLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Check In!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <br>
-                                                    <p align="center">Check In Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
-                                                    <div align="right">
-                                                        <form method="POST" action="{{ route('checkin', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="reset" class="btn btn-danger mx-2" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-primary">Check In</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                            <button type="button" class="btn btn-primary waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkin"
+                                @if ($jumlah_kamar_pilih != $data->jumlah_ruangan) disabled @endif><b>Check In</b></button>
+                            <!-- == Modal Check In == -->
+                            <div class="modal fade" id="checkin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="checkinLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Check In!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <br>
+                                            <p align="center">Check In Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
+                                            <div align="right">
+                                                <form method="POST" action="{{ route('checkin', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="reset" class="btn btn-danger mx-2" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Check In</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <button type="button" class="btn btn-danger waves-effect waves-ligh m-1" data-bs-toggle="modal" data-bs-target="#cancel"><b>Cancel</b></button>
-                                    <!-- == Modal Cancel == -->
-                                    <div class="modal fade" id="cancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Cancel Reservasi!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <br>
-                                                    <p align="center">Cancel (batalkan) Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
-                                                    <div align="right">
-                                                        <form id="cancelForm" action="{{ route('cancel_reservasi', ['id' => $data->transaksi_id]) }}" method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="reset" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Kembali</button>
-                                                            <button type="submit" class="btn btn-danger">Cancel</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                            <button type="button" class="btn btn-danger waves-effect waves-ligh m-1" data-bs-toggle="modal" data-bs-target="#cancel"><b>Cancel</b></button>
+                            <!-- == Modal Cancel == -->
+                            <div class="modal fade" id="cancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Cancel Reservasi!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <br>
+                                            <p align="center">Cancel (batalkan) Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
+                                            <div align="right">
+                                                <form id="cancelForm" action="{{ route('cancel_reservasi', ['id' => $data->transaksi_id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="reset" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Kembali</button>
+                                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
-                                <!-- ============================================================= -->
+                            <!-- ============================================================= -->
 
-                                @elseif ($data->status_transaksi === 'pending')
-                                    @if ($jenis_transaksi === 'kamar')
-                                    <button type="button" class="btn btn-success waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRKamar">Terima</button>
+                            @elseif ($data->status_transaksi === 'pending')
+                            @if ($jenis_transaksi === 'kamar')
+                            <button type="button" class="btn btn-success waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRKamar">Terima</button>
 
-                                    <!-- Modal Terima Reservasi Kamar -->
-                                    <div class="modal fade" id="terimaRKamar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="terimaRKamarLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white" id="terimaRKamarLabel">Tambahkan Kamar!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <!-- Modal Terima Reservasi Kamar -->
+                            <div class="modal fade" id="terimaRKamar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="terimaRKamarLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id="terimaRKamarLabel">Tambahkan Kamar!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('tambah_kamar_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}" method="POST" id="formSimpanKamar">
+                                                @csrf
+                                                <input type="hidden" name="transaksi_id" value="{{ $data->id }}">
+                                                <input type="hidden" name="jinstansi_id" value="{{ $data->jinstansi_id }}">
+
+                                                <div class="mb-3">
+                                                    <label for="example-text-input" class="form-label">Pilih kamar :</label>
+                                                    <select id="kamar_ids" name="kamar_ids[]" class="selectpicker" multiple data-live-search="true" data-width="75%" data-size="5">
+                                                        @foreach ($AddKamar as $ak)
+                                                        <option value="{{ $ak->kamar_id }}">
+                                                            {{ $ak->nomor_kamar }} | {{ $ak->nama_gedung }}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <form action="{{ route('tambah_kamar_transaksi', ['jenis_transaksi' => $jenis_transaksi,'id' => $data->transaksi_id]) }}" method="POST" id="formSimpanKamar">
-                                                        @csrf
-                                                        <input type="hidden" name="transaksi_id" value="{{ $data->id }}">
-                                                        <input type="hidden" name="jinstansi_id" value="{{ $data->jinstansi_id }}">
-                                                        <div class="mb-3">
-                                                            <label for="example-text-input" class="form-label">Pilih kamar :</label>
-                                                            <select id="kamar_ids" name="kamar_ids[]" class="selectpicker" multiple data-live-search="true" data-width="75%" data-size="5">
-                                                                @foreach ($AddKamar as $ak)
-                                                                @if (($ak->status_transaksi === 'pending' || $ak->status_transaksi === 'kosong') && $ak->status_kamar === 'kosong')
-                                                                <option value="{{ $ak->kamar_id }}" @if (in_array($ak->kamar_id, old('kamar_ids', []))) selected @endif>
-                                                                    {{ $ak->nomor_kamar }} | {{ $ak->nama_gedung }}
-                                                                </option>
-                                                                @else
-                                                                <option class="bg-light" disabled>
-                                                                    {{ $ak->nomor_kamar }} | {{ $ak->nama_gedung }}
-                                                                </option>
-                                                                @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
 
-                                                        <div align="right">
-                                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-primary">Selesai</button>
-                                                        </div>
-                                                    </form>
+                                                <div align="right">
+                                                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Selesai</button>
                                                 </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @elseif ($jenis_transaksi === 'ruangan')
+                            <button type="button" class="btn btn-success waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRRuangan">Terima</button>
+
+                            <!-- Modal Terima Reservasi Ruangan -->
+                            <div class="modal fade" id="terimaRRuangan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="terimaRRuanganLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id="terimaRRuanganLabel">Peringatan!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p align="center">Terima reservasi <b>{{ $data->nama_ruangan }}</b> atas nama <b>{{ $data->nama }}</b> ?</p>
+
+                                            <div align="right">
+                                                <form method="POST" action="{{ route('terima_reservasiRuangan', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Terima</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                    @elseif ($jenis_transaksi === 'ruangan')
-                                    <button type="button" class="btn btn-success waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#terimaRRuangan">Terima</button>
+                                </div>
+                            </div>
+                            @endif
 
-                                    <!-- Modal Terima Reservasi Ruangan -->
-                                    <div class="modal fade" id="terimaRRuangan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="terimaRRuanganLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white" id="terimaRRuanganLabel">Peringatan!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p align="center">Terima reservasi <b>{{ $data->nama_ruangan }}</b> atas nama <b>{{ $data->nama }}</b> ?</p>
+                            <button type="button" class="btn btn-danger waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#tolakReservasi">Tolak</button>
+                            <!-- Modal Tolak Reservasi -->
+                            <div class="modal fade" id="tolakReservasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="tolakReservasiLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="tolakReservasiLabel">Peringatan!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h6>Tolak Reservasi atas nama {{ $data->nama }}?</h6>
 
-                                                    <div align="right">
-                                                        <form method="POST" action="{{ route('terima_reservasiRuangan', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-primary">Terima</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                            <div align="right">
+                                                <form method="POST" action="{{ route('tolak_reservasi', ['id' => $data->transaksi_id]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-danger">Tolak</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                    @endif
+                                </div>
+                            </div>
 
-                                    <button type="button" class="btn btn-danger waves-effect waves-light m-1" style="width: 70px;" data-bs-toggle="modal" data-bs-target="#tolakReservasi">Tolak</button>
-                                    <!-- Modal Tolak Reservasi -->
-                                    <div class="modal fade" id="tolakReservasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="tolakReservasiLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="tolakReservasiLabel">Peringatan!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h6>Tolak Reservasi atas nama {{ $data->nama }}?</h6>
-
-                                                    <div align="right">
-                                                        <form method="POST" action="{{ route('tolak_reservasi', ['id' => $data->transaksi_id]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-danger">Tolak</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                            <button type="button" class="btn btn-danger waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#cancel"><b>Cancel</b></button>
+                            <!-- == Modal Cancel == -->
+                            <div class="modal fade" id="cancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content border-primary">
+                                        <div class="modal-header bg-gradient bg-primary">
+                                            <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Cancel Reservasi!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <br>
+                                            <p align="center">Cancel (batalkan) Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
+                                            <div align="right">
+                                                <form id="cancelForm" action="{{ route('cancel_reservasi', ['id' => $data->transaksi_id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="reset" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Kembali</button>
+                                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <button type="button" class="btn btn-danger waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#cancel"><b>Cancel</b></button>
-                                    <!-- == Modal Cancel == -->
-                                    <div class="modal fade" id="cancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white" id="staticBackdropLabel">Peringatan Cancel Reservasi!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <br>
-                                                    <p align="center">Cancel (batalkan) Reservasi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
-                                                    <div align="right">
-                                                        <form id="cancelForm" action="{{ route('cancel_reservasi', ['id' => $data->transaksi_id]) }}" method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="reset" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Kembali</button>
-                                                            <button type="submit" class="btn btn-danger">Cancel</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <!-- == Edit Reservasi == -->
+                            @if ($jenis_transaksi === 'kamar')
+                            <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            @elseif ($jenis_transaksi === 'ruangan')
+                            <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                            @endif
 
-                                    <!-- == Edit Reservasi == -->
-                                    @if ($jenis_transaksi === 'kamar')
-                                    <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
-                                    @elseif ($jenis_transaksi === 'ruangan')
-                                    <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
-                                    @endif
-
-                                <!-- ============================================================= -->
+                            <!-- ============================================================= -->
 
                                 @elseif ($data->status_transaksi === 'checkin')
-                                    <button type="button" class="btn btn-warning waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#diskon"><b>Diskon</b></button>
+                                <button type="button" class="btn btn-warning waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#diskon"><b>Diskon</b></button>
 
-                                    <!-- Modal Diskon -->
-                                    <div class="modal fade" id="diskon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="diskonLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white"" id=" diskonLabel">Diskon Transaksi</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body"><br>
-                                                    <form method="POST" action="{{ route('diskon_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <div class="mb-3">
-                                                            <label for="example-text-input" class="form-label">Diskon (%)</label>
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <input class="form-control" type="number" name="diskon" value="{{ $data->diskon }}" id="example-text-input">
-                                                                </div>
-                                                                <div class="col-8" align="right">
-                                                                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-success mx-2">Simpan</button>
-                                                                </div>
+                                <!-- Modal Diskon -->
+                                <div class="modal fade" id="diskon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="diskonLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content border-primary">
+                                            <div class="modal-header bg-gradient bg-primary">
+                                                <h5 class="modal-title text-white"" id=" diskonLabel">Diskon Transaksi</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body"><br>
+                                                <form method="POST" action="{{ route('diskon_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="mb-3">
+                                                        <label for="example-text-input" class="form-label">Diskon (%)</label>
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <input class="form-control" type="number" name="diskon" value="{{ $data->diskon }}" id="example-text-input">
+                                                            </div>
+                                                            <div class="col-8" align="right">
+                                                                <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-success mx-2">Simpan</button>
                                                             </div>
                                                         </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- == Edit Reservasi == -->
-                                    @if ($jenis_transaksi === 'kamar')
-                                    <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
-                                    @elseif ($jenis_transaksi === 'ruangan')
-                                    <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
-                                    @endif
-
-                                    <button type="button" class="btn btn-danger waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkout"><b>Check Out</b></button>
-
-                                    <!-- Modal Tolak Reservasi -->
-                                    <div class="modal fade" id="checkout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="checkoutLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white" id=" checkoutLabel">Peringatan!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body"><br>
-                                                    <p align="center">Check Out transaksi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
-                                                    <div align="right">
-                                                        <form method="POST" action="{{ route('checkout', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="reset" class="btn btn-secondary me-1" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-danger">Check Out</button>
-                                                        </form>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                <!-- ============================================================= -->
-                                @elseif ($data->status_transaksi === 'checkout')
+                                <!-- == Edit Reservasi == -->
+                                @if ($jenis_transaksi === 'kamar')
+                                <a href="{{ route('pegawai_reservasiKamar.edit', $data->transaksi_id) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                                @elseif ($jenis_transaksi === 'ruangan')
+                                <a href="{{ route('pegawai_reservasiRuangan.edit', ['id' => $data->transaksi_id]) }}" class="btn btn-warning waves-effect waves-light me-1" title="edit"><i class="bx bx-edit-alt font-size-20 align-middle"></i></a>
+                                @endif
 
-                                    <button type="button" class="btn btn-info waves-effect btn-label waves-light m-1" data-bs-toggle="modal" data-bs-target="#bukti_bayar">
-                                        <i class="bx bxs-file-jpg label-icon"></i>
-                                        Bukti Bayar
-                                    </button>
-                                    <!-- Modal Bukti Bayar -->
-                                    <div class="modal fade" id="bukti_bayar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="bukti_bayarLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content border-primary">
-                                                <div class="modal-header bg-gradient bg-primary">
-                                                    <h5 class="modal-title text-white" id=" bukti_bayarLabel">Tambah Bukti Bayar</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body"><br>
-                                                    <form id="bbayarForm" action="{{ route('bukti_bayar', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}" method="POST" enctype="multipart/form-data">
+                                <button type="button" class="btn btn-danger waves-effect waves-light m-1" data-bs-toggle="modal" data-bs-target="#checkout"><b>Check Out</b></button>
+
+                                <!-- Modal check out -->
+                                <div class="modal fade" id="checkout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="checkoutLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content border-primary">
+                                            <div class="modal-header bg-gradient bg-primary">
+                                                <h5 class="modal-title text-white" id=" checkoutLabel">Peringatan!</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body"><br>
+                                                <p align="center">Check Out transaksi atas nama <b>"{{ $data->nama }}"</b> ?</p><br>
+                                                <div align="right">
+                                                    <form method="POST" action="{{ route('checkout', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}">
                                                         @csrf
                                                         @method('PUT')
-                                                        <div class="mb-3">
-                                                            <label for="bukti_bayar" class="form-label">Bukti Bayar</label>
-                                                            <input type="file" class="form-control" id="bukti_bayar" name="bukti_bayar">
-                                                            <div class="text-muted" style="font-size: 11px;">*file berupa JPEG/PNG/JPG/dan sebagainya.</div>
-                                                        </div>
-                                                        <div class="mb-3" align="right">
-                                                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-success mx-2">Simpan</button>
-                                                        </div>
+                                                        <button type="reset" class="btn btn-secondary me-1" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-danger">Check Out</button>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
+                            <!-- ============================================================= -->
+                                @elseif ($data->status_transaksi === 'checkout')
+                                    @if (!empty($data->bukti_bayar))
                                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light m-1" data-bs-toggle="modal" data-bs-target="#faktur">
                                         <i class="bx bx-printer label-icon"></i>
                                         Faktur
@@ -633,6 +595,38 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    <button type="button" class="btn btn-info waves-effect btn-label waves-light m-1" data-bs-toggle="modal" data-bs-target="#bukti_bayar">
+                                        <i class="bx bxs-file-jpg label-icon"></i>
+                                        Bukti Bayar
+                                    </button>
+                                    <!-- Modal Bukti Bayar -->
+                                    <div class="modal fade" id="bukti_bayar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="bukti_bayarLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content border-primary">
+                                                <div class="modal-header bg-gradient bg-primary">
+                                                    <h5 class="modal-title text-white" id=" bukti_bayarLabel">Tambah Bukti Bayar</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body"><br>
+                                                    <form id="bbayarForm" action="{{ route('bukti_bayar', ['jenis_transaksi' => $jenis_transaksi, 'id' => $data->transaksi_id]) }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="mb-3">
+                                                            <label for="bukti_bayar" class="form-label">Bukti Bayar</label>
+                                                            <input type="file" class="form-control" id="bukti_bayar" name="bukti_bayar">
+                                                            <div class="text-muted" style="font-size: 11px;">*file berupa JPEG/PNG/JPG/dan sebagainya.</div>
+                                                        </div>
+                                                        <div class="mb-3" align="right">
+                                                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-success mx-2">Simpan</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
                                 @endif
                             @endif
                             <a type="reset" class="btn btn-secondary waves-effect waves-light m-1" onclick="kembali()">Kembali</a>

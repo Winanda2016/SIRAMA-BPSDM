@@ -62,12 +62,15 @@ class CetakDokumenController extends Controller
         $pdfUrl = url('dokumen/faktur/' . $pdfPath);
 
         // Siapkan pesan WhatsApp
-        $pesan = 'Silakan unduh faktur transaksi Anda di sini: ' . $pdfUrl;
+        $pesan = "Halo". $transaksi->nama .", Silakan unduh faktur transaksi anda pada link berikut : \n" . $pdfUrl;
+
+        // Encode pesan
+        $pesan_encoded = urlencode($pesan);
 
         // Generate WhatsApp URL
-        $waUrl = 'https://wa.me/' . urlencode($no_hp) . '?text=' . urlencode($pesan);
+        $whatsapp_url = "https://wa.me/" . $no_hp . "?text=" . $pesan_encoded;
 
-        return redirect()->away($waUrl);
+        return redirect()->away($whatsapp_url);
     }
 
     public function downloadFaktur($id)

@@ -119,6 +119,6 @@ class tamuTransaksiController extends Controller
         $transaksi->save();
 
         return redirect()->route('detail_riwayat', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id])
-            ->with('success', 'Reservasi berhasil dibatalkan dan bukti bayar berhasil diunggah!');
+            ->with('success', 'Bukti bayar berhasil diunggah!');
     }
 }

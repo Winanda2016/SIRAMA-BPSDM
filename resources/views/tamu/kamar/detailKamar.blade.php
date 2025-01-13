@@ -58,20 +58,9 @@ $no = 1;
                     </div>
                     <div class="rd-text">
                         <div class="rd-title">
-                            <h3>Kamar Asrama</h3>
-                        </div>
-                        <div>
-                            @if($message = Session::get('success'))
-                            <div class="alert alert-success">
-                                <p>{{ $message }}</p>
-                            </div>
-                            @endif
-                            @if($message = Session::get('error'))
-                            <div class="alert alert-danger">
-                                <p>{{ $message }}</p>
-                            </div>
-                            @endif
-                        </div>
+                            <h3><b>Asrama BPSDM Prov.Sumbar</b></h3>
+                        </div><br>
+                        <p>Berikut merupakan list harga penyewaan kamar asrama permalam</p>
                         <div class="table-responsive">
                             <table class="table table-bordered dt-responsive table-check nowrap">
                                 <thead>
@@ -90,6 +79,7 @@ $no = 1;
                                 </tbody>
                             </table>
                         </div>
+                        <hr>
 
                         <h4 class="my-3">Deskripsi</h4>
                         <table>
@@ -107,11 +97,17 @@ $no = 1;
                             </tbody>
                         </table>
                         <hr>
+
+                        <h4 class="my-3">Catatan Reservasi</h4>
+                        <p class="f-para" align="justify">Untuk melakukan reservasi, 
+                            silakan cek terlebih dahulu ketersediaan kamar sesuai dengan tanggal yang diinginkan. 
+                            Jika kamar tersedia, tombol "Reservasi" akan muncul. Klik tombol tersebut untuk melanjutkan dan mengisi 
+                            formulir reservasi.</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card" style="padding: 44px 10px 50px 10px;">
+                <div class="card" style="padding: 20px 10px 20px 10px;">
                     <div class="room-booking">
                         <h4>Cek Ketersediaan Kamar</h4>
                         <hr>
@@ -126,6 +122,7 @@ $no = 1;
                                 <input type="date" id="date-out" name="cek_tgl_checkout" placeholder="YYYY-MM-DD" required>
                             </div>
                             <button type="submit" class="cek-ketersediaan">Cek Ketersediaan</button><br>
+                            <h6 id="error-date" style="color: red; display: none; font-size:13px"></h6>
                             <h6 id="hasil-cek-ketersediaan"></h6>
                         </form><br>
                         <div class="rdt-right">
@@ -142,12 +139,34 @@ $no = 1;
 <script>
     $(document).ready(function() {
         $('#cek-ketersediaan-form').on('submit', function(event) {
-            event.preventDefault(); // Mencegah pengiriman form secara default
+            event.preventDefault();
 
             var form = $(this);
-            var formData = form.serialize(); // Mengambil data dari form
+            var formData = form.serialize();
             var tglCheckin = $('#date-in').val();
             var tglCheckout = $('#date-out').val();
+            var errorMessage = '';
+
+            // Cek apakah tanggal check-in lebih kecil dari tanggal check-out
+            if (new Date(tglCheckin) >= new Date(tglCheckout)) {
+                errorMessage = '(Error) Kesalahan Inputan!<br>Tanggal Check-In harus "lebih kecil" dari Tanggal Check-Out!';
+                $('#error-date').html(errorMessage).show();
+                return;
+            }
+
+            // Cek apakah tanggal check-in dan check-out tidak lebih kecil dari hari ini
+            var today = new Date();
+            var checkinDate = new Date(tglCheckin);
+            var checkoutDate = new Date(tglCheckout);
+
+            if (checkinDate < today || checkoutDate < today) {
+                errorMessage = '(Error) Kesalahan Inputan!<br>Tanggal tidak boleh lebih kecil dari hari ini!';
+                $('#error-date').html(errorMessage).show();
+                return;
+            }
+
+            // Hapus pesan error jika validasi berhasil
+            $('#error-date').html('').hide();
 
             // Simpan tanggal ke local storage
             localStorage.setItem('tglCheckin', tglCheckin);
@@ -168,6 +187,8 @@ $no = 1;
                     }
                 },
                 error: function(xhr) {
+                    $('#hasil-cek-ketersediaan').hide();
+                    
                     $('#hasil-cek-ketersediaan').text('Terjadi kesalahan.');
                     $('#btn-reservasi').hide();
                 }

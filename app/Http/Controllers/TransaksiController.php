@@ -70,21 +70,37 @@ class TransaksiController extends Controller
             $tglCheckout = $data->tgl_checkout;
 
             $AddKamar = Kamar::select(
-                'kamar.id as kamar_id',
                 'kamar.nomor_kamar',
-                'kamar.status as status_kamar',
                 'gedung.nama_gedung',
-                DB::raw('COALESCE(transaksi.status_transaksi, "kosong") as status_transaksi')
+                'kamar.id as kamar_id'
             )
-                ->leftJoin('gedung', 'gedung.id', '=', 'kamar.gedung_id')
-                ->leftJoin('detail_transaksi_kamar', 'kamar.id', '=', 'detail_transaksi_kamar.kamar_id')
-                ->leftJoin('transaksi', function ($join) use ($tglCheckin, $tglCheckout) {
-                    $join->on('detail_transaksi_kamar.transaksi_id', '=', 'transaksi.id')
+                ->leftJoin('gedung', 'kamar.gedung_id', '=', 'gedung.id')
+                ->where('status', 'kosong')
+                ->whereNotIn('kamar.id', function ($query) use ($tglCheckin, $tglCheckout) {
+                    $query->select('dk.kamar_id')
+                        ->from('detail_transaksi_kamar as dk')
+                        ->join('transaksi as t', 'dk.transaksi_id', '=', 't.id')
                         ->where(function ($query) use ($tglCheckin, $tglCheckout) {
-                            $query->where('transaksi.tgl_checkin', '<=', $tglCheckout)
-                                ->where('transaksi.tgl_checkout', '>=', $tglCheckin);
+                            // Cek apakah transaksi yang ada bentrok dengan tanggal check-in dan check-out
+                            $query->where(function ($query) use ($tglCheckin, $tglCheckout) {
+                                $query->where('t.tgl_checkin', '<=', $tglCheckout)
+                                    ->where('t.tgl_checkout', '>=', $tglCheckin);
+                            })
+                                ->orWhere(function ($query) use ($tglCheckin, $tglCheckout) {
+                                    $query->where('t.tgl_checkin', '<=', $tglCheckin)
+                                        ->where('t.tgl_checkout', '>=', $tglCheckin);
+                                })
+                                ->orWhere(function ($query) use ($tglCheckin, $tglCheckout) {
+                                    $query->where('t.tgl_checkin', '<=', $tglCheckout)
+                                        ->where('t.tgl_checkout', '>=', $tglCheckout);
+                                })
+                                ->orWhere(function ($query) use ($tglCheckin, $tglCheckout) {
+                                    $query->where('t.tgl_checkin', '>=', $tglCheckin)
+                                        ->where('t.tgl_checkout', '<=', $tglCheckout);
+                                });
                         });
                 })
+                ->orderBy('gedung.nama_gedung')
                 ->orderBy('kamar.nomor_kamar')
                 ->get();
 
@@ -92,9 +108,12 @@ class TransaksiController extends Controller
             $tgl_checkout = \Carbon\Carbon::parse($data->tgl_checkout);
             $total_hari = $tgl_checkin->diffInDays($tgl_checkout);
 
+            // Hitung jumlah kamar yang sudah dipilih
+            $jumlah_kamar_pilih = detailTKamar::where('transaksi_id', $id)->count();
+
             return view(
                 'admin.transaksi.detailTransaksi',
-                compact('data', 'kamar', 'AddKamar', 'jenis_transaksi', 'total_hari', 'no_hp')
+                compact('data', 'kamar', 'AddKamar', 'jenis_transaksi', 'total_hari', 'no_hp', 'jumlah_kamar_pilih')
             );
         } elseif ($jenis_transaksi == 'ruangan') {
             $data = Transaksi::select(
@@ -155,8 +174,7 @@ class TransaksiController extends Controller
         $transaksi->status_transaksi = 'tolak';
         $transaksi->save();
 
-        return redirect()->route('riwayat_transaksi')
-            ->with('success', 'Reservasi ditolak!');
+        return redirect()->route('riwayat_transaksi')->with('success', 'Reservasi berhasil ditolak!');
     }
 
     public function cancelReservasi($id)
@@ -166,8 +184,7 @@ class TransaksiController extends Controller
         $transaksi->status_transaksi = 'batal';
         $transaksi->save();
 
-        return redirect()->route('riwayat_transaksi')
-            ->with('success', 'Reservasi berhasil dibatalkan!');
+        return redirect()->route('riwayat_transaksi')->with('success', 'Reservasi berhasil dibatalkan!');
     }
 
     //terima reservasi kamar
@@ -180,6 +197,19 @@ class TransaksiController extends Controller
 
         $transaksi = Transaksi::findOrFail($id);
 
+        $jumlahKamarDipilih = count($validatedData['kamar_ids']);
+
+        $jumlahOrang = $transaksi->jumlah_orang;
+        $jumlahRuangan = $transaksi->jumlah_ruangan;
+
+        if ($jumlahKamarDipilih > $jumlahOrang) {
+            return redirect()->back()
+                ->with('error', 'Kamar yang dipilih tidak boleh melebihi Jumlah Orang!');
+        } elseif ($jumlahKamarDipilih > $jumlahRuangan) {
+            return redirect()->back()
+                ->with('error', 'Kamar yang dibutuhkan hanya ' . $jumlahRuangan . ' kamar!');
+        }
+
         $transaksi->status_transaksi = 'terima';
         $transaksi->save();
 
@@ -190,10 +220,8 @@ class TransaksiController extends Controller
             $detailTransaksi->save();
         }
 
-        return redirect()->route(
-            'detail_transaksi',
-            ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]
-        );
+        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id])
+            ->with('success', 'Kamar yang dipilih berhasil ditambahkan!');
     }
 
     public function hapusKamar($jenis_transaksi, $id)
@@ -211,7 +239,7 @@ class TransaksiController extends Controller
         return redirect()->route(
             'detail_transaksi',
             ['jenis_transaksi' => $jenis_transaksi, 'id' => $detailTransaksi->transaksi_id]
-        );
+        )->with('success', 'Kamar berhasil dihapus!');
     }
 
     public function CheckIn($jenis_transaksi, $id)
@@ -232,7 +260,7 @@ class TransaksiController extends Controller
         $transaksi->status_transaksi = 'checkin';
         $transaksi->save();
 
-        return redirect()->route('daftar_tamu');
+        return redirect()->route('daftar_tamu')->with('success', 'Check In Berhasil dilakukan!');
     }
 
     public function CheckOut($jenis_transaksi, $id)
@@ -255,7 +283,7 @@ class TransaksiController extends Controller
         $transaksi->status_transaksi = 'checkout';
         $transaksi->save();
 
-        return redirect()->route('riwayat_transaksi');
+        return redirect()->route('riwayat_transaksi')->with('success', 'Berhasil melakukan Check Out!');
     }
 
     public function diskon(Request $request, $jenis_transaksi, $id)
@@ -349,12 +377,10 @@ class TransaksiController extends Controller
     public function tambahBuktiBayar(Request $request, $jenis_transaksi, $id)
     {
         $transaksi = Transaksi::findOrFail($id);
-
         $request->validate([
             'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Upload dokumen jika ada
         try {
             if ($request->hasFile('bukti_bayar')) {
                 $file = $request->file('bukti_bayar');
@@ -362,14 +388,17 @@ class TransaksiController extends Controller
                 $fileName = 'Transaksi_' . time() . '.' . $extension;
                 $file->move(public_path('public/dokumen/bukti_bayar'), $fileName);
                 $transaksi->bukti_bayar = 'public/dokumen/bukti_bayar/' . $fileName;
+            } else {
+                return redirect()->back()->with('error', 'File bukti bayar tidak ditemukan!');
             }
+
+            $transaksi->save();
+            return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id])
+                ->with('success', 'Bukti bayar berhasil ditambahkan!');
+                
         } catch (\Exception $e) {
-            return back()->withError('Gagal mengupload bukti pembayaran: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan bukti bayar: ' . $e->getMessage());
         }
-
-        $transaksi->save();
-
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
     }
 
     public function hapusBuktiBayar($jenis_transaksi, $id)
@@ -386,7 +415,8 @@ class TransaksiController extends Controller
         $transaksi->bukti_bayar = null;
         $transaksi->save();
 
-        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id]);
+        return redirect()->route('detail_transaksi', ['jenis_transaksi' => $jenis_transaksi, 'id' => $id])
+            ->with('success', 'Berhasil menghapus bukti bayar!');
     }
 
     //== Transaksi langsung ==

@@ -32,29 +32,32 @@
                     <div class="bd-more-text" align="justify">
                         <div class="bm-item">
                             <h4>Badan Pengembangan Sumber Daya Manusia (BPSDM)</h4>
-                            <p>Badan Pengembangan Sumber Daya Manusia (BPSDM) Provinsi Sumatera Barat, merupakan salah satu Organisasi Perangkat Daerah (OPD)
-                                Provinsi Sumatera Barat yang merupakan unsur penunjang urusan pemerintahan di bidang pengembangan sumber daya manusia yang
-                                menjadi kewenangan daerah provinsi.
+                            <p>Badan Pengembangan Sumber Daya Manusia (BPSDM) Provinsi Sumatera Barat,
+                                merupakan salah satu Organisasi Perangkat Daerah (OPD) Provinsi Sumatera Barat yang merupakan unsur
+                                penunjang urusan pemerintahan di bidang pengembangan sumber daya manusia yang menjadi kewenangan daerah provinsi.
+                                Sebagai unsur penunjang tentu BPSDM harus bisa mempersiapkan segala sesuatu yang berkaitan dengan kebutuhan kompetensi
+                                ASN yang akan digunakan oleh unsur pelaksana urusan pemerintahan daerah dan unsur penunjang lainnya. Keberadaan BPSDM harus
+                                bisa mendukung penyelenggaraan urusan daerah dengan mempersiapkan kebutuhan kompetensi SDM.
                             </p>
                             <p>
-                                Berdasarkan dokumen Rencana Strategis (RENSTRA) BPSDM Perubahan tahun 2016-2021, Salah satu tugas atau kinerja BPSDM
-                                Provinsi Sumatera Barat adalah Peningkatan Kualitas SDM Penyelenggara melalui pendidikan dan pelatihan (diklat).
-                                Pada RENSTRA BPSDM Perubahaan 2016-2021 juga dijelaskan bahwa, untuk meningkatkan kuantitas dan kualitas sarana dan prasarana
-                                baik untuk proses belajar-mengajar maupun untuk penyelenggaraan, salah satunya dibangun Asrama penginapan peserta diklat dan
-                                peningkatan kualitas Aula.
+                                Badan pengembangan sumber daya manusia
+                                memiliki luas sekitar 2 Hektar yang terdiri dari gedung kantor, asrama dan fasilitas – fasilitas lainnya.
+                                Jumlah kamar yang tersedia sebanyak 78 (tujuh puluh delapan) kamar dengan kapasitas sebanyak 250 orang.
                             </p>
                         </div>
                         <div class="bm-item">
                             <h4>Sistem Informasi Asrama (SIRAMA)</h4>
                             <p>SIRAMA atau Sistem Informasi Asrama Badan Pengmbangan Sumber Daya Manusia Provinsi Sumtaera Barat
                                 adalah salah satu sistem informasi yang ada di Badan Pengembangan Sumber Daya Manusia
-                                Provinsi Sumatera Barat yang bertujuan untuk meningkatkan pelayanan retribusi daerah pada Asrama Badan Pengembangan Sumber Daya
-                                Manusia Provinsi Sumatera Barat.
+                                Provinsi Sumatera Barat yang bertujuan untuk meningkatkan pelayanan dan transparansi dalam pemungutan retribusi daerah pada Badan 
+                                Pengembangan Sumber daya Manusia Provinsi Sumatera Barat.
                             </p>
-                            <p>Selain untuk meningkatkan pelayanan retribusi daerah, SIRAMA juga bertujuan untuk mempermudah tamu atau pengunjung yang ingin 
-                                melakukan reservasi pada kamar asrama dan ruangan pada BPSDM Prov.Sumbar. Dengan tersedianya Sistem Informasi Asrama ini pengunjung atau tamu
-                                tidak perlu lagi untuk datang ke kantor langsung untuk melakukan reservsi, dan juga dengan adanya SIRAMA ini pengunjung atau tamu 
-                                dapat dengan mudah melihat informasi mengenai kamar atau layanan lainnya yang ada di BPSDM Prov.Sumbar.
+                            <p>Selain bertujuan untuk meningkatkan pelayanan retribusi daerah, SIRAMA juga dirancang untuk mempermudah 
+                                calon tamu yang ingin melakukan reservasi kamar asrama atau ruangan di BPSDM Provinsi Sumatera Barat. 
+                                Dengan adanya SIRAMA ini, calon tamu tidak perlu lagi datang langsung ke kantor untuk 
+                                melakukan reservasi. Proses reservasi dapat dilakukan secara online melalui SIRAMA, yang telah dilengkapi 
+                                dengan informasi lengkap mengenai kamar asrama maupun ruangan yang tersedia di BPSDM. Hal ini memberikan 
+                                kemudahan bagi calon tamu dalam memperoleh informasi yang dibutuhkan secara praktis dan efisien.
                             </p>
                         </div>
                     </div>

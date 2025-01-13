@@ -27,22 +27,6 @@
         <div class="row">
             <div class="col-lg-5">
                 <div class="card p-4">
-                    @if($message = Session::get('success'))
-                    <div class="alert alert-success alert-dismissible">
-                        <p>{{ $message }}</p>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    @endif
-                    @if($message = Session::get('error'))
-                    <div class="alert alert-danger alert-dismissible">
-                        <p>{{ $message }}</p>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    @endif
                     <div class="room-booking">
                         <div class="reservationForm">
                             @if ($data->status_transaksi === 'pending')
@@ -218,7 +202,7 @@
                                 <button type="button" class="BPrimary p-2" data-toggle="modal" data-target="#bbayarModal" title="tambah bukti bayar" style="width: fit-content;">
                                     Bukti Bayar
                                 </button>
-                                <!-- Modal Konfirmasi -->
+                                <!-- Modal Tambah Bukti Bayar -->
                                 <div class="modal fade" id="bbayarModal" tabindex="-1" role="dialog" aria-labelledby="bbayarModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">

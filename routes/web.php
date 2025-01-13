@@ -10,21 +10,34 @@ use App\Http\Controllers\transaksiKamarController;
 use App\Http\Controllers\transaksiRuanganController;
 use App\Http\Controllers\tamuTransaksiController;
 use App\Http\Controllers\TransaksiController;
-use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\SaranPengaduanController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CetakDokumenController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================================================================================================
 //== Cetak Faktur ==
-Route::get('/transaksi/{id}/faktur/download', [CetakDokumenController::class, 'downloadFaktur'])
-->name('transaksi.faktur.download');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/transaksi/{id}/faktur/download', [CetakDokumenController::class, 'downloadFaktur'])
+        ->name('transaksi.faktur.download');
+});
+
+Route::get('/wel', function () {
+    return view('welcome');
+});
 
 Route::middleware('guest')->group(function () {
 
     Route::get('/', [DashboardController::class, 'indexTamu'])->name('Tdashboard');
 
     //== Tamu==
-    Route::get('/tentang-kami', function () {return view('tamu.tentangKami');})
+    Route::get('/tentang-kami', function () {
+        return view('tamu.tentangKami');
+    })
         ->name('Ptentang');
 
     //== Kamar Tamu ==
@@ -42,9 +55,10 @@ Route::middleware('guest')->group(function () {
         ->name('cek_ketersediaan_ruangan');
 
     //== Kontak ==
-    Route::get('/kontak', function () {return view('tamu.kontak');})
+    Route::get('/kontak', function () {
+        return view('tamu.kontak');
+    })
         ->name('Pkontak');
-
 });
 
 
@@ -86,14 +100,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //== Kelola Users ==
     Route::resource('/kelola-users', kelolaUserController::class);
 
-    //== Komentar ==
-    Route::resource('/komentar', KomentarController::class);
+    //== Saran Pengaduan ==
+    Route::resource('/saran-pengaduan', SaranPengaduanController::class);
 
     //Laporan
     Route::get('/laporan/cetak-pdf', [CetakDokumenController::class, 'laporanPDF'])
         ->name('laporan_pdf');
     Route::get('/laporan/cetak-excel', [CetakDokumenController::class, 'laporanExcel'])
         ->name('laporan_excel');
+
+    Route::put('admin/users/{id}/password', [kelolaUserController::class, 'updatePassword'])->name('admin.password.update');
 });
 
 // ========================================================================================================================
@@ -155,7 +171,7 @@ Route::middleware(['auth', 'role:pegawai'])->group(function () {
 
     Route::put('/bukti-bayar/{jenis_transaksi}/{id}', [TransaksiController::class, 'tambahBuktiBayar'])
         ->name('bukti_bayar');
-        Route::delete('/bukti-bayar/{jenis_transaksi}/{id}', [TransaksiController::class, 'hapusBuktiBayar'])
+    Route::delete('/bukti-bayar/{jenis_transaksi}/{id}', [TransaksiController::class, 'hapusBuktiBayar'])
         ->name('hapus_bukti_bayar');
 
     //== Daftar Tamu ==
@@ -211,8 +227,8 @@ Route::middleware(['auth', 'role:tamu'])->group(function () {
     Route::put('/ruangan/update-reservasi/{id}', [transaksiRuanganController::class, 'update'])
         ->name('reservasi_ruangan.update');
 
-    Route::post('/komentar/tambah', [KomentarController::class, 'storeKomentar'])
-        ->name('komentar.store');
+    Route::post('/saran-pengaduan/tambah', [SaranPengaduanController::class, 'storeSaranPengaduan'])
+        ->name('saran-pengaduan.store');
 });
 
 require __DIR__ . '/auth.php';
